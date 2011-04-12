@@ -49,6 +49,17 @@ class modeluserrab extends CI_Model {
         return $row;
     }
 
+function getDetailuserrabbyuserpass($idrab,$iduser) {
+        $xStr = "SELECT " .
+                "idx," .
+                "iduser," .
+                "idrab" .
+                " FROM userrab  WHERE iduser = '" . $iduser . "' and idrab = '" . $idrab . "'";
+
+        $query = $this->db->query($xStr);
+        $row = $query->row();
+        return $row;
+    }
     function getLastIndexuserrab() { /* spertinya perlu lock table */
         $xStr = "SELECT " .
                 "idx," .
@@ -80,6 +91,12 @@ class modeluserrab extends CI_Model {
 
     function setDeleteuserrab($xidx) {
         $xStr = " DELETE FROM userrab WHERE userrab.idx = '" . $xidx . "'";
+
+        $query = $this->db->query($xStr);
+    }
+
+    function setDeleteuserbyuser($xiduser) {
+        $xStr = " DELETE FROM userrab WHERE userrab.iduser = '" . $xiduser . "'";
 
         $query = $this->db->query($xStr);
     }
