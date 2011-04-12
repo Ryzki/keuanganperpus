@@ -1,0 +1,98 @@
+.jqmenuatas{
+font: 99.5% "Lucida Sans Unicode", "Bitstream Vera Sans", "Trebuchet Unicode MS", "Lucida Grande", Verdana, Helvetica, sans-serif;
+/*background: #414141;*/
+background: transparent 50%;
+width: 950px;
+z-index: 200;
+}
+
+.jqmenuatas ul{
+margin: 0;
+padding: 0;
+list-style-type: none;
+}
+
+/*Top level list items*/
+.jqmenuatas ul li{
+position: relative;
+display: inline;
+float: left;
+z-index: 200;
+}
+
+/*Top level menu link items style*/
+.jqmenuatas ul li a{
+display: block;
+/*background: #414141; background of tabs (default state)*/
+background: #414141;
+color: white;
+padding: 8px 10px;
+border-right: 1px solid #778;
+color: #2d2b2b;
+text-decoration: none;
+z-index: 200;
+
+}
+
+* html .jqmenuatas ul li a{ /*IE6 hack to get sub menu links to behave correctly*/
+display: inline-block;
+}
+
+.jqmenuatas ul li a:link, .jqmenuatas ul li a:visited{
+color: white;
+}
+
+.jqmenuatas ul li a:hover{
+background: black; /*tab link background during hover state*/
+color: white;
+}
+    
+/*1st sub level menu*/
+.jqmenuatas ul li ul{
+position: absolute;
+
+left: 0;
+display: block;
+visibility: hidden;
+z-index: 100;
+}
+
+/*Sub level menu list items (undo style from Top level List Items)*/
+.jqmenuatas ul li ul li{
+display: list-item;
+float: none;
+}
+
+/*All subsequent sub menu levels vertical offset after 1st level sub menu */
+.jqmenuatas ul li ul li ul{
+top: 0;
+}
+
+/* Sub level menu links style */
+.jqmenuatas ul li ul li a{
+font: 90.5% "Lucida Sans Unicode", "Bitstream Vera Sans", "Trebuchet Unicode MS", "Lucida Grande", Verdana, Helvetica, sans-serif;
+width: 160px; /*width of sub menus*/
+padding: 5px;
+margin: 0;
+border-top-width: 0;
+border-bottom: 1px solid gray;
+}
+
+.jqmenuatasz ul li ul li a:hover{ /*sub menus hover style*/
+background: #eff9ff;
+color: black;
+}
+
+/* ######### CSS classes applied to down and right arrow images  ######### */
+
+.downarrowclass{
+position: absolute;
+top: 12px;
+right: 7px;
+}
+
+.rightarrowclass{
+position: absolute;
+top: 6px;
+right: 5px;
+}

@@ -1,0 +1,349 @@
+html,body{margin:0;
+padding:0;
+/*background: #CCCCFF;*/     
+background-color: #666666;
+
+}
+
+body{font: 80% arial,sans-serif;text-align:center}
+p{margin:0 10px 10px}
+a{display:block;color: #981793;padding:10px}
+
+div#header {
+  position: relative;
+  top: 10px;
+  height:200px;
+  line-height:80px;
+  margin:0;
+  padding-left:0px;
+  background: #EEE;
+  /*color: #79B30B; */
+  color: black;
+  overflow: hidden;
+  }
+  
+div#mnhead {
+ position: relative; 
+ 
+  height:35px;
+  line-height:35px;
+  margin:0;
+  top:127px;
+  padding-top :3px;
+  padding-left:5px; width: 927px;
+  background: #110DA2;
+  color: #79B30B;
+  border:1px solid #DDEEF6;
+  overflow: visible;
+  left: 7px;
+  
+  }
+  
+div .headermenu {
+  top :10px;
+  position: relative; 
+  float: left;
+  height:400px;
+  width: 295px;
+  margin-left: 2px;
+  padding: 5px;
+  background: #110DA2;
+  
+  color: white;
+  border:2px solid #110DA2;
+  left: 7px;
+  
+    
+  }
+  
+  div .footermenu {
+  top :0px;
+  position: relative; 
+  float: left;
+  height:120px;
+  width: 295px;
+  margin-left: 2px;
+  padding: 5px;
+  /*background: #110DA2; */
+  
+  color: black;
+  border-right :1px dashed #ff0808;
+ /* border-right:2px solid #ff0000;*/   
+  left: 7px;
+  
+    
+  }
+
+ 
+  
+div#homeview {
+   position: relative;
+   height: 330px;
+   width: 300px;
+   top : 0px;
+   left: 600px;  
+   border: green;
+   background: white;
+   padding: 10px; 
+   /*background-image : url(images/voxuslogo.png) ;
+   background-repeat: repeat;
+   background-position: center;*/
+   clear: both;
+   overflow: hidden;
+  }
+
+div#homeviewdetail {
+   position: relative;
+   
+   width: 900px;
+   top : 0px;
+   left: 0px;  
+   border: green;
+   background: white;
+   padding: 10px; 
+   /*background-image : url(images/voxuslogo.png) ;
+   background-repeat: repeat;
+   background-position: center;*/
+   clear: both;
+   overflow: hidden;
+  }
+  
+  
+  div#contentadmin {
+   position: relative;
+  /* height: 310px; */
+   width: 885px;
+   top : 0px;
+   left: 0px;  
+   border: green;
+   background: white;
+   padding: 20px; 
+   /*background-image : url(images/voxuslogo.png) ;
+   background-repeat: repeat;
+   background-position: center;*/
+   clear: both;
+  /* overflow: hidden; */
+  }
+
+  
+ div#gambarview1{
+ 
+   position: relative;
+   height: 70px;
+   width: 580px;
+   top : -352px;
+   left: 0px;
+   border: green;
+   background: white;
+   color: black;
+   padding: 5px; 
+   clear: both;
+   border:2px solid #110DA2;
+   overflow: hidden;
+   /*background: transparent;
+   background-image : url(img/tebudigital.png); */
+   
+  }
+  
+  div#gambarview2{
+   position: relative;
+   height: 285px;
+   width: 905px;
+   top : 2px;
+   left: 0px;
+   
+   background: white;
+   padding: 5px; 
+   clear: both;
+   border:2px solid #110DA2;
+   overflow: hidden;
+  } 
+  
+  div#gambarview3{
+   position: relative;
+   height: 120px;
+   width: 120px;
+   top : -450px;
+   left: 250px;
+   border: green;
+   background: white;
+   padding: 5px; 
+   clear: both;
+   border:2px solid #110DA2;
+   overflow: hidden;
+  }
+ 
+  
+  
+  div#readmore{
+  font: 95% "Lucida Sans Unicode", "Bitstream Vera Sans", "Trebuchet Unicode MS", "Lucida Grande", Verdana, Helvetica, sans-serif;
+  cursor: pointer;
+  margin-left: 10px;
+  }
+  
+  div#listisi{
+   padding: 10px;
+   margin-left: 10px;
+   margin-bottom: 30px;
+  
+  }
+  
+div#container{text-align:left;top : 20px;background-color: white;}
+
+div#contentx p{line-height:1.4;padding-left :20px;} 
+div#contentview p{line-height:1.4;padding-left :10px;} 
+div#navigation{background:transparent;color: black;}
+div#extra{background:transparent;color: black;}
+div#footer{background: #333;color: #FFF}
+div#footer p{margin:0;padding:5px 10px}
+
+div#container{width:950px;margin:0 auto}
+
+div#wrapper{float:left;width:100%}
+div#contentx{padding: 0px; margin-left : 150px;margin-top:-175px; width : 700px; background: transparent;}
+
+div#contentview{
+                padding: 5px;
+                margin-bottom:5px;  
+                margin-left : 10px;
+                margin-top:15px; 
+                width : 920px;
+                height: 300px;
+                background: #110DA2;
+                /*background: url(images/bgtiara.png) repeat-y;
+                border: black 3px ; */
+                overflow: hidden;
+                color: blue;
+                }
+                
+div#contentviewdetail{
+                padding: 5px;
+                margin-bottom:5px;  
+                margin-left : 10px;
+                margin-top:5px; 
+                width : 920px;
+                background: #110DA2;
+                background: url(images/bgtiara.png) repeat-y;
+                /*border: black 3px ; */
+                overflow: hidden;
+                color: black;
+                }
+                
+                
+div#contentv{padding: 5px;
+                margin-bottom:5px;  
+                margin-left : 10px;
+                margin-top:15px; 
+                width : 920px;
+                /*height: 350px;  */
+                background: white; 
+                border: black 3px ; 
+               /* overflow: hidden; */
+                color: black;
+                }                
+                
+
+div#contentNF{margin-left : 455px; margin-top: 25px;}
+div#navigation{position: absolute; float:left;width:150px;margin-left:750px;top : 200px;}
+div#extra{position: absolute; float:left;width:150px;margin-left:0px;top:265px}
+
+div#footer{position: relative; clear:left;width:100%;top:0px;text-align: center;font: 9px;color: gray;}
+
+div#clearfix {
+  display: inline-block;
+}
+
+.image_carousel {
+      margin-top: 10px; 
+       padding: 5px 0 5px 0px;
+       margin-left : 0px;
+    }
+    
+    .image_carousel img {
+        border: 1px solid #ccc;
+        background-color: white;
+        padding: 2px;
+        margin: 2px;
+        display: block;
+        float: left;
+        
+    }
+    .clearfix {
+        float: none;
+        clear: both;
+    }
+    
+.slideshow { height: 280px; width: 905px; margin: auto }
+.slideshow img { padding: 0px; border: 1px solid #ccc; background-color: #eee; }
+
+.imghomebawahview {
+  margin-top: -15px;
+}
+
+div#keterangan{
+    
+    position: absolute;
+    height: 20px;
+   margin-top: -375px;
+   font:14px Arial, Helvetica, sans-serif ;
+   color: blue;
+   font-weight: bolder;
+   margin-left: 190px;
+   z-index: 1000;
+  
+}
+.subhomeatas{
+  margin-top: -95px;
+ margin-left: 100px;
+ font-size: 8pt;
+ color: black;
+}
+
+.subhomeatasview{
+ margin-top: -130px;
+ margin-left: 100px;
+ font-size: 8pt;
+ text-decoration: none;
+ color: black;
+}
+.subhomeatasview li{
+    font: 100% "Lucida Sans Unicode", "Bitstream Vera Sans", "Trebuchet Unicode MS", "Lucida Grande", Verdana, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+.subhomeatasview a{
+ text-decoration: none;
+ color: black;
+ margin: 0;
+   padding: 0;
+}
+
+.subhomebawahview{
+ margin-top: -110px;
+ margin-left: 100px;
+ font-size: 8pt;
+ text-decoration: none;
+}
+
+
+
+.subhomebawahview a{
+ text-decoration: none;
+ color: black;
+ padding:  0;
+    
+}
+
+.subhomebawah {
+  margin-top: -95px;
+ margin-left: 100px;
+ font-size: 8pt;
+ color: black;
+}
+
+.icoym{
+  margin-top: -10px;
+ margin-left: 100px;
+ font-size: 8pt;
+ color: black;
+}  

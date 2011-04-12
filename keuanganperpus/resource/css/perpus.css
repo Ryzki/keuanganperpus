@@ -1,0 +1,247 @@
+/* 
+    Document   : dolphin
+    Created on : 21 Mar 11, 22:55:53
+    Author     : Administrator
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+html,body{margin:0;
+padding:0;
+/*background: #CCCCFF;
+background-color: #666666;
+*/
+background-image: url(img/bgpage.png);
+}
+
+img {
+	border: 0;
+}
+
+body{font: 80% arial,sans-serif;text-align:center}
+
+p{margin:0 10px 10px}
+a{display:block;color: #981793;padding:10px}
+
+#utama {
+       text-align: left;
+	margin: auto;
+	width: 950px;
+       position: relative;
+       /*background-image: url(img/bgkiri.png);*/
+       background: blue;
+}
+
+#kop{
+    position: relative;
+    
+    height: 110px;
+    width: 950px;
+    float: left;
+    background-image: url(img/bgkiri.png);
+}
+
+#logo{
+ margin-left: 10px;
+ float: left;
+ width: 100px;
+ height: 100px
+}
+
+#kopperpus{
+ position: relative;
+ height: 100px;
+ margin-left: 10px;
+ width: 800px;
+ text-align: center;
+ /*background-color: red;*/
+ padding: 10px;
+ float: left;
+ color: red;
+ font:12px/17px Arial, Helvetica, sans-serif;
+ font-size: 18pt;
+}
+
+#isi{
+    position: relative;
+    float: left;
+
+    background-image: url(img/bgkiri.png);
+    text-align: left;
+    background: url(img/bgkiri.png);
+    width: 950px;
+
+}
+
+div#header {
+  position: relative;
+  top: 10px;
+  height:200px;
+  line-height:80px;
+  margin:0;
+  padding-left:0px;
+  background: #EEE;
+  /*color: #79B30B; */
+  color: black;
+  overflow: hidden;
+  }
+
+/*#left {
+ position: absolute;
+ top: 0;
+ left: -50px;
+ width: 340px;
+ background-image: url(img/bgkiri.png);
+ padding: 10px;
+}
+
+#right {
+ position: absolute;
+ top: 0;
+ left: 310px;
+ width: 700px;
+ background-image: url(img/bgisi.png);
+ padding: 10px;
+}
+*/
+#nav ul {
+ margin: 0;
+ padding: 0 0 0 30px;
+ 
+}
+#nav li {
+ float: left;
+ border-right: 1px solid #A26A6B;
+ padding: 66px 9px 9px 9px;
+ list-style: none;
+ /*background-color: #0099FF;*/
+}
+#nav li.last {
+ border-right: none;
+}
+#nav a {
+ color: #CECECE;
+ font: 12px arial, sans-serif;
+ font-weight: normal;
+}
+#nav .selected a {
+ font-weight: bold;
+}
+
+
+#randomgbr{
+   position: relative;
+   margin-top: 10px;
+   padding: 5px;
+}
+
+#gbratas{
+  position: relative;
+  height: 220px;
+  float: left;
+  top: 0;
+}
+
+#gbr1{
+ position: relative;
+ width: 160px;
+ height: 200px;
+ margin: 0px 3px 3px 0px;
+/* background-color: #981793; */
+text-align: center;
+ background: transparent;
+ float: left;
+}
+
+#gbr1 a{
+    text-decoration: none;
+    color: black;
+}
+#gbrtengah{
+ position: relative;
+ height: 300px;
+ top: 240px;
+ left: 0px;
+}
+
+#gbrx{
+ background:transparent;
+ width: 300px;
+ height: 250px;
+ margin: 0px 3px 3px 0px;
+ padding:20px;
+}
+
+#gbrbawah{
+ position: relative;
+  height: 450px;
+  float: left;
+  top: 220px;
+}
+
+#gbr2{
+ position: relative;
+ width: 160px;
+ height: 250px;
+ margin: 0px 3px 3px 0px;
+ /* background-color: #981793; */
+ 
+ text-align: center;
+ background: transparent;
+ float: left;
+ float: left;
+}
+
+#gbr2 a{
+    text-decoration: none;
+    color: black;
+}
+#menuutama{
+   margin-top: 20px;
+  position: relative;
+  width: 600px;
+  text-align: center;
+  left: 100px;
+}
+#menuitem{
+ float: left;
+ font: 12px arial, sans-serif;
+ font-weight: bolder;
+ color: white;
+ width: 100px;
+ height: 100px
+}
+#menuitem a{
+ text-decoration: none;
+ padding: 0px;
+ color: white;
+}
+
+div#navigation{position: absolute;
+               float:left;
+               width:150px;
+               margin-left:750px;
+               top : 200px;
+               background:transparent;
+               color: black;}
+
+div#mnhead {
+position: relative;
+height:35px;
+  line-height:35px;
+  margin-left: 3px;
+  padding-top :3px;
+  padding-left:5px; width: 630px;
+  /*background-color:  #110DA2 ;
+  background: transparent 60%;*/
+  color: #79B30B;
+  border:1px solid #DDEEF6;
+  overflow: visible;
+  left: -1px;
+
+  }

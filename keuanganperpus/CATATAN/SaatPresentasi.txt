@@ -1,0 +1,13 @@
+Kesepakatan Penyebutan Penamaan
+Contoh 
+Transaksi adalah ...
+
+Menggambatrakan Aplikasi Ini dibanngun dengan Codeiginiter-->Bahas pemrograman lain sesuai proposal
+
+Pengisian pengguna dan Jenis transaksi pada PLU  Datanya Hampir sama namun berbeda Sifat kegunaannya
+
+untuk  pengguna hanya grouping
+Jenis transaksi ==>untuk reporting otomatisasi 
+Perhatikan pengisian jenis transaksi
+
+Pertanyaan Apakah Setiap user yang login harus sesui dia ditempakan dimana?

@@ -1,0 +1,52 @@
+#grid
+{ 
+    position: absolute;
+    float: left;
+    overflow: hidden;
+    clear:both;    
+    
+    
+
+}
+
+.row{
+    float: left; 
+    border-top: 1pt gray solid;
+    overflow: hidden;
+    height: 40;
+    margin-left: 150px;
+}
+
+.cell
+{                    
+    
+    float: left;
+    border-left: 1pt gray solid;
+    border-right : 1pt gray solid;
+   /* padding: 5px; 
+    height: 40px; */
+    overflow: visible;
+    
+    white-space: normal;
+   
+}
+.cellh
+{
+    position: relative; 
+    float: left;
+    border-left: 1pt gray solid;
+    border-right : 1pt gray solid;
+    background-color: gray;
+ /*   padding: 5px; */
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.itemcell
+{                    
+    
+    float: left;
+    overflow: visible;   
+    white-space: normal;
+   
+}
