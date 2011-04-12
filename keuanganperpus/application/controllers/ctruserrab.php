@@ -75,6 +75,7 @@ class ctruserrab extends CI_Controller {
         return $this->modelgetmenu->getMenuForTree();
         //return '<div id="browser"> <div id="lstreeview" name="lstreeview" class="treev">' . $this->modelgetmenu->getMenuForTree() . '</div></div>';
     }
+    
     function getlistuserrab($xAwal, $xSearch) {
         $xLimit = 3;
         $this->load->helper('form');
