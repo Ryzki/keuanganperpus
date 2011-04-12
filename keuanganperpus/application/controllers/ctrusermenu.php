@@ -51,7 +51,7 @@ class ctrusermenu extends CI_Controller {
         $this->load->helper('common');
         $this->load->model('modelpegawai');
         $xBufResult = '<input type="hidden" name="edidx" id="edidx" value="0" />';
-        $xBufResult .= setForm('Nama User', 'iduser', form_dropdown('ediduser', $this->modelpegawai->getArrayListpegawai(), '0', 'id="ediduser" width="150px" onchange="setcheckmenu();"')) . '<div class="spacer"></div>';
+        $xBufResult .= setForm('NamaUser', 'Nama User', form_dropdown('ediduser', $this->modelpegawai->getArrayListpegawai(), '0', 'id="ediduser" width="150px" onchange="setcheckmenu();"')) . '<div class="spacer"></div>';
         //$xBufResult .= setForm('edidmenu', 'idmenu', form_input(getArrayObj('edidmenu', $xidmenu, '100'))) . '<div class="spacer"></div>';
          $xBufResult .= '<div id="chkmenu">'.$this->setChecboxMenu().'</div>';
         $xBufResult .= '<div class="garis"></div>' . form_button('btSimpan', 'simpan', 'onclick="dosimpan();"') . '<div class="spacer"></div>';

@@ -22,24 +22,21 @@ class ctruserrab extends CI_Controller {
         $this->load->helper('form');
         $this->load->helper('html');
         $this->load->model('modelgetmenu');
-        $xForm = '<div id="stylized" class="myform">' . form_open_multipart('ctruserrab/inserttable', array('id' => 'form', 'name' => 'form'));
-        $xAddJs = '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/tiny_mce/jquery.tinymce.js"></script>' .
-                '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/thickbox.js"></script>' .
-                '<link rel="stylesheet" href="' . base_url() . 'resource/css/thickbox.css" type="text/css" media="screen" />' .
-                link_tag('resource/css/screenshot.css') .
-                link_tag('resource/js/uploadify/uploadify.css') .
-                '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/uploadify/swfobject.js"></script>' .
-                '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/uploadify/jquery.uploadify.v2.1.4.js"></script>' .
+        $xForm = '<div id="stylized" class="myform"><h3>Setting Priviledges User R A B</h3>' . form_open_multipart('ctruserrab/inserttable', array('id' => 'form', 'name' => 'form')).'<div class="garis"></div>';
+        $xAddJs = link_tag('resource/css/jquery-ui-lightness.css') .
+                link_tag('resource/css/jquery.checkboxtree.css') .
                 '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/ajax/baseurl.js"></script>' .
                 '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/ajax/ajaxuserrab.js"></script>' .
-                '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/ajax/ajaxuploadfy.js"></script>' .
-                '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/ajax/ajaxmce.js"></script>';
-        echo $this->modelgetmenu->SetViewPerpus($xForm . $this->setDetailFormuserrab($xidx), $this->getlistuserrab($xAwal, $xSearch), '', $xAddJs, '');
+                '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/ui/jquery-ui-1.8.9.custom.js"></script>' .
+                '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/ui/jquery.ui.core.js"></script>' .
+                '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/jquery.checkboxtree.js"></script>';
+        echo $this->modelgetmenu->SetViewPerpus($xForm . $this->setDetailFormuserrab($xidx), '', '', $xAddJs, '');
     }
 
     function setDetailFormuserrab($xidx) {
         $this->load->helper('form');
         $this->load->model('modeluserrab');
+        $this->load->model('modelpegawai');
         $row = $this->modeluserrab->getDetailuserrab($xidx);
         $xBufResult = '';
         if (empty($row)) {
@@ -53,29 +50,38 @@ class ctruserrab extends CI_Controller {
         }
         $this->load->helper('common');
         $xBufResult = '<input type="hidden" name="edidx" id="edidx" value="0" />';
-        $xBufResult .= setForm('Nama User', 'iduser', form_dropdown('ediduser', $this->modelpegawai->getArrayListpegawai(), '0', 'id="ediduser" width="150px" onchange="setcheckmenu();"')) . '<div class="spacer"></div>';
-        $xBufResult .= setForm('edidrab', 'idrab', form_input(getArrayObj('edidrab', $xidrab, '100'))) . '<div class="spacer"></div>';
-        $xBufResult .= '<div class="garis"></div>' . form_button('btSimpan', 'simpan', 'onclick="dosimpan();"') . form_button('btNew', 'new', 'onclick="doClear();"') . '<div class="spacer"></div>';
+        $xBufResult .= setForm('NamaUser', 'Nama User', form_dropdown('ediduser', $this->modelpegawai->getArrayListpegawai(), '0', 'id="ediduser" width="150px" onchange="setcheckrab();"')) . '<div class="spacer"></div>';
+        $xBufResult .= '<div id="chkmenu">'.$this->setChecboxRab().'</div>';
+        $xBufResult .= '<div class="garis"></div>' . form_button('btSimpan', 'simpan', 'onclick="dosimpan();"') . '<div class="spacer"></div>';
         return $xBufResult;
     }
 
-    function setChecboxRab() {
-
-        $this->load->model('modelmenu');
-        $xQuery = $this->modelmenu->getListmenu(0, 100);
-        $xbufResult = '<div id="chkmenu">';
-
-        foreach ($xQuery->result() as $row) {
-
-            //$xBuffResul[$row->nmmenu] = $row->nmmenu;
-            $xbufResult .= form_checkbox(getArrayObjCheckBox($row->nmmenu, $row->idmenu, FALSE, "0")) . $row->nmmenu . '<div class="spacer"></div>'; //form_checkbox( $row->nmmenu, $row->idmenu);
-        }
-        $xbufResult .='</div>';
-        $this->load->model('modelgetmenu');
-        return $this->modelgetmenu->getMenuForTree();
-        //return '<div id="browser"> <div id="lstreeview" name="lstreeview" class="treev">' . $this->modelgetmenu->getMenuForTree() . '</div></div>';
+    function setChecboxRab() {       
+        $this->load->model('modelrab');
+        return $this->modelrab->gettreeviewchk();
+        //return '<div id="browser"> <div id="lstreeview" name="lstreeview" class="treev">' . $this->modelgetrab->getrabForTree() . '</div></div>';
     }
-    
+
+    function isinrab(){
+        $this->load->helper('json');
+        $this->load->model('modeluserrab');
+        $iduser = $_POST['xiduser'];
+        $idrab = $_POST['xidrab'];
+
+        $xrow = $this->modeluserrab->getDetailuserrabbyuserpass($idrab,$iduser);
+        if(!empty ($xrow->iduser)){
+        $this->json_data['isinrab'] = true;
+        $this->json_data['idrab'] = $xrow->idrab;
+        } else
+        {
+            $this->json_data['isinrab'] = false;
+        $this->json_data['idrab'] = $idrab;
+        }
+
+        echo json_encode($this->json_data);
+
+    }
+
     function getlistuserrab($xAwal, $xSearch) {
         $xLimit = 3;
         $this->load->helper('form');
@@ -158,20 +164,35 @@ class ctruserrab extends CI_Controller {
     }
 
     function simpan() {
-        $this->load->helper('json');
+        //$this->load->helper('json');
         if (!empty($_POST['edidx'])) {
             $xidx = $_POST['edidx'];
         } else {
             $xidx = '0';
         }
-        $xiduser = $_POST['ediduser'];
-        $xidrab = $_POST['edidrab'];
         $this->load->model('modeluserrab');
-        if ($xidx != '0') {
-            $xStr = $this->modeluserrab->setUpdateuserrab($xidx, $xiduser, $xidrab);
-        } else {
-            $xStr = $this->modeluserrab->setInsertuserrab($xidx, $xiduser, $xidrab);
+        $this->load->model('modelrab');
+
+        $xiduser = $_POST['ediduser'];
+
+        $this->modeluserrab->setDeleteuserbyuser($xiduser);
+
+        $xQuery = $this->modelrab->getListraball();
+
+        foreach ($xQuery->result() as $row) {
+            if(isset($_POST['mn'.$row->idx])){
+                $xidrab = $_POST['mn'.$row->idx];
+                $xStr = $this->modeluserrab->setInsertuserrab($xidx, $xiduser, $xidrab);
+            }
         }
+//        $xiduser = $_POST['ediduser'];
+//        $xidrab = $_POST['edidrab'];
+//        $this->load->model('modeluserrab');
+//        if ($xidx != '0') {
+//            $xStr = $this->modeluserrab->setUpdateuserrab($xidx, $xiduser, $xidrab);
+//        } else {
+//            $xStr = $this->modeluserrab->setInsertuserrab($xidx, $xiduser, $xidrab);
+//        }
     }
 
 }
