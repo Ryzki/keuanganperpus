@@ -39,6 +39,19 @@ class modelrab extends CI_Model {
 // return $xStr;
     }
 
+    function getListraball() {
+                $xStr = "SELECT " .
+                "idx," .
+                "JudulRAB," .
+                "idparent," .
+                "kodeRAB," .
+                "kodeRABUSD" .
+                " FROM rab  order by idx ASC ";
+        $query = $this->db->query($xStr);
+        return $query;
+    }
+
+    
     function getListForTree($xParent='') {
         if (!empty($xParent)) {
             $xParent = " Where idparent = '" . $xParent . "'";
@@ -179,6 +192,49 @@ class modelrab extends CI_Model {
         $xStr = " DELETE FROM rab WHERE left(kodeRAB,length('".$kodeRAB."')) = '" . $kodeRAB . "'";
 
         $query = $this->db->query($xStr);
+    }
+
+
+    function GettreeChildchk($xQuery) {
+        $xBufResult = "";
+        if (!empty($xQuery)) {
+
+            foreach ($xQuery->result() as $row) {
+                //$xRowUrl =  $row->urlci;
+                //if(empty($xRowUrl)){
+                // $xRowUrl = 'ctrblueprint/index/'.$row->id;
+                //}
+
+                $xChild = $this->GettreeChildchk($this->getListForTree($row->idx));
+                if (!empty($xChild)) {
+                    $xBufResult .= setlitreechk( $row->idx , $row->JudulRAB, $xChild);
+                } else {
+                    $xBufResult .= setlitreechk($row->idx , $row->JudulRAB, $xChild);
+                }
+                //$xChild  = $this->GetChild($this->getListForTree($row->idmenu));
+                //$xBufResult .= setli(site_url($xRowUrl),$row->nmmenu,$xChild);
+            }
+
+            if (!empty($xBufResult))
+                $xBufResult = setul('', $xBufResult);
+        }
+        return $xBufResult;
+    }
+
+    function gettreeviewchk() {
+        $xBufResult = "";
+        $this->load->helper('menu');
+        $this->load->helper('url');
+        $xQuery = $this->getListForTree("");
+        foreach ($xQuery->result() as $row) {
+            $xChild = $this->GettreeChildchk($this->getListForTree($row->idx));
+            $xBufResult .= setlitreechk( $row->idx ,$row->JudulRAB , $xChild);
+            //$xBufResult .= setli(site_url($row->urlci),'<span class="folder">'.$row->nmmenu.'</span>',$xChild);
+        }
+        //$xBufResult = setul('menuatas',$xBufResult);
+        $xBufResult = setultree('id="tree"', $xBufResult);
+
+        return $xBufResult;
     }
 //********************************************************end edit*************/
 
