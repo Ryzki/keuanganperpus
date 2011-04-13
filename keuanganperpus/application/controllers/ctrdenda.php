@@ -23,20 +23,16 @@ class ctrdenda extends CI_Controller {
         $this->load->helper('html');
         $this->load->model('modelgetmenu');
         $this->load->model('modelhargajenistransaksi');
-        $row= $this->modelhargajenistransaksi->getDetailhargaIdJnsTransaksi('2');
-        $xHarga  =number_format($row->biaya, 0, '.', ',');
-        $xForm = '<div id="stylized" class="myform"><h3>Isi Denda </h3>' . form_open_multipart('ctranggotabaca/inserttable', array('id' => 'form', 'name' => 'form')).'<div class="garis"></div>';
-        $xAddJs = '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/tiny_mce/jquery.tinymce.js"></script>' .
-                '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/thickbox.js"></script>' .
-                '<link rel="stylesheet" href="' . base_url() . 'resource/css/thickbox.css" type="text/css" media="screen" />' .
-                link_tag('resource/css/screenshot.css') .
-                link_tag('resource/js/uploadify/uploadify.css') .
-                '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/uploadify/swfobject.js"></script>' .
-                '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/uploadify/jquery.uploadify.v2.1.4.js"></script>' .
+        $row = $this->modelhargajenistransaksi->getDetailhargaIdJnsTransaksi('2');
+        $xHarga = number_format($row->biaya, 0, '.', ',');
+        $xForm = '<div id="stylized" class="myform"><h3>Isi Pembayaran Denda </h3>' . form_open_multipart('ctranggotabaca/inserttable', array('id' => 'form', 'name' => 'form')) . '<div class="garis"></div>';
+        $xAddJs = link_tag('resource/js/themes/base/jquery.ui.all.css') .
                 '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/ajax/baseurl.js"></script>' .
-                '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/ajax/ajaxanggotabaca.js"></script>' .
-                '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/ajax/ajaxuploadfy.js"></script>' .
-                '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/ajax/ajaxmce.js"></script>';
+                '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/ui/jquery.ui.core.js"></script>' .
+                '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/ui/jquery.ui.widget.js"></script>' .
+                '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/autoNumeric.js"></script>' .
+                '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/ui/jquery.ui.datepicker.js"></script>' .
+                '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/ajax/ajaxdenda.js"></script>';
         echo $this->modelgetmenu->SetViewPerpus($xForm . $this->setDetailFormanggotabaca($xidx), $this->getlistanggotabaca($xAwal, $xSearch), '', $xAddJs, '');
     }
 
@@ -68,17 +64,14 @@ class ctrdenda extends CI_Controller {
         }
         $this->load->helper('common');
         $this->load->model('modeljenisanggotabaca');
-        $xBufResult = '<input type="hidden" name="edidx" id="edidx" value="0" />' .
+        $xBufResult = '<input type="hidden" name="edidx" id="edidx" value="0" />';
+        $xBufResult .= '<input type="hidden" name="edidsparta" id="edidsparta" value="0" />';
         $xBufResult .= setForm('edtgldenda', 'Tanggal Denda', form_input(getArrayObj('edtgldenda', $xemail, '120'))) . '<div class="spacer"></div>';
         $xBufResult .= setForm('edNoIdentitas', 'NIM', form_input(getArrayObj('edNoIdentitas', $xNoIdentitas, '150'))) . '<div class="spacer"></div>';
         $xBufResult .= setForm('edNama', 'Nama', form_input(getArrayObj('edNama', $xNama, '200'))) . '<div class="spacer"></div>';
-        $xBufResult .= setForm('edDendaSparta', 'Nominal Denda', form_input(getArrayObj('edDendaSparta', $xAlamat, '400'))) . '<div class="spacer"></div>';
-        $xBufResult .= form_button('btSimpan', 'Get From Sparta', 'onclick="dosimpan();"');
-        $xBufResult .= setForm('edAlamat', 'Denda Sesungguhnya', form_input(getArrayObj('edAlamat', $xAlamat, '400'))) . '<div class="spacer"></div>';
-        $xBufResult .= setForm('edKota', 'Kota', form_input(getArrayObj('edKota', $xKota, '100'))) . '<div class="spacer"></div>';
-        $xBufResult .= setForm('edkodepos', 'Kode Pos', form_input(getArrayObj('edkodepos', $xkodepos, '100'))) . '<div class="spacer"></div>';
-        $xBufResult .= setForm('edNotelp', 'No Telp', form_input(getArrayObj('edNotelp', $xNotelp, '100'))) . '<div class="spacer"></div>';
-        $xBufResult .= setForm('edemail', 'Email', form_input(getArrayObj('edemail', $xemail, '120'))) . '<div class="spacer"></div>';
+        $xBufResult .= setForm('edDendaSparta', 'Denda', form_input(getArrayObj('edDendaSparta', $xAlamat, '100'))) . '<div class="spacer"></div>';
+        $xBufResult .= form_button('btSimpan', 'Get From Sparta', 'onclick="dogetsparta();"') . '<div class="spacer"></div>';
+        $xBufResult .= setForm('edDenda', 'Di Bayar', form_input(getArrayObj('edDenda', $xAlamat, '100'))) . '<div class="spacer"></div>';
         $xBufResult .= '<div class="garis"></div>' . form_button('btSimpan', 'simpan', 'onclick="dosimpan();"') . form_button('btNew', 'new', 'onclick="doClear();"') . '<div class="spacer"></div>';
         return $xBufResult;
     }
@@ -108,10 +101,9 @@ class ctrdenda extends CI_Controller {
         $this->load->helper('form');
         $this->load->helper('common');
         $xbufResult = addRow(addCell('idx', 'width:100px;', true) .
-                        addCell('NoIdentitas', 'width:100px;', true) .
-                        addCell('Nama', 'width:100px;', true) .
-                        addCell('Alamat', 'width:100px;', true) .
-                        addCell('Notelp', 'width:100px;', true) .
+                        addCell('NIM', 'width:100px;', true) .
+                        addCell('Denda', 'width:100px;', true) .
+                        addCell('Dibayar', 'width:100px;', true) .
                         addCell('Edit/Hapus', 'width:100px;text-align:center;', true));
         $this->load->model('modelanggotabaca');
         $xQuery = $this->modelanggotabaca->getListanggotabaca($xAwal, $xLimit, $xSearch);
@@ -133,9 +125,8 @@ class ctrdenda extends CI_Controller {
         $xRowCells = addCell($xButtonADD, 'width:100px;', true) .
                 addCell($xInput, 'width:200px;border-right:0px;', true) .
                 addCell($xButtonSearch, 'width:40px;border-right:0px;border-left:0px;', true) .
-                addCell($xButtonPrev . '&nbsp&nbsp' . $xButtonNext, 'width:100px;border-left:0px;', true)
-        ;
-        return '<div id="tabledata" name ="tabledata" class="tc1" style="width:650px;">' . $xbufResult . $xRowCells . '</div>';
+                addCell($xButtonPrev . '&nbsp&nbsp' . $xButtonNext, 'width:100px;border-left:0px;', true);
+        return '<div id="tabledata" name ="tabledata" class="tc1" style="width:550px;">' . $xbufResult . $xRowCells . '</div>';
     }
 
     function actionrecord($xIdRec='', $xAction='') {
@@ -203,31 +194,46 @@ class ctrdenda extends CI_Controller {
         } else {
             $xidx = '0';
         }
-        $xNoIdentitas = $_POST['edNoIdentitas'];
-        $xNama = $_POST['edNama'];
-        $xidJenisAnggota = $_POST['edidJenisAnggota'];
-        $xAlamat = $_POST['edAlamat'];
-        $xKota = $_POST['edKota'];
-        $xkodepos = $_POST['edkodepos'];
-        $xNotelp = $_POST['edNotelp'];
-        $xemail = $_POST['edemail'];
-        $this->load->model('modelanggotabaca');
-        $this->load->model('modeltransaksi');
-        $this->load->model('modelhargajenistransaksi');
-        if ($xidx != '0') {
-            $xStr = $this->modelanggotabaca->setUpdateanggotabaca($xidx, $xNoIdentitas, $xNama, $xidJenisAnggota, $xAlamat, $xKota, $xkodepos, $xNotelp, $xemail);
-        } else {
-            $xStr = $this->modelanggotabaca->setInsertanggotabaca($xidx, $xNoIdentitas, $xNama, $xidJenisAnggota, $xAlamat, $xKota, $xkodepos, $xNotelp, $xemail);
-            $row= $this->modelhargajenistransaksi->getDetailhargaIdJnsTransaksi('2');
-            //$xHarga  =number_format($row->biaya, 0, '.', ',');
-            $xiduser =  $this->session->userdata('idpegawai');
-            $xidlokasi =  $this->session->userdata('idlokasi');
-           $xtanggal =  $this->session->userdata('tanggal');
-           $rowlast =   $this->modelanggotabaca->getLastIndexanggotabaca();
-           $xStr = $this->modeltransaksi->setInserttransaksi($xidx, '0', '2', $rowlast->idx, '0', '0', $xtanggal, '01:01:01', '1', $row->biaya, $row->biaya, $xiduser, '0', '', $xidlokasi);
+        /*
+        data: "edidx="+$("#edidx").val()+
+                "&edidsparta="+$("#edidsparta").val()+
+                "&edNoIdentitas="+$("#edNoIdentitas").val()+
+                "&edDendaSparta="+$("#edDendaSparta").val()+
+                "&edDenda="+$("#edDenda").val()
+        */
 
-            //$xStr = $this->modeltransaksi->setInserttransaksi($xidx, $xidplu, $xidjenistransaksi, $xidpegawai, $xidunitkerja, $xidstatusdinas, $xtanggal, $xjam, $xjumlahsatuan, $xnominalpersatuan, $xtotal, $xiduser, $xnominaldenda, $xiddendasparta, $xidlokasi);
+        $xidplu = '0';
+        $xidsparta = $_POST['edidsparta'];
+        $xidjenistransaksi = '1';
+
+        $xidpegawai = $_POST['edNoIdentitas'];
+        $xidunitkerja = '0';
+        $xidstatusdinas = '0';
+        //$xtanggal = $_POST['edtanggal'];
+        //$xjam = $_POST['edjam'];
+
+
+
+        $xtanggal = $_POST['edtgldenda'] ;
+        $xjumlahsatuan = $_POST['edjumlahsatuan'];
+        $xnominalpersatuan = $_POST['ednominalpersatuan'];
+        $xtotal = $_POST['edtotal'];
+        $xiduser = $this->session->userdata('idpegawai');
+        $xnominaldenda = $_POST['ednominaldenda'];
+        $xiddendasparta = $_POST['ediddendasparta'];
+        $xidlokasi = $this->session->userdata('idlokasi');
+        $this->load->model('modeldenda');
+        $xStr = 'kosong';
+        if ($xidx != '0') {
+            $xStr = $this->modeldenda->setUpdatetransaksidenda($xidx, $xidplu, $xidjenistransaksi, $xidpegawai, $xidunitkerja, $xidstatusdinas, str_replace('.', '', $xjumlahsatuan),
+                            $xnominalpersatuan, $xtotal, $xiduser, $xnominaldenda, $xiddendasparta, $xidlokasi);
+        } else {
+            $xStr = $this->modeldenda->setInserttransaksidenda($xidx, $xidplu, $xidjenistransaksi, $xidpegawai, $xidunitkerja,
+                            $xidstatusdinas, str_replace('.', '', $xjumlahsatuan), $xnominalpersatuan,
+                            $xtotal, $xiduser, $xnominaldenda, $xiddendasparta, $xidlokasi);
         }
+        $this->json_data['data'] = $xStr;
+        echo json_encode($this->json_data);
     }
 
 }
