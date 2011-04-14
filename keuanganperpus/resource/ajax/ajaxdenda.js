@@ -46,8 +46,8 @@ function doedit(edidx){
                 $("#edidx").val(json.idx);
                 $("#edidsparta").val(json.iddendasparta);
                 $("#edNoIdentitas").val(json.NoIdentitas);
-                $("#edDendaSparta").val(json.nominalpersatuan);
-                $("#edDenda").val(json.nominaldenda);
+                $("#edDendaSparta").val(json.nominaldenda);
+                $("#edDenda").val(json.nominalpersatuan);
             },
             error: function (xmlHttpRequest, textStatus, errorThrown) {
                 start = xmlHttpRequest.responseText.search("<title>") + 7;
@@ -64,9 +64,10 @@ function doClear(){
     $(document).ready(function(){
         $("#edidx").val("0");
         $("#edidsparta").val("");
+        $("#edNama").val("");
         $("#edNoIdentitas").val("");
         $("#edDendaSparta").val("");
-        $("#edDenda").val();
+        $("#edDenda").val("");
     });
 } 
 function dosimpan(){ 
