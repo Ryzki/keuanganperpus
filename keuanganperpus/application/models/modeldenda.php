@@ -96,9 +96,9 @@ return $xBuffResul;
 
 function getListtransaksi($xAwal,$xLimit,$xSearch=''){
 if(!empty($xSearch)){
-     $xSearch = "Where idplu like '%".$xSearch."%' and tanggal = current_date and idjenistransaksi = '1'" ;
+     $xSearch = " Where idplu like '%".$xSearch."%' and tanggal = current_date and idjenistransaksi = '1'" ;
  } else {
-     $xSearch = "Where  tanggal = current_date and idjenistransaksi = '1'" ;
+     $xSearch = " Where  tanggal = current_date and idjenistransaksi = '1'" ;
  }
  $xStr =   "SELECT ".
       "idx,".
