@@ -23,19 +23,10 @@ class ctrtransaksifotokopi extends CI_Controller {
         $this->load->helper('html');
         $this->load->model('modelgetmenu');
         $xForm = '<div id="stylized" class="myform"><h3>Transaksi Fotokopi/Jilid/Print(Berdasar PLU )</h3>' . form_open_multipart('ctrtransaksi/inserttable', array('id' => 'form', 'name' => 'form')).'<div class="garis"></div>';
-        $xAddJs = '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/tiny_mce/jquery.tinymce.js"></script>' .
-                '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/thickbox.js"></script>' .
-                '<link rel="stylesheet" href="' . base_url() . 'resource/css/thickbox.css" type="text/css" media="screen" />' .
-                link_tag('resource/css/screenshot.css') .
-                link_tag('resource/js/uploadify/uploadify.css') .
-                '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/uploadify/swfobject.js"></script>' .
-                '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/uploadify/jquery.uploadify.v2.1.4.js"></script>' .
-                '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/ajax/baseurl.js"></script>' .
-                '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/ajax/ajaxtransaksifotokopi.js"></script>' .
-                '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/ajax/ajaxuploadfy.js"></script>' .
-                '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/autoNumeric.js"></script>' .
-                '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/ajax/ajaxmce.js"></script>'.
-                    '<script  type=text/javascript>
+        $xAddJs = '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/ajax/baseurl.js"></script>' .
+                  '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/ajax/ajaxtransaksifotokopi.js"></script>' .
+                  '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/autoNumeric.js"></script>' .
+                  '<script  type=text/javascript>
                             $(function() {
                              $("#stylized input#edjumlahsatuan").autoNumeric();
                              //$("#edjumlahsatuan").autoNumeric();
@@ -106,31 +97,7 @@ class ctrtransaksifotokopi extends CI_Controller {
         return $xBufResult;
     }
 
-    function inserttable() {
-        $xidx = $_POST['edidx'];
-        $xidplu = $_POST['edidplu'];
-        $xidjenistransaksi = $_POST['edidjenistransaksi'];
-        $xidpegawai = $_POST['edidpegawai'];
-        $xidunitkerja = $_POST['edidunitkerja'];
-        $xidstatusdinas = $_POST['edidstatusdinas'];
-        $xtanggal = $_POST['edtanggal'];
-        $xjam = $_POST['edjam'];
-        $xjumlahsatuan = $_POST['edjumlahsatuan'];
-        $xnominalpersatuan = $_POST['ednominalpersatuan'];
-        $xtotal = $_POST['edtotal'];
-        $xiduser = $_POST['ediduser'];
-        $xnominaldenda = $_POST['ednominaldenda'];
-        $xiddendasparta = $_POST['ediddendasparta'];
-        $xidlokasi = $_POST['edidlokasi'];
-
-        $this->load->model('modeltransaksi');
-        if ($xidx != '0') {
-            $this->modeltransaksi->setUpdatetransaksi($xidx, $xidplu, $xidjenistransaksi, $xidpegawai, $xidunitkerja, $xidstatusdinas, $xtanggal, $xjam, $xjumlahsatuan, $xnominalpersatuan, $xtotal, $xiduser, $xnominaldenda, $xiddendasparta, $xidlokasi);
-        } else {
-            $this->modeltransaksi->setInserttransaksi($xidx, $xidplu, $xidjenistransaksi, $xidpegawai, $xidunitkerja, $xidstatusdinas, $xtanggal, $xjam, $xjumlahsatuan, $xnominalpersatuan, $xtotal, $xiduser, $xnominaldenda, $xiddendasparta, $xidlokasi);
-        }
-        $this->createform('0');
-    }
+    
 
     function getlisttransaksi($xAwal, $xSearch) {
         $xLimit = 3;
@@ -289,7 +256,7 @@ class ctrtransaksifotokopi extends CI_Controller {
         } else {
             $xidx = '0';
         }
-        $xidplu = $_POST['edidplu'];
+        $xkodeplu = $_POST['edidplu'];
         $xidjenistransaksi = $_POST['edidjenistransaksi'];
         $xidpegawai = $_POST['edidpegawai'];
         $this->load->model('modelpegawai');
@@ -312,12 +279,14 @@ class ctrtransaksifotokopi extends CI_Controller {
         $xiddendasparta = $_POST['ediddendasparta'];
         $xidlokasi = $this->session->userdata('idlokasi');
         $this->load->model('modeltransaksi');
+        $this->load->model('modelprodukplu');
+        $xRowPLU = $this->modelprodukplu->getDetailprodukbykode($xkodeplu);
          $xStr ='kosong';
         if ($xidx != '0') {
-            $xStr = $this->modeltransaksi->setUpdatetransaksiFC($xidx,$xidplu,$xidjenistransaksi,$xidpegawai,$xidunitkerja,$xidstatusdinas,str_replace('.','',$xjumlahsatuan),
+            $xStr = $this->modeltransaksi->setUpdatetransaksiFC($xidx,$xkodeplu,'3',$xRowPLU->idstatusPLU,$xRowPLU->idJnsPengguna,$xidpegawai,$xidunitkerja,$xidstatusdinas,str_replace('.','',$xjumlahsatuan),
                                $xnominalpersatuan,$xtotal,$xiduser,$xnominaldenda,$xiddendasparta,$xidlokasi);
         } else {
-            $xStr = $this->modeltransaksi->setInserttransaksiFC($xidx,$xidplu,$xidjenistransaksi,$xidpegawai,$xidunitkerja,
+            $xStr = $this->modeltransaksi->setInserttransaksiFC($xidx,$xkodeplu,'3',$xRowPLU->idstatusPLU,$xRowPLU->idJnsPengguna,$xidpegawai,$xidunitkerja,
                               $xidstatusdinas,str_replace('.','',$xjumlahsatuan),$xnominalpersatuan,
                               $xtotal,$xiduser,$xnominaldenda,$xiddendasparta,$xidlokasi);
         }

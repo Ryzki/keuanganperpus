@@ -26,17 +26,9 @@ class ctranggotabaca extends CI_Controller {
         $row= $this->modelhargajenistransaksi->getDetailhargaIdJnsTransaksi('2');
         $xHarga  =number_format($row->biaya, 0, '.', ',');
         $xForm = '<div id="stylized" class="myform"><h3>Isi / Edit  Anggota Baca (Biaya Rp. '.$xHarga.')</h3>' . form_open_multipart('ctranggotabaca/inserttable', array('id' => 'form', 'name' => 'form')).'<div class="garis"></div>';
-        $xAddJs = '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/tiny_mce/jquery.tinymce.js"></script>' .
-                '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/thickbox.js"></script>' .
-                '<link rel="stylesheet" href="' . base_url() . 'resource/css/thickbox.css" type="text/css" media="screen" />' .
-                link_tag('resource/css/screenshot.css') .
-                link_tag('resource/js/uploadify/uploadify.css') .
-                '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/uploadify/swfobject.js"></script>' .
-                '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/uploadify/jquery.uploadify.v2.1.4.js"></script>' .
-                '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/ajax/baseurl.js"></script>' .
-                '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/ajax/ajaxanggotabaca.js"></script>' .
-                '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/ajax/ajaxuploadfy.js"></script>' .
-                '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/ajax/ajaxmce.js"></script>';
+        $xAddJs = '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/ajax/baseurl.js"></script>' .
+                '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/ajax/ajaxanggotabaca.js"></script>' ;
+                
         echo $this->modelgetmenu->SetViewPerpus($xForm . $this->setDetailFormanggotabaca($xidx), $this->getlistanggotabaca($xAwal, $xSearch), '', $xAddJs, '');
     }
 
@@ -73,9 +65,9 @@ class ctranggotabaca extends CI_Controller {
         $xBufResult .= setForm('edNama', 'Nama', form_input(getArrayObj('edNama', $xNama, '200'))) . '<div class="spacer"></div>';
         $xBufResult .= setForm('edidJenisAnggota', 'Jenis Anggota', form_dropdown('edidJenisAnggota', $this->modeljenisanggotabaca->getArrayListjenisanggotabaca(),'0','id="edidJenisAnggota" width="150px"')) . '<div class="spacer"></div>';
         $xBufResult .= setForm('edAlamat', 'Alamat', form_input(getArrayObj('edAlamat', $xAlamat, '400'))) . '<div class="spacer"></div>';
-        $xBufResult .= setForm('edKota', 'Kota', form_input(getArrayObj('edKota', $xKota, '100'))) . '<div class="spacer"></div>';
+        $xBufResult .= setForm('edKota', 'Kota', form_input(getArrayObj('edKota', $xKota, '100'))) ;
         $xBufResult .= setForm('edkodepos', 'Kode Pos', form_input(getArrayObj('edkodepos', $xkodepos, '100'))) . '<div class="spacer"></div>';
-        $xBufResult .= setForm('edNotelp', 'No Telp', form_input(getArrayObj('edNotelp', $xNotelp, '100'))) . '<div class="spacer"></div>';
+        $xBufResult .= setForm('edNotelp', 'No Telp', form_input(getArrayObj('edNotelp', $xNotelp, '100'))) ;
         $xBufResult .= setForm('edemail', 'Email', form_input(getArrayObj('edemail', $xemail, '120'))) . '<div class="spacer"></div>';
         $xBufResult .= '<div class="garis"></div>' . form_button('btSimpan', 'simpan', 'onclick="dosimpan();"') . form_button('btNew', 'new', 'onclick="doClear();"') . '<div class="spacer"></div>';
         return $xBufResult;

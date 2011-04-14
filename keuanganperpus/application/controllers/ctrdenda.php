@@ -59,7 +59,7 @@ class ctrdenda extends CI_Controller {
             
         } else {
             $xidx = $row->idx;
-            $xNoIdentitas = $row->NoIdentitas;
+            $xNoIdentitas = $row->NIM;
             $xiddendasparta = $row->iddendasparta;
            //IF SPARTA  $xNama
             $xNama ='';
@@ -96,7 +96,7 @@ class ctrdenda extends CI_Controller {
             $xButtonEdit = '<img src="' . base_url() . 'resource/imgbtn/edit.png" alt="Edit Data" onclick = "doedit(\'' . $row->idx . '\');" style="border:none;width:20px"/>';
             $xButtonHapus = '<img src="' . base_url() . 'resource/imgbtn/delete_table.png" alt="Hapus Data" onclick = "dohapus(\'' . $row->idx . '\',\'' . substr($row->idplu, 0, 20) . '\');" style="border:none;">';
             $xbufResult .= addRow(addCell($row->idx, 'width:100px;') .
-                            addCell($row->idplu, 'width:100px;') .
+                            addCell($row->NIM, 'width:100px;') .
                             addCell(number_format( $row->nominaldenda, 2, ',', '.'), 'width:100px;text-align:right;') .
                             addCell( number_format($row->nominalpersatuan,2, ',', '.'), 'width:100px;text-align:right;') .
                             addCell($xButtonEdit . '&nbsp/&nbsp' . $xButtonHapus, 'width:100px;'));
@@ -136,7 +136,7 @@ class ctrdenda extends CI_Controller {
         $this->load->helper('json');
         $this->json_data['idx'] = $row->idx;
         $this->json_data['iddendasparta'] = $row->iddendasparta;
-        $this->json_data['NoIdentitas'] = $row->idplu;
+        $this->json_data['NoIdentitas'] = $row->NIM;
         //$this->json_data['Nama'] = $row->Nama;
         $this->json_data['nominalpersatuan'] = $row->nominalpersatuan;
         $this->json_data['nominaldenda'] = $row->nominaldenda;
@@ -184,7 +184,7 @@ class ctrdenda extends CI_Controller {
                 "&edDenda="+$("#edDenda").val()
         */
 
-        $xidplu = $_POST['edNoIdentitas'];
+        $xNIM = $_POST['edNoIdentitas'];
         $xidsparta = $_POST['edidsparta'];
         $xidjenistransaksi = '1';
 
@@ -209,12 +209,12 @@ class ctrdenda extends CI_Controller {
 
 
         if ($xidx != '0') {
-            $xStr = $this->modeldenda->setUpdatetransaksidenda($xidx, $xidplu, $xidjenistransaksi, $xidpegawai, $xidunitkerja,
+            $xStr = $this->modeldenda->setUpdatetransaksidenda($xidx, $xNIM, $xidjenistransaksi, $xidpegawai, $xidunitkerja,
                                $xidstatusdinas, str_replace('.', '', $xjumlahsatuan),
                                str_replace('.', '', $xnominalpersatuan), str_replace('.', '', $xtotal), $xiduser,
                                str_replace('.', '', $xnominaldenda), $xiddendasparta, $xidlokasi);
         } else {
-            $xStr = $this->modeldenda->setInserttransaksidenda($xidx, $xidplu, $xidjenistransaksi, $xidpegawai, $xidunitkerja,
+            $xStr = $this->modeldenda->setInserttransaksidenda($xidx, $xNIM, $xidjenistransaksi, $xidpegawai, $xidunitkerja,
                             $xidstatusdinas, str_replace('.', '', $xjumlahsatuan), str_replace('.', '', $xnominalpersatuan),
                             str_replace('.', '', $xtotal), $xiduser, str_replace('.', '', $xnominaldenda), $xiddendasparta, $xidlokasi);
         }

@@ -66,15 +66,16 @@ class ctrprodukplu extends CI_Controller {
         $this->load->model('modelstatusplu');
         $this->load->model('modelrekanan');
         $this->load->model('modeljenistransaksi');
-        $xBufResult = '<input type="hidden" name="edidx" id="edidx" value="0" />' .
-                $xBufResult .= setForm('edKodePLU', 'KodePLU', form_input(getArrayObj('edKodePLU', $xKodePLU, '100')));
+        $xBufResult = '<input type="hidden" name="edidx" id="edidx" value="0" />';
+        $xBufResult = '<input type="hidden" name="edidjenistransaksi" id="edidjenistransaksi" value="3" />';
+        $xBufResult .= setForm('edKodePLU', 'KodePLU', form_input(getArrayObj('edKodePLU', $xKodePLU, '100')));
         $xBufResult .= setForm('edidJnsPengguna', 'Grouping Pengguna', form_dropdown('edidJnsPengguna', $this->modeljenipengguna->getArrayListjenipengguna(), '0', 'id="edidJnsPengguna" width="150px"')) . '<div class="spacer"></div>';
         $xBufResult .= setForm('edNamaProduk', 'NamaProduk', form_input(getArrayObj('edNamaProduk', $xNamaProduk, '300'))) . '<div class="spacer"></div>';
-        $xBufResult .= setForm('edSingkatan', 'Singkatan', form_input(getArrayObj('edSingkatan', $xSingkatan, '100')), 'Cth:A3,A4,Jilid,Print') . '<div class="spacer"></div>';
+        $xBufResult .= setForm('edSingkatan', 'Singkatan', form_input(getArrayObj('edSingkatan', $xSingkatan, '100')), 'Cth:A3,A4,Jilid,Print') ;
         $xBufResult .= setForm('edidstatusPLU', 'Status PLU', form_dropdown('edidstatusPLU', $this->modelstatusplu->getArrayListstatusplu(), '0', 'id="edidstatusPLU" width="150px"')) . '<div class="spacer"></div>';
         $xBufResult .= setForm('edidrekanan', 'Rekanan', form_dropdown('edidrekanan', $this->modelrekanan->getArrayListrekanan(), '0', 'id="edidrekanan" width="150px"')) . '<div class="spacer"></div>';
         $xBufResult .= setForm('edharga', 'Harga', form_input(getArrayObj('edharga', $xharga, '100'))) . '<div class="spacer"></div>';
-        $xBufResult .= setForm('edidjenistransaksi', 'Jenistransaksi', form_dropdown('edidjenistransaksi', $this->modeljenistransaksi->getArrayListjenistransaksi(), '0', 'id="edidjenistransaksi" width="150px"')) . '<div class="spacer"></div>';
+        //$xBufResult .= setForm('edidjenistransaksi', 'Jenistransaksi', form_dropdown('edidjenistransaksi', $this->modeljenistransaksi->getArrayListjenistransaksi(), '0', 'id="edidjenistransaksi" width="150px"')) . '<div class="spacer"></div>';
         $xBufResult .= '<div class="garis"></div>' . form_button('btSimpan', 'simpan', 'onclick="dosimpan();"') . form_button('btNew', 'new', 'onclick="doClear();"') . '<div class="spacer"></div>';
         return $xBufResult;
     }
@@ -203,7 +204,7 @@ class ctrprodukplu extends CI_Controller {
         $xidstatusPLU = $_POST['edidstatusPLU'];
         $xidrekanan = $_POST['edidrekanan'];
         $xharga = $_POST['edharga'];
-        $xidjenistransaksi = $_POST['edidjenistransaksi'];
+        $xidjenistransaksi = '3';
         $this->load->model('modelprodukplu');
         if ($xidx != '0') {
             $xStr = $this->modelprodukplu->setUpdateprodukplu($xidx, $xKodePLU, $xidJnsPengguna, $xNamaProduk, $xSingkatan, $xidstatusPLU, $xidrekanan, str_replace('.', '', $xharga), $xidjenistransaksi);
