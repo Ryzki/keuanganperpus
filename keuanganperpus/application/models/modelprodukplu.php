@@ -87,6 +87,23 @@ class modelprodukplu extends CI_Model {
         return $row;
     }
 
+function getDetailprodukbykode($xkodeplu) {
+        $xStr = "SELECT " .
+                "idx," .
+                "KodePLU," .
+                "idJnsPengguna," .
+                "NamaProduk," .
+                "Singkatan," .
+                "idstatusPLU," .
+                "idrekanan," .
+                "harga," .
+                "idjenistransaksi" .
+                " FROM produkplu  WHERE KodePLU = '" . $xkodeplu . "'";
+
+        $query = $this->db->query($xStr);
+        $row = $query->row();
+        return $row;
+    }
     function getLastIndexprodukplu() { /* spertinya perlu lock table */
         $xStr = "SELECT " .
                 "idx," .

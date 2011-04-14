@@ -14,13 +14,13 @@ class modeldenda extends CI_Model {
  $query = $this->db->query($xStr);
 }
 
-Function setInserttransaksidenda($xidx,$xidplu,$xidjenistransaksi,$xidpegawai,$xidunitkerja,
+Function setInserttransaksidenda($xidx,$xNIM,$xidjenistransaksi,$xidpegawai,$xidunitkerja,
                               $xidstatusdinas,$xjumlahsatuan,$xnominalpersatuan,
                               $xtotal,$xiduser,$xnominaldenda,$xiddendasparta,$xidlokasi)
 {
   $xStr =  " INSERT INTO transaksi( ".
               "idx,".
-              "idplu,".
+              "NIM,".
               "idjenistransaksi,".
               "idpegawai,".
               "idunitkerja,".
@@ -33,7 +33,7 @@ Function setInserttransaksidenda($xidx,$xidplu,$xidjenistransaksi,$xidpegawai,$x
               "iduser,".
               "nominaldenda,".
               "iddendasparta,".
-              "idlokasi) VALUES('".$xidx."','".$xidplu."','".$xidjenistransaksi."','".$xidpegawai."','".$xidunitkerja."','".$xidstatusdinas."',current_date,current_time,'".$xjumlahsatuan."','".$xnominalpersatuan."','".$xtotal."','".$xiduser."','".$xnominaldenda."','".$xiddendasparta."','".$xidlokasi."')";
+              "idlokasi) VALUES('".$xidx."','".$xNIM."','".$xidjenistransaksi."','".$xidpegawai."','".$xidunitkerja."','".$xidstatusdinas."',current_date,current_time,'".$xjumlahsatuan."','".$xnominalpersatuan."','".$xtotal."','".$xiduser."','".$xnominaldenda."','".$xiddendasparta."','".$xidlokasi."')";
 
 // return $xStr;
 $query = $this->db->query($xStr);
@@ -42,12 +42,12 @@ return $xidx;
 }
 
 
- Function setUpdatetransaksidenda($xidx,$xidplu,$xidjenistransaksi,$xidpegawai,$xidunitkerja,$xidstatusdinas,$xjumlahsatuan,
+ Function setUpdatetransaksidenda($xidx,$xNIM,$xidjenistransaksi,$xidpegawai,$xidunitkerja,$xidstatusdinas,$xjumlahsatuan,
                                $xnominalpersatuan,$xtotal,$xiduser,$xnominaldenda,$xiddendasparta,$xidlokasi)
 {
   $xStr =  " UPDATE transaksi SET ".
              "idx='".$xidx."',".
-             "idplu='".$xidplu."',".
+             "NIM='".$xNIM."',".
              "idjenistransaksi='".$xidjenistransaksi."',".
              "idpegawai='".$xidpegawai."',".
              "idunitkerja='".$xidunitkerja."',".
@@ -71,7 +71,7 @@ function getArrayListtransaksi(){ /* spertinya perlu lock table*/
  $xBuffResul = array();
  $xStr =  "SELECT ".
       "idx,".
-      "idplu,".
+      "NIM,".
       "idjenistransaksi,".
       "idpegawai,".
       "idunitkerja,".
@@ -89,20 +89,20 @@ function getArrayListtransaksi(){ /* spertinya perlu lock table*/
  $query = $this->db->query($xStr);
  foreach ($query->result() as $row)
  {
-   $xBuffResul[$row->idx] = $row->idplu;
+   $xBuffResul[$row->idx] = $row->NIM;
    }
 return $xBuffResul;
 }
 
 function getListtransaksi($xAwal,$xLimit,$xSearch=''){
 if(!empty($xSearch)){
-     $xSearch = " Where idplu like '%".$xSearch."%' and tanggal = current_date and idjenistransaksi = '1'" ;
+     $xSearch = " Where NIM like '%".$xSearch."%' and tanggal = current_date and idjenistransaksi = '1'" ;
  } else {
      $xSearch = " Where  tanggal = current_date and idjenistransaksi = '1'" ;
  }
  $xStr =   "SELECT ".
       "idx,".
-      "idplu,".
+      "NIM,".
       "idjenistransaksi,".
       "idpegawai,".
       "idunitkerja,".
@@ -125,7 +125,7 @@ if(!empty($xSearch)){
 function getDetailtransaksi($xidx){
  $xStr =   "SELECT ".
       "idx,".
-      "idplu,".
+      "NIM,".
       "idjenistransaksi,".
       "idpegawai,".
       "idunitkerja,".
@@ -150,7 +150,7 @@ $row = $query->row();
 function getLastIndextransaksi(){ /* spertinya perlu lock table*/
  $xStr =   "SELECT ".
       "idx,".
-      "idplu,".
+      "NIM,".
       "idjenistransaksi,".
       "idpegawai,".
       "idunitkerja,".
@@ -171,11 +171,11 @@ $row = $query->row();
 }
 
 
- Function setInserttransaksi($xidx,$xidplu,$xidjenistransaksi,$xidpegawai,$xidunitkerja,$xidstatusdinas,$xtanggal,$xjam,$xjumlahsatuan,$xnominalpersatuan,$xtotal,$xiduser,$xnominaldenda,$xiddendasparta,$xidlokasi)
+ Function setInserttransaksi($xidx,$xNIM,$xidjenistransaksi,$xidpegawai,$xidunitkerja,$xidstatusdinas,$xtanggal,$xjam,$xjumlahsatuan,$xnominalpersatuan,$xtotal,$xiduser,$xnominaldenda,$xiddendasparta,$xidlokasi)
 {
   $xStr =  " INSERT INTO transaksi( ".
               "idx,".
-              "idplu,".
+              "NIM,".
               "idjenistransaksi,".
               "idpegawai,".
               "idunitkerja,".
@@ -188,7 +188,7 @@ $row = $query->row();
               "iduser,".
               "nominaldenda,".
               "iddendasparta,".
-              "idlokasi) VALUES('".$xidx."','".$xidplu."','".$xidjenistransaksi."','".$xidpegawai."','".$xidunitkerja."','".$xidstatusdinas."','".$xtanggal."','".$xjam."','".$xjumlahsatuan."','".$xnominalpersatuan."','".$xtotal."','".$xiduser."','".$xnominaldenda."','".$xiddendasparta."','".$xidlokasi."')";
+              "idlokasi) VALUES('".$xidx."','".$xNIM."','".$xidjenistransaksi."','".$xidpegawai."','".$xidunitkerja."','".$xidstatusdinas."','".$xtanggal."','".$xjam."','".$xjumlahsatuan."','".$xnominalpersatuan."','".$xtotal."','".$xiduser."','".$xnominaldenda."','".$xiddendasparta."','".$xidlokasi."')";
 
  //echo $xStr;
 $query = $this->db->query($xStr);
@@ -196,11 +196,11 @@ $query = $this->db->query($xStr);
 }
 
 
- Function setUpdatetransaksi($xidx,$xidplu,$xidjenistransaksi,$xidpegawai,$xidunitkerja,$xidstatusdinas,$xtanggal,$xjam,$xjumlahsatuan,$xnominalpersatuan,$xtotal,$xiduser,$xnominaldenda,$xiddendasparta,$xidlokasi)
+ Function setUpdatetransaksi($xidx,$xNIM,$xidjenistransaksi,$xidpegawai,$xidunitkerja,$xidstatusdinas,$xtanggal,$xjam,$xjumlahsatuan,$xnominalpersatuan,$xtotal,$xiduser,$xnominaldenda,$xiddendasparta,$xidlokasi)
 {
   $xStr =  " UPDATE transaksi SET ".
              "idx='".$xidx."',".
-             "idplu='".$xidplu."',".
+             "NIM='".$xNIM."',".
              "idjenistransaksi='".$xidjenistransaksi."',".
              "idpegawai='".$xidpegawai."',".
              "idunitkerja='".$xidunitkerja."',".

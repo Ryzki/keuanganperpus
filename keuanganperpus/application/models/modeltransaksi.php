@@ -14,7 +14,7 @@ class modeltransaksi extends CI_Model {
  $query = $this->db->query($xStr);
 }
 
-Function setInserttransaksiFC($xidx,$xidplu,$xidjenistransaksi,$xidpegawai,$xidunitkerja,
+Function setInserttransaksiFC($xidx,$xidplu,$xidjenistransaksi,$xidstatusplu,$xidgrouppengguna,$xidpegawai,$xidunitkerja,
                               $xidstatusdinas,$xjumlahsatuan,$xnominalpersatuan,
                               $xtotal,$xiduser,$xnominaldenda,$xiddendasparta,$xidlokasi)
 {
@@ -22,6 +22,8 @@ Function setInserttransaksiFC($xidx,$xidplu,$xidjenistransaksi,$xidpegawai,$xidu
               "idx,".
               "idplu,".
               "idjenistransaksi,".
+              "idstatusplu,".
+              "idgrouppengguna,".
               "idpegawai,".
               "idunitkerja,".
               "idstatusdinas,".
@@ -33,7 +35,7 @@ Function setInserttransaksiFC($xidx,$xidplu,$xidjenistransaksi,$xidpegawai,$xidu
               "iduser,".
               "nominaldenda,".
               "iddendasparta,".
-              "idlokasi) VALUES('".$xidx."','".$xidplu."','".$xidjenistransaksi."','".$xidpegawai."','".$xidunitkerja."','".$xidstatusdinas."',current_date,current_time,'".$xjumlahsatuan."','".$xnominalpersatuan."','".$xtotal."','".$xiduser."','".$xnominaldenda."','".$xiddendasparta."','".$xidlokasi."')";
+              "idlokasi) VALUES('".$xidx."','".$xidplu."','".$xidjenistransaksi."','".$xidstatusplu."','".$xidgrouppengguna."','".$xidpegawai."','".$xidunitkerja."','".$xidstatusdinas."',current_date,current_time,'".$xjumlahsatuan."','".$xnominalpersatuan."','".$xtotal."','".$xiduser."','".$xnominaldenda."','".$xiddendasparta."','".$xidlokasi."')";
 
 // return $xStr;
 $query = $this->db->query($xStr);
@@ -42,13 +44,15 @@ return $xidx;
 }
 
 
- Function setUpdatetransaksiFC($xidx,$xidplu,$xidjenistransaksi,$xidpegawai,$xidunitkerja,$xidstatusdinas,$xjumlahsatuan,
+ Function setUpdatetransaksiFC($xidx,$xidplu,$xidjenistransaksi,$xidstatusplu,$xidgrouppengguna,$xidpegawai,$xidunitkerja,$xidstatusdinas,$xjumlahsatuan,
                                $xnominalpersatuan,$xtotal,$xiduser,$xnominaldenda,$xiddendasparta,$xidlokasi)
 {
   $xStr =  " UPDATE transaksi SET ".
              "idx='".$xidx."',".
              "idplu='".$xidplu."',".
              "idjenistransaksi='".$xidjenistransaksi."',".
+             "idstatusplu='".$xidpegawai."',".
+             "idgrouppengguna='".$xidgrouppengguna."',".
              "idpegawai='".$xidpegawai."',".
              "idunitkerja='".$xidunitkerja."',".
              "idstatusdinas='".$xidstatusdinas."',".
@@ -96,8 +100,11 @@ return $xBuffResul;
 
 function getListtransaksi($xAwal,$xLimit,$xSearch=''){
 if(!empty($xSearch)){ 
-     $xSearch = "Where idplu like '%".$xSearch."%'" ;
- }   
+     $xSearch = "Where idplu like '%".$xSearch."%' and idjenistransaksi='3'" ;
+ }   else
+ {
+     $xSearch = "Where idjenistransaksi='3'" ;
+ }
  $xStr =   "SELECT ".
       "idx,".
       "idplu,".
