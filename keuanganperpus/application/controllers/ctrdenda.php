@@ -87,18 +87,18 @@ class ctrdenda extends CI_Controller {
         $this->load->helper('common');
         $xbufResult = addRow(addCell('idx', 'width:100px;', true) .
                         addCell('NIM', 'width:100px;', true) .
-                        addCell('Denda', 'width:100px;', true) .
-                        addCell('Dibayar', 'width:100px;', true) .
+                        addCell('Denda', 'width:100px;text-align:right;', true) .
+                        addCell('Dibayar', 'width:100px;text-align:right;', true) .
                         addCell('Edit/Hapus', 'width:100px;text-align:center;', true));
         $this->load->model('modeldenda');
         $xQuery = $this->modeldenda->getListtransaksi($xAwal, $xLimit, $xSearch);
         foreach ($xQuery->result() as $row) {
             $xButtonEdit = '<img src="' . base_url() . 'resource/imgbtn/edit.png" alt="Edit Data" onclick = "doedit(\'' . $row->idx . '\');" style="border:none;width:20px"/>';
-            $xButtonHapus = '<img src="' . base_url() . 'resource/imgbtn/delete_table.png" alt="Hapus Data" onclick = "dohapus(\'' . $row->idx . '\',\'' . substr($row->NoIdentitas, 0, 20) . '\');" style="border:none;">';
+            $xButtonHapus = '<img src="' . base_url() . 'resource/imgbtn/delete_table.png" alt="Hapus Data" onclick = "dohapus(\'' . $row->idx . '\',\'' . substr($row->idplu, 0, 20) . '\');" style="border:none;">';
             $xbufResult .= addRow(addCell($row->idx, 'width:100px;') .
                             addCell($row->idplu, 'width:100px;') .
-                            addCell($row->nominaldenda, 'width:100px;') .
-                            addCell($row->nominalpersatuan, 'width:100px;') .
+                            addCell(number_format( $row->nominaldenda, 2, ',', '.'), 'width:100px;text-align:right;') .
+                            addCell( number_format($row->nominalpersatuan,2, ',', '.'), 'width:100px;text-align:right;') .
                             addCell($xButtonEdit . '&nbsp/&nbsp' . $xButtonHapus, 'width:100px;'));
         }
         $xButtonADD = '<img src="' . base_url() . 'resource/imgbtn/document-new.png" onclick = "doClear();" style="border:none;" />';
@@ -165,7 +165,7 @@ class ctrdenda extends CI_Controller {
         } else {
             $this->session->set_userdata('awal', $xAwal);
         }
-        $this->json_data['tabledata'] = $this->getlistanggotabaca($xAwal, $xSearch);
+        $this->json_data['tabledata'] = $this->getlistDendabyTanggal($xAwal, $xSearch);
         echo json_encode($this->json_data);
     }
 
@@ -211,11 +211,11 @@ class ctrdenda extends CI_Controller {
         if ($xidx != '0') {
             $xStr = $this->modeldenda->setUpdatetransaksidenda($xidx, $xidplu, $xidjenistransaksi, $xidpegawai, $xidunitkerja,
                                $xidstatusdinas, str_replace('.', '', $xjumlahsatuan),
-                               $xnominalpersatuan, str_replace('.', '', $xtotal), $xiduser,
+                               str_replace('.', '', $xnominalpersatuan), str_replace('.', '', $xtotal), $xiduser,
                                str_replace('.', '', $xnominaldenda), $xiddendasparta, $xidlokasi);
         } else {
             $xStr = $this->modeldenda->setInserttransaksidenda($xidx, $xidplu, $xidjenistransaksi, $xidpegawai, $xidunitkerja,
-                            $xidstatusdinas, str_replace('.', '', $xjumlahsatuan), $xnominalpersatuan,
+                            $xidstatusdinas, str_replace('.', '', $xjumlahsatuan), str_replace('.', '', $xnominalpersatuan),
                             str_replace('.', '', $xtotal), $xiduser, str_replace('.', '', $xnominaldenda), $xiddendasparta, $xidlokasi);
         }
         $this->json_data['data'] = $xStr;
