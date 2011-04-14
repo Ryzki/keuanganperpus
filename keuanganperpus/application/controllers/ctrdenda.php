@@ -33,67 +33,52 @@ class ctrdenda extends CI_Controller {
                 '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/autoNumeric.js"></script>' .
                 '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/ui/jquery.ui.datepicker.js"></script>' .
                 '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/ajax/ajaxdenda.js"></script>';
-        echo $this->modelgetmenu->SetViewPerpus($xForm . $this->setDetailFormanggotabaca($xidx), $this->getlistanggotabaca($xAwal, $xSearch), '', $xAddJs, '');
+        echo $this->modelgetmenu->SetViewPerpus($xForm . $this->setDetailFormanggotabaca($xidx), $this->getlistDendabyTanggal($xAwal, $xSearch), '', $xAddJs, '');
     }
 
     function setDetailFormanggotabaca($xidx) {
         $this->load->helper('form');
-        $this->load->model('modelanggotabaca');
-        $row = $this->modelanggotabaca->getDetailanggotabaca($xidx);
+        $this->load->model('modeldenda');
+        $row = $this->modeldenda->getDetailtransaksi($xidx);
         $xBufResult = '';
+        /*
+        $this->json_data['iddendasparta'] = $row->iddendasparta;
+        $this->json_data['NoIdentitas'] = $row->NoIdentitas;
+        //$this->json_data['Nama'] = $row->Nama;
+        $this->json_data['nominalpersatuan'] = $row->nominalpersatuan;
+        $this->json_data['nominaldenda'] = $row->nominaldenda;
+
+         */
         if (empty($row)) {
             $xidx = '0';
             $xNoIdentitas = '';
-            $xNama = '';
-            $xidJenisAnggota = '';
-            $xAlamat = '';
-            $xKota = '';
-            $xkodepos = '';
-            $xNotelp = '';
-            $xemail = '';
+            $xiddendasparta = '';
+            $xNama ='';
+            $xnominalpersatuan = '';
+            $xnominaldenda = '';
+            
         } else {
             $xidx = $row->idx;
             $xNoIdentitas = $row->NoIdentitas;
-            $xNama = $row->Nama;
-            $xidJenisAnggota = $row->idJenisAnggota;
-            $xAlamat = $row->Alamat;
-            $xKota = $row->Kota;
-            $xkodepos = $row->kodepos;
-            $xNotelp = $row->Notelp;
-            $xemail = $row->email;
+            $xiddendasparta = $row->iddendasparta;
+           //IF SPARTA  $xNama
+            $xNama ='';
+            $xnominalpersatuan = $row->nominalpersatuan;
+            $xnominaldenda = $row->nominaldenda;
         }
+
         $this->load->helper('common');
         $this->load->model('modeljenisanggotabaca');
         $xBufResult = '<input type="hidden" name="edidx" id="edidx" value="0" />';
-        $xBufResult .= '<input type="hidden" name="edidsparta" id="edidsparta" value="0" />';
-        $xBufResult .= setForm('edtgldenda', 'Tanggal Denda', form_input(getArrayObj('edtgldenda', $xemail, '120'))) . '<div class="spacer"></div>';
+        $xBufResult .= '<input type="hidden" name="edidsparta" id="edidsparta" value="'.$xiddendasparta.'" />';
+        $xBufResult .= setForm('edtgldenda', 'Tanggal Denda', form_input(getArrayObj('edtgldenda', '', '120'))) . '<div class="spacer"></div>';
         $xBufResult .= setForm('edNoIdentitas', 'NIM', form_input(getArrayObj('edNoIdentitas', $xNoIdentitas, '150'))) . '<div class="spacer"></div>';
         $xBufResult .= setForm('edNama', 'Nama', form_input(getArrayObj('edNama', $xNama, '200'))) . '<div class="spacer"></div>';
-        $xBufResult .= setForm('edDendaSparta', 'Denda', form_input(getArrayObj('edDendaSparta', $xAlamat, '100'))) . '<div class="spacer"></div>';
-        $xBufResult .= form_button('btSimpan', 'Get From Sparta', 'onclick="dogetsparta();"') . '<div class="spacer"></div>';
-        $xBufResult .= setForm('edDenda', 'Di Bayar', form_input(getArrayObj('edDenda', $xAlamat, '100'))) . '<div class="spacer"></div>';
+        $xBufResult .= setForm('edDendaSparta', 'Denda', form_input(getArrayObj('edDendaSparta', $xnominaldenda, '100'))) . '<div class="spacer"></div>';
+        $xBufResult .= form_button('btGetSparta', 'Get From Sparta', 'onclick="dogetsparta();"') . '<div class="spacer"></div>';
+        $xBufResult .= setForm('edDenda', 'Di Bayar', form_input(getArrayObj('edDenda', $xnominalpersatuan, '100'))) . '<div class="spacer"></div>';
         $xBufResult .= '<div class="garis"></div>' . form_button('btSimpan', 'simpan', 'onclick="dosimpan();"') . form_button('btNew', 'new', 'onclick="doClear();"') . '<div class="spacer"></div>';
         return $xBufResult;
-    }
-
-    function inserttable() {
-        $xidx = $_POST['edidx'];
-        $xNoIdentitas = $_POST['edNoIdentitas'];
-        $xNama = $_POST['edNama'];
-        $xidJenisAnggota = $_POST['edidJenisAnggota'];
-        $xAlamat = $_POST['edAlamat'];
-        $xKota = $_POST['edKota'];
-        $xkodepos = $_POST['edkodepos'];
-        $xNotelp = $_POST['edNotelp'];
-        $xemail = $_POST['edemail'];
-
-        $this->load->model('modelanggotabaca');
-        if ($xidx != '0') {
-            $this->modelanggotabaca->setUpdateanggotabaca($xidx, $xNoIdentitas, $xNama, $xidJenisAnggota, $xAlamat, $xKota, $xkodepos, $xNotelp, $xemail);
-        } else {
-            $this->modelanggotabaca->setInsertanggotabaca($xidx, $xNoIdentitas, $xNama, $xidJenisAnggota, $xAlamat, $xKota, $xkodepos, $xNotelp, $xemail);
-        }
-        $this->createform('0');
     }
 
     function getlistanggotabaca($xAwal, $xSearch) {
@@ -105,16 +90,15 @@ class ctrdenda extends CI_Controller {
                         addCell('Denda', 'width:100px;', true) .
                         addCell('Dibayar', 'width:100px;', true) .
                         addCell('Edit/Hapus', 'width:100px;text-align:center;', true));
-        $this->load->model('modelanggotabaca');
-        $xQuery = $this->modelanggotabaca->getListanggotabaca($xAwal, $xLimit, $xSearch);
+        $this->load->model('modeldenda');
+        $xQuery = $this->modeldenda->getListanggotabaca($xAwal, $xLimit, $xSearch);
         foreach ($xQuery->result() as $row) {
             $xButtonEdit = '<img src="' . base_url() . 'resource/imgbtn/edit.png" alt="Edit Data" onclick = "doedit(\'' . $row->idx . '\');" style="border:none;width:20px"/>';
             $xButtonHapus = '<img src="' . base_url() . 'resource/imgbtn/delete_table.png" alt="Hapus Data" onclick = "dohapus(\'' . $row->idx . '\',\'' . substr($row->NoIdentitas, 0, 20) . '\');" style="border:none;">';
             $xbufResult .= addRow(addCell($row->idx, 'width:100px;') .
-                            addCell($row->NoIdentitas, 'width:100px;') .
-                            addCell($row->Nama, 'width:100px;') .
-                            addCell($row->Alamat, 'width:100px;') .
-                            addCell($row->Notelp, 'width:100px;') .
+                            addCell($row->idplu, 'width:100px;') .
+                            addCell($row->nominaldenda, 'width:100px;') .
+                            addCell($row->nominalpersatuan, 'width:100px;') .
                             addCell($xButtonEdit . '&nbsp/&nbsp' . $xButtonHapus, 'width:100px;'));
         }
         $xButtonADD = '<img src="' . base_url() . 'resource/imgbtn/document-new.png" onclick = "doClear();" style="border:none;" />';
@@ -151,14 +135,12 @@ class ctrdenda extends CI_Controller {
         $row = $this->modelanggotabaca->getDetailanggotabaca($xIdEdit);
         $this->load->helper('json');
         $this->json_data['idx'] = $row->idx;
-        $this->json_data['NoIdentitas'] = $row->NoIdentitas;
-        $this->json_data['Nama'] = $row->Nama;
-        $this->json_data['idJenisAnggota'] = $row->idJenisAnggota;
-        $this->json_data['Alamat'] = $row->Alamat;
-        $this->json_data['Kota'] = $row->Kota;
-        $this->json_data['kodepos'] = $row->kodepos;
-        $this->json_data['Notelp'] = $row->Notelp;
-        $this->json_data['email'] = $row->email;
+        $this->json_data['iddendasparta'] = $row->iddendasparta;
+        $this->json_data['NoIdentitas'] = $row->idplu;
+        //$this->json_data['Nama'] = $row->Nama;
+        $this->json_data['nominalpersatuan'] = $row->nominalpersatuan;
+        $this->json_data['nominaldenda'] = $row->nominaldenda;
+        
         echo json_encode($this->json_data);
     }
 
@@ -202,11 +184,11 @@ class ctrdenda extends CI_Controller {
                 "&edDenda="+$("#edDenda").val()
         */
 
-        $xidplu = '0';
+        $xidplu = $_POST['edNoIdentitas'];
         $xidsparta = $_POST['edidsparta'];
         $xidjenistransaksi = '1';
 
-        $xidpegawai = $_POST['edNoIdentitas'];
+        $xidpegawai = '0';
         $xidunitkerja = '0';
         $xidstatusdinas = '0';
         //$xtanggal = $_POST['edtanggal'];
@@ -215,22 +197,26 @@ class ctrdenda extends CI_Controller {
 
 
         $xtanggal = $_POST['edtgldenda'] ;
-        $xjumlahsatuan = $_POST['edjumlahsatuan'];
-        $xnominalpersatuan = $_POST['ednominalpersatuan'];
-        $xtotal = $_POST['edtotal'];
+        $xjumlahsatuan = '1';
+        $xnominalpersatuan = $_POST['edDenda'];
+        $xtotal = $xnominalpersatuan;
         $xiduser = $this->session->userdata('idpegawai');
-        $xnominaldenda = $_POST['ednominaldenda'];
-        $xiddendasparta = $_POST['ediddendasparta'];
+        $xnominaldenda = $_POST['edDendaSparta'];
+        $xiddendasparta = $_POST['edidsparta'];
         $xidlokasi = $this->session->userdata('idlokasi');
         $this->load->model('modeldenda');
         $xStr = 'kosong';
+
+
         if ($xidx != '0') {
-            $xStr = $this->modeldenda->setUpdatetransaksidenda($xidx, $xidplu, $xidjenistransaksi, $xidpegawai, $xidunitkerja, $xidstatusdinas, str_replace('.', '', $xjumlahsatuan),
-                            $xnominalpersatuan, $xtotal, $xiduser, $xnominaldenda, $xiddendasparta, $xidlokasi);
+            $xStr = $this->modeldenda->setUpdatetransaksidenda($xidx, $xidplu, $xidjenistransaksi, $xidpegawai, $xidunitkerja,
+                               $xidstatusdinas, str_replace('.', '', $xjumlahsatuan),
+                               $xnominalpersatuan, str_replace('.', '', $xtotal), $xiduser,
+                               str_replace('.', '', $xnominaldenda), $xiddendasparta, $xidlokasi);
         } else {
             $xStr = $this->modeldenda->setInserttransaksidenda($xidx, $xidplu, $xidjenistransaksi, $xidpegawai, $xidunitkerja,
                             $xidstatusdinas, str_replace('.', '', $xjumlahsatuan), $xnominalpersatuan,
-                            $xtotal, $xiduser, $xnominaldenda, $xiddendasparta, $xidlokasi);
+                            str_replace('.', '', $xtotal), $xiduser, str_replace('.', '', $xnominaldenda), $xiddendasparta, $xidlokasi);
         }
         $this->json_data['data'] = $xStr;
         echo json_encode($this->json_data);
