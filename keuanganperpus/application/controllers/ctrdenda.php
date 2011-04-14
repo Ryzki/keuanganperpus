@@ -33,10 +33,10 @@ class ctrdenda extends CI_Controller {
                 '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/autoNumeric.js"></script>' .
                 '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/ui/jquery.ui.datepicker.js"></script>' .
                 '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/ajax/ajaxdenda.js"></script>';
-        echo $this->modelgetmenu->SetViewPerpus($xForm . $this->setDetailFormanggotabaca($xidx), $this->getlistDendabyTanggal($xAwal, $xSearch), '', $xAddJs, '');
+        echo $this->modelgetmenu->SetViewPerpus($xForm . $this->setDetailFormdenda($xidx), $this->getlistDendabyTanggal($xAwal, $xSearch), '', $xAddJs, '');
     }
 
-    function setDetailFormanggotabaca($xidx) {
+    function setDetailFormdenda($xidx) {
         $this->load->helper('form');
         $this->load->model('modeldenda');
         $row = $this->modeldenda->getDetailtransaksi($xidx);
@@ -81,7 +81,7 @@ class ctrdenda extends CI_Controller {
         return $xBufResult;
     }
 
-    function getlistanggotabaca($xAwal, $xSearch) {
+    function getlistDendabyTanggal($xAwal, $xSearch) {
         $xLimit = 3;
         $this->load->helper('form');
         $this->load->helper('common');
@@ -91,7 +91,7 @@ class ctrdenda extends CI_Controller {
                         addCell('Dibayar', 'width:100px;', true) .
                         addCell('Edit/Hapus', 'width:100px;text-align:center;', true));
         $this->load->model('modeldenda');
-        $xQuery = $this->modeldenda->getListanggotabaca($xAwal, $xLimit, $xSearch);
+        $xQuery = $this->modeldenda->getListtransaksi($xAwal, $xLimit, $xSearch);
         foreach ($xQuery->result() as $row) {
             $xButtonEdit = '<img src="' . base_url() . 'resource/imgbtn/edit.png" alt="Edit Data" onclick = "doedit(\'' . $row->idx . '\');" style="border:none;width:20px"/>';
             $xButtonHapus = '<img src="' . base_url() . 'resource/imgbtn/delete_table.png" alt="Hapus Data" onclick = "dohapus(\'' . $row->idx . '\',\'' . substr($row->NoIdentitas, 0, 20) . '\');" style="border:none;">';
