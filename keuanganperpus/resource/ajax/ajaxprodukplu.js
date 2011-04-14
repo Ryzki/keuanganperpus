@@ -20,7 +20,7 @@ function dosearch(xAwal){
             type: 'POST',
             success: function(json){
            
-                $("#tabledata").html(json.lstreeview);
+                $("#tabledata").html(json.tabledata);
             // $("#tabledata").html(json.tabledata);
             },
             error: function (xmlHttpRequest, textStatus, errorThrown) {
