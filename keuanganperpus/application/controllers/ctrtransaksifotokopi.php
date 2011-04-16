@@ -248,7 +248,12 @@ class ctrtransaksifotokopi extends CI_Controller {
         $this->json_data['tabledata'] = $this->getlisttransaksi($xAwal, $xSearch);
         echo json_encode($this->json_data);
     }
+/*
+ perbaiki :
+ * 1. belum bisa menyimpan data pegawai dan unit kerja
+ * 2. field dinas atau pribadi disi otomatis berdasrkan kode PLU
 
+ */
     function simpan() {
         $this->load->helper('json');
         if (!empty($_POST['edidx'])) {
@@ -260,16 +265,18 @@ class ctrtransaksifotokopi extends CI_Controller {
         $xidjenistransaksi = $_POST['edidjenistransaksi'];
         $xidpegawai = $_POST['edidpegawai'];
         $this->load->model('modelpegawai');
-        $rowpegawai = $this->modelpegawai->getDetailpegawai($xidpegawai);
-        if(!empty($rowpegawai))
-        $xidunitkerja = $rowpegawai->idUnitKerja; else
+        $rowpegawai = $this->modelpegawai->getDataPegawai($xidpegawai);
+        
+        if(!empty($rowpegawai)){
+           $xidunitkerja = $rowpegawai->idUnitKerja;
+           $xidpegawai = $rowpegawai->idx;
+        }
+        else
         $xidunitkerja ='0';
-        $xidstatusdinas = $_POST['edidstatusdinas'];
+
+        
         //$xtanggal = $_POST['edtanggal'];
         //$xjam = $_POST['edjam'];
-
-
-            
         $xtanggal =  $this->session->userdata('tanggal');
         $xjumlahsatuan = $_POST['edjumlahsatuan'];
         $xnominalpersatuan = $_POST['ednominalpersatuan'];
@@ -281,16 +288,24 @@ class ctrtransaksifotokopi extends CI_Controller {
         $this->load->model('modeltransaksi');
         $this->load->model('modelprodukplu');
         $xRowPLU = $this->modelprodukplu->getDetailprodukbykode($xkodeplu);
+        $xidstatusdinas = '0';
+        if(!empty($xRowPLU->idJnsPengguna)){
+
+           $xidstatusdinas = $xRowPLU->idJnsPengguna;//nilai di transaksi 1 if dinas
+
+        }
+
          $xStr ='kosong';
         if ($xidx != '0') {
-            $xStr = $this->modeltransaksi->setUpdatetransaksiFC($xidx,$xkodeplu,'3',$xRowPLU->idstatusPLU,$xRowPLU->idJnsPengguna,$xidpegawai,$xidunitkerja,$xidstatusdinas,str_replace('.','',$xjumlahsatuan),
-                               $xnominalpersatuan,$xtotal,$xiduser,$xnominaldenda,$xiddendasparta,$xidlokasi);
+            $xStr = $this->modeltransaksi->setUpdatetransaksiFC($xidx,$xkodeplu,'3',$xRowPLU->idstatusPLU,$xRowPLU->idJnsPengguna,
+                                         $xidpegawai,$xidunitkerja,$xidstatusdinas,str_replace('.','',$xjumlahsatuan),
+                                         $xnominalpersatuan,$xtotal,$xiduser,$xnominaldenda,$xiddendasparta,$xidlokasi);
         } else {
             $xStr = $this->modeltransaksi->setInserttransaksiFC($xidx,$xkodeplu,'3',$xRowPLU->idstatusPLU,$xRowPLU->idJnsPengguna,$xidpegawai,$xidunitkerja,
                               $xidstatusdinas,str_replace('.','',$xjumlahsatuan),$xnominalpersatuan,
                               $xtotal,$xiduser,$xnominaldenda,$xiddendasparta,$xidlokasi);
         }
-        $this->json_data['data'] = $xStr;
+        $this->json_data['data'] = $xStr." Coba ".$xidpegawai;
         echo json_encode($this->json_data);
     }
 
