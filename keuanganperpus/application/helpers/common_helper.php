@@ -29,6 +29,22 @@
                       return $data;
                    }
                    
+   function getArrayBulan(){
+     $xBuffResul['01'] = 'Januari';
+     $xBuffResul['02'] = 'Februari';
+     $xBuffResul['03'] = 'Maret';
+     $xBuffResul['04'] = 'April';
+     $xBuffResul['05'] = 'Mei';
+     $xBuffResul['06'] = 'Juni';
+     $xBuffResul['07'] = 'Juli';
+     $xBuffResul['08'] = 'Agustus';
+     $xBuffResul['09'] = 'September';
+     $xBuffResul['10'] = 'Oktober';
+     $xBuffResul['11'] = 'November';
+     $xBuffResul['12'] = 'Desember';
+   return $xBuffResul;
+   }
+
    function setForm($xName,$xCaption,$xForm,$xAtrib=''){
            $xBufResult  = '<p> <label for="'.$xName.'">'.$xCaption.'<span class="small">'.$xAtrib.'</span>'.'</label> '.$xForm.'</p>';    
           return $xBufResult;
