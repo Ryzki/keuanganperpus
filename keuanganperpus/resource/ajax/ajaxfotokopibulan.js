@@ -1,16 +1,16 @@
-function dosearch(xAwal){ 
+function dosearch(xAwal){
     xSearch ="";
-    try 
+    try
     {
         if ($("#edSearch").val()!=""){
             xSearch = $("#edSearch").val();
-        } 
+        }
     }catch(err){
         xSearch ="";
     }
     if (typeof(xSearch) =="undefined"){
         xSearch ="";
-    } 
+    }
     $(document).ready(function(){
         $.ajax({
             url: getBaseURL()+"index.php/ctrtransaksifotokopi/search/",
@@ -32,9 +32,9 @@ function dosearch(xAwal){
             }
         });
     });
-} 
+}
 
-function doedit(edidx){ 
+function doedit(edidx){
     $(document).ready(function(){
         $.ajax({
             url: getBaseURL()+"index.php/ctrtransaksifotokopi/editrec/",
@@ -51,7 +51,7 @@ function doedit(edidx){
                 //       $("#edidstatusdinas").val(json.idstatusdinas);
                 //       $("#edtanggal").val(json.tanggal);
                 //       $("#edjam").val(json.jam);
-                
+
                 $("#edjumlahsatuan").val(json.jumlahsatuan);
                 $("#ednominalpersatuan").val(json.nominalpersatuan);
                 $("#edtotal").val(json.total);
@@ -131,7 +131,7 @@ function dotampilpegawai(){
                    $("#nmpegawai").val(json.npp);
                    $("#nmpegawai").html(json.Nama);
                    $("#edidunitkerja").val(json.nmunitkerja);
-                   doshownmpegawai(true);                    
+                   doshownmpegawai(true);
             } else
              {
                     alert('Data Yang Anda Cari tidak Ditemukan');
@@ -153,7 +153,7 @@ function dotampilpegawai(){
     });
 }
 
-function doClear(){ 
+function doClear(){
     $(document).ready(function(){
         $("#edidx").val("0");
         $("#edidplu").val("");
@@ -174,7 +174,7 @@ function doClear(){
     });
 }
 
-function dosimpan(){ 
+function dosimpan(){
     $(document).ready(function(){
         $.ajax({
             url: getBaseURL()+"index.php/ctrtransaksifotokopi/simpan/",
@@ -202,7 +202,7 @@ function dosimpan(){
                 doshownamaProduk(false);
                 doshownmpegawai(false);
                 doshowpegawai(false);
-                
+
                 //$("#edidplu").val(json.data);
                 alert(json.data);
             },
@@ -217,9 +217,9 @@ function dosimpan(){
             }
         });
     });
-} 
+}
 
-function dohapus(edidx,edidplu){ 
+function dohapus(edidx,edidplu){
     if (confirm("Anda yakin Akan menghapus data "+edidplu+"?"))
     {
         $(document).ready(function(){
@@ -230,7 +230,7 @@ function dohapus(edidx,edidplu){
                 dataType: 'json',
                 type: 'POST',
                 success: function(json){
-                    doClear(); 
+                    doClear();
                     dosearch('-99');
                     doshownamaProduk(false);
                     doshowpegawai(false);
@@ -249,7 +249,7 @@ function dohapus(edidx,edidplu){
             });
         });
     }
-} 
+}
 
 
 function dokeypresseed(){
@@ -352,7 +352,7 @@ function doshownamaProduk(isshow){
 
     });
 }
-function initCorners() { 
+function initCorners() {
     var setting = {
         tl: {
             radius: 10
@@ -369,12 +369,6 @@ function initCorners() {
         antiAlias: true
     }
     curvyCorners(setting, "div#mnhead h1");
-} 
+}
 //   addEvent(window, 'load', initCorners);
 //     dosearch(0);
-dokeypresseed();
-
-
-doshownamaProduk(false);
-doshowpegawai(false);
-doshownmpegawai(false);
