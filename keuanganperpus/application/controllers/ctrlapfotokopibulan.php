@@ -5,17 +5,20 @@ if (!defined('BASEPATH'))
 /* Class  Control : anggotabaca  * di Buat oleh Diar PHP Generator * Update List untuk grid karena program generatorku lom sempurna ya hehehehehe */
 
 class ctrlapfotokopibulan extends CI_Controller {
-
+    
     function __construct() {
         parent::__construct();
+     
+        
     }
-
+    
     function index($xAwal=0, $xSearch='') {
 //  $this->load->view('test.php');
         if ($xAwal <= -1) {
             $xAwal = 0;
         } $this->session->set_userdata('awal', $xAwal);
         $this->createform('0', $xAwal);
+
     }
 
     function createform($xidx, $xAwal=0, $xSearch='') {
@@ -33,7 +36,7 @@ class ctrlapfotokopibulan extends CI_Controller {
                 '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/autoNumeric.js"></script>' .
                 '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/ui/jquery.ui.datepicker.js"></script>' .
                 '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/ajax/ajaxfotokopibulan.js"></script>';
-        echo $this->modelgetmenu->SetViewPerpus($xForm . $this->setDetailFormReport($xidx), '', '', $xAddJs, '');
+        echo $this->modelgetmenu->SetViewPerpus($xForm . $this->setDetailFormReport($xidx), $this->getReport('4'), '', $xAddJs, '');
     }
 
     function setDetailFormReport($xidx) {
@@ -46,21 +49,106 @@ class ctrlapfotokopibulan extends CI_Controller {
     }
 
     function getReport($xBulan) {
-        $xIdEdit = $_POST['edidx'];
-      
-        return '<div id="tablereport" name ="tablereport" class="tablereport" style="width:550px;">' . $xbufResult . $xRowCells . '</div>';
+        //$xIdEdit = $_POST['edidx'];
+        $arrayrow = $this->getrow($xBulan);
+        $xBufresult ='<table border="1px">';
+        for($i=0;$i<count($arrayrow);$i++){
+            $xBufresult .= '<tr>'. $arrayrow[$i].'</tr>';
+        }
+        $xBufresult .='</table>';
+        return '<div id="tablereport" name ="tablereport" class="tablereport" style="width:700px;">' . $xBufresult . '</div>';
     }
-    function gettablefotokopi(){
-      /*
-       *
-       1 cek tanggal
 
-       Select trx.idx, trx.idplu,plu.idjnspengguna,tanggal,jumlahsatuan,nominalpersatuan,
-       (select JenisPengguna from jenipengguna as jnsp Where jnsp.idx=plu.idjnspengguna limit 1) as pengg
-       from transaksi as trx
-       inner join produkplu as plu on(trx.idplu=plu.KodePLU) where month(tanggal)=4 order by plu.idjnspengguna;
-       */
+    function getvalcellfotokopifromdatabase($xidplu,$xtanggal,$xBulan){
+        //digunakan untukmenent
+        $this->load->model('modeltransaksi');
+
+       return $this->modeltransaksi->getlembarsum($xidplu,$xtanggal,$xBulan);
     }
+
+
+    function addkolomFotoKopi($xarraydata,$xidplu,$xarrayhari,$xBulan,$xArrayTotalFC){
+      //digunakan untukmenentukan tanggal
+      //Tambahakan Nilai I untuk rowHeader
+      /*$xBufArray[0] = '';
+       $xBufArray[1] = '';
+       $xBufArray[2] = $xidplu;*/
+
+        $this->load->model('modelprodukplu');
+        $rowplu = $this->modelprodukplu->getDetailprodukplubykode($xidplu);
+        $xJmlLembar = 0;
+        
+        for($i=0;$i<count($xarrayhari);$i++){
+           $lembar =  $this->getvalcellfotokopifromdatabase($xidplu, $xarrayhari[$i],$xBulan);
+           //$this->arrayTotalFC[$i] +=  $lembar;
+           
+                         
+           $xArrayTotalFC[$i] += ($lembar*$rowplu->harga);
+           
+           $xBufArray[$i] = $xarraydata[$i]. '<td align ="center">'. $lembar.'</td>';
+           $xJmlLembar +=  $lembar;
+        }
+
+       $xBufArray[0] = $xarraydata[0].'<td align ="center">'.$rowplu->NamaProduk.'<br />Rp.'.$rowplu->harga.'</td>';
+       $xBufArray[count($xarrayhari)-1] = $xarraydata[count($xarrayhari)-1].'<td align ="center">'.$xJmlLembar.'</td>';
+
+       
+        $xArrayResult[0] = $xBufArray;
+        $xArrayResult[1] = $xArrayTotalFC;
+        return $xArrayResult;
+
+    }
+
+    function addTotalFotoKopi($xarraydata,$xarrayhari,$xArrayTotalFC){
+       $xBufTotal =0;
+        for($i=0;$i<count($xarrayhari);$i++){
+           
+           $xBufArray[$i] = $xarraydata[$i]. '<td align ="right">'. number_format($xArrayTotalFC[$i], 0, '.', ',').'</td>';
+           $xBufTotal += $xArrayTotalFC[$i];
+      
+        }
+        $xBufArray[0] = $xarraydata[0].'<td align ="center">Total<br />Rp</td>';
+        $xBufArray[count($xarrayhari)-1] = $xarraydata[count($xarrayhari)-1].'<td align ="right">'.number_format($xBufTotal, 0, '.', ',').'</td>';
+      
+
+        return $xBufArray;
+
+    }
+    
+    function getrow($xbulan){
+        //Prepare data untuk membuat reporttable
+        /*
+       *
+          1. buat array untuk row
+       *  2. tambahkan cell
+       */
+       $this->load->model('modeltransaksi');
+       $ArrayHari = $this->modeltransaksi->getarrayhari($xbulan);
+       if(!empty($ArrayHari) ){
+         for($i=0;$i<count($ArrayHari);$i++){
+             //echo "Test".$ArrayHari[$i];
+             if ($i==0){
+                 $arrayrow[$i]= '<td>'.$ArrayHari[$i].'</td>';
+             }else
+             { $arrayrow[$i]= '<td>'.$ArrayHari[$i].'</td>';}
+             $xArrayTotalFC[$i] = 0;
+
+        }
+       }
+       
+       $xarrayFC = $this->modeltransaksi->getarraystatusplufotocopy($xbulan);
+       
+       if(!empty($xarrayFC) ){
+         for($i=0;$i<count($xarrayFC);$i++){
+            $xBufarrayrow = $this->addkolomFotoKopi($arrayrow, $xarrayFC[$i],$ArrayHari ,$xbulan,$xArrayTotalFC);
+            $arrayrow = $xBufarrayrow[0];
+            $xArrayTotalFC = $xBufarrayrow[1];
+         }
+       }
+       $arrayrow = $this->addTotalFotoKopi($arrayrow, $ArrayHari, $xArrayTotalFC);
+    return $arrayrow;
+    }
+
 
     function actionrecord($xIdRec='', $xAction='') {
         $this->load->model('modelanggotabaca');
