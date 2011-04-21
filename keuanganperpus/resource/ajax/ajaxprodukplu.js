@@ -78,7 +78,8 @@ function doClear(){
         $("#edharga").val("");
         $("#edidjenistransaksi").val("");
     });
-} 
+}
+
 function dosimpan(){ 
     $(document).ready(function(){
         $.ajax({
@@ -87,9 +88,10 @@ function dosimpan(){
             cache: false,
             dataType: 'json',
             type: 'POST',
-            success: function(msg){
+            success: function(json){
                 doClear();
                 dosearch('-99');
+               alert("Data Sudah Disimpan  ");
             },
             error: function (xmlHttpRequest, textStatus, errorThrown) {
                 start = xmlHttpRequest.responseText.search("<title>") + 7;
