@@ -204,7 +204,7 @@ function dosimpan(){
                 doshowpegawai(false);
                 
                 //$("#edidplu").val(json.data);
-                alert(json.data);
+               // alert(json.data);
             },
             error: function (xmlHttpRequest, textStatus, errorThrown) {
                 start = xmlHttpRequest.responseText.search("<title>") + 7;
