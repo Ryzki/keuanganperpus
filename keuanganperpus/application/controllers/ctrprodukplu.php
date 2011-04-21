@@ -67,7 +67,7 @@ class ctrprodukplu extends CI_Controller {
         $this->load->model('modelrekanan');
         $this->load->model('modeljenistransaksi');
         $xBufResult = '<input type="hidden" name="edidx" id="edidx" value="0" />';
-        $xBufResult = '<input type="hidden" name="edidjenistransaksi" id="edidjenistransaksi" value="3" />';
+        $xBufResult .= '<input type="hidden" name="edidjenistransaksi" id="edidjenistransaksi" value="3" />';
         $xBufResult .= setForm('edKodePLU', 'KodePLU', form_input(getArrayObj('edKodePLU', $xKodePLU, '100')));
         $xBufResult .= setForm('edidJnsPengguna', 'Grouping Pengguna', form_dropdown('edidJnsPengguna', $this->modeljenipengguna->getArrayListjenipengguna(), '0', 'id="edidJnsPengguna" width="150px"')) . '<div class="spacer"></div>';
         $xBufResult .= setForm('edNamaProduk', 'NamaProduk', form_input(getArrayObj('edNamaProduk', $xNamaProduk, '300'))) . '<div class="spacer"></div>';
@@ -191,6 +191,7 @@ class ctrprodukplu extends CI_Controller {
     }
 
     function simpan() {
+        
         $this->load->helper('json');
         if (!empty($_POST['edidx'])) {
             $xidx = $_POST['edidx'];
@@ -206,11 +207,15 @@ class ctrprodukplu extends CI_Controller {
         $xharga = $_POST['edharga'];
         $xidjenistransaksi = '3';
         $this->load->model('modelprodukplu');
+        //$this->json_data['data'] = $xidx;
         if ($xidx != '0') {
+            //echo "testts";
+            
             $xStr = $this->modelprodukplu->setUpdateprodukplu($xidx, $xKodePLU, $xidJnsPengguna, $xNamaProduk, $xSingkatan, $xidstatusPLU, $xidrekanan, str_replace('.', '', $xharga), $xidjenistransaksi);
         } else {
             $xStr = $this->modelprodukplu->setInsertprodukplu($xidx, $xKodePLU, $xidJnsPengguna, $xNamaProduk, $xSingkatan, $xidstatusPLU, $xidrekanan, str_replace('.', '', $xharga), $xidjenistransaksi);
         }
+       //echo json_encode($this->json_data);
     }
 
 }
