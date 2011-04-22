@@ -45,6 +45,7 @@ function doedit(edidx){
             success: function(json){
                 $("#edidx").val(json.idx);
                 $("#edidplu").val(json.idplu);
+                $("#idjenipengguna").val(json.idjenipengguna);
                 $("#edidjenistransaksi").val(json.idjenistransaksi);
                 $("#edidpegawai").val(json.idpegawai);
                 $("#edidunitkerja").val(json.idunitkerja);
@@ -89,11 +90,11 @@ function dotampildataPLU(){
                    $("#ednominalpersatuan").val(json.harga);
                    $("#edjumlahsatuan").focus();
                    $("#nmproduk").html(json.NamaProduk);
-                   $("#edidjenistransaksi").val(json.idjenistransaksi);
+                   $("#edidgrouppengguna").val(json.idjenipengguna);
 
                     doshownamaProduk(true);
 
-                  if((json.idjenistransaksi==3)||(json.idjenistransaksi==4)){
+                  if((json.idjenipengguna==2)||(json.idjenipengguna==3)){
                        doshowpegawai(true);
                      }
             } else
@@ -158,6 +159,7 @@ function doClear(){
         $("#edidx").val("0");
         $("#edidplu").val("");
         $("#edidjenistransaksi").val("");
+        $("#edidgrouppengguna").val("");
         $("#edidpegawai").val("");
         $("#edidunitkerja").val("");
         // $("#edidstatusdinas").val("");
@@ -378,3 +380,5 @@ dokeypresseed();
 doshownamaProduk(false);
 doshowpegawai(false);
 doshownmpegawai(false);
+
+//** Cek Group Pengguna
