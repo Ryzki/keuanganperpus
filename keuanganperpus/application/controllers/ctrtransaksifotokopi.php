@@ -45,6 +45,7 @@ class ctrtransaksifotokopi extends CI_Controller {
             $xidx = '0';
             $xidplu = '';
             $xidjenistransaksi = '';
+            $idgrouppengguna = '';
             $xidpegawai = '';
             $xidunitkerja = '';
             $xidstatusdinas = '';
@@ -60,6 +61,7 @@ class ctrtransaksifotokopi extends CI_Controller {
         } else {
             $xidx = $row->idx;
             $xidplu = $row->idplu;
+            $xidgrouppengguna = $row->idgrouppengguna;
             $xidjenistransaksi = $row->idjenistransaksi;
             $xidpegawai = $row->idpegawai;
             $xidunitkerja = $row->idunitkerja;
@@ -75,7 +77,9 @@ class ctrtransaksifotokopi extends CI_Controller {
             $xidlokasi = $row->idlokasi;
         }
         $this->load->helper('common');
-        $xBufResult  = '<input type="hidden" name="edidx" id="edidx" value="0" />'.'<input type="hidden" name="edidjenistransaksi" id="edidjenistransaksi" value="0" />';
+        $xBufResult  = '<input type="hidden" name="edidx" id="edidx" value="0" />'.
+                       '<input type="hidden" name="edidjenistransaksi" id="edidjenistransaksi" value="0" />'.
+                       '<input type="hidden" name="edidgrouppengguna" id="edidgrouppengguna" value="0" />';
         $xBufResult .= setForm('edidplu', 'Kode PLU', form_input(getArrayObj('edidplu', $xidplu, '100')),'Ketikkan Kode PLU dan Tekan ENTER');
         //$xBufResult .= setForm('edidjenistransaksi', 'idjenistransaksi', form_input(getArrayObj('edidjenistransaksi', $xidjenistransaksi, '100'))) . '<div class="spacer"></div>';
         
@@ -163,6 +167,7 @@ class ctrtransaksifotokopi extends CI_Controller {
         $this->json_data['idx'] = $row->idx;
         $this->json_data['idplu'] = $row->idplu;
         $this->json_data['idjenistransaksi'] = $row->idjenistransaksi;
+        $this->json_data['idjenipengguna'] = $row->idgrouppengguna;
         $this->json_data['idpegawai'] = $row->idpegawai;
         $this->json_data['idunitkerja'] = $row->idunitkerja;
         $this->json_data['idstatusdinas'] = $row->idstatusdinas;
@@ -197,7 +202,8 @@ class ctrtransaksifotokopi extends CI_Controller {
           $this->json_data['isdataada'] = true;
           $this->json_data['harga'] = $rowplu->harga;
           $this->json_data['NamaProduk'] = $rowplu->NamaProduk;
-          $this->json_data['idjenistransaksi'] = $rowplu->idjenistransaksi;
+          //$this->json_data['idgrouppengguna'] = $rowplu->idgrouppengguna;
+          $this->json_data['idjenipengguna'] = $rowplu->idJnsPengguna;
           
         }else{
          $this->json_data['isdataada'] = false;
