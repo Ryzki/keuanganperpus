@@ -112,7 +112,7 @@ class modeltransaksi extends CI_Model {
         $xStr = "SELECT " .
                 "idx," .
                 "idplu," .
-                "idjenistransaksi," .
+                "idjenistransaksi,idgrouppengguna," .
                 "idpegawai," .
                 "idunitkerja," .
                 "idstatusdinas," .
@@ -142,7 +142,7 @@ class modeltransaksi extends CI_Model {
         $xStr = "SELECT " .
                 "idx," .
                 "idplu," .
-                "idjenistransaksi," .
+                "idjenistransaksi,idgrouppengguna," .
                 "idpegawai," .
                 "idunitkerja," .
                 "idstatusdinas," .
@@ -164,7 +164,7 @@ class modeltransaksi extends CI_Model {
         $xStr = "SELECT " .
                 "idx," .
                 "idplu," .
-                "idjenistransaksi," .
+                "idjenistransaksi,idgrouppengguna," .
                 "idpegawai," .
                 "idunitkerja," .
                 "idstatusdinas," .
@@ -188,7 +188,7 @@ class modeltransaksi extends CI_Model {
         $xStr = "SELECT " .
                 "idx," .
                 "idplu," .
-                "idjenistransaksi," .
+                "idjenistransaksi,idgrouppengguna," .
                 "idpegawai," .
                 "idunitkerja," .
                 "idstatusdinas," .
@@ -211,7 +211,7 @@ class modeltransaksi extends CI_Model {
         $xStr = " INSERT INTO transaksi( " .
                 "idx," .
                 "idplu," .
-                "idjenistransaksi," .
+                "idjenistransaksi,idgrouppengguna," .
                 "idpegawai," .
                 "idunitkerja," .
                 "idstatusdinas," .
