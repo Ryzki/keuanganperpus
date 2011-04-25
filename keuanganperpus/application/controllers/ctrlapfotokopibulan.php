@@ -30,44 +30,70 @@ class ctrlapfotokopibulan extends CI_Controller {
         $xHarga = number_format($row->biaya, 0, '.', ',');
         $xForm = '<div id="stylized" class="myform"><h3>Laporan Detail Fotokopi/Print/Jilid Perbulan </h3>' . form_open_multipart('ctranggotabaca/inserttable', array('id' => 'form', 'name' => 'form')) . '<div class="garis"></div>';
         $xAddJs = link_tag('resource/js/themes/base/jquery.ui.all.css') .
+                '<link rel="stylesheet" href="' . base_url() . 'resource/css/thickbox.css" type="text/css" media="screen" />'.
                 '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/ajax/baseurl.js"></script>' .
                 '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/ui/jquery.ui.core.js"></script>' .
                 '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/ui/jquery.ui.widget.js"></script>' .
                 '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/autoNumeric.js"></script>' .
                 '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/ui/jquery.ui.datepicker.js"></script>' .
+                '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/ajax/thickbox.js"></script>'.
                 '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/ajax/ajaxfotokopibulan.js"></script>';
-        echo $this->modelgetmenu->SetViewPerpus($xForm . $this->setDetailFormReport($xidx), $this->getReport('4'), '', $xAddJs, '');
+
+        echo $this->modelgetmenu->SetViewPerpus($xForm . $this->setDetailFormReport($xidx), $this->getReport('4','2011'), '', $xAddJs, '');
     }
 
     function setDetailFormReport($xidx) {
         $this->load->helper('form');
         $this->load->helper('common');
         //$this->load->model('modeljenisanggotabaca');
+        $xStrTahun = $this->session->userdata('tanggal');
+
         $xBufResult = setForm('edBulan', 'Bulan', form_dropdown('edBulan', getArrayBulan(),'0','id="edBulan" width="150px"')) . '<div class="spacer"></div>';
-        $xBufResult .= '<div class="garis"></div>' . form_button('btSimpan', 'Tampil Data', 'onclick="dotampil();"') . form_button('btNew', 'new', 'onclick="doClear();"') . '<div class="spacer"></div>';
+        $xBufResult .= setForm('edTahun', 'Tahun', form_input(getArrayObj('edTahun',  substr($xStrTahun, 0, 4), '100'))) . '<div class="spacer"></div>';
+        $xBufResult .= '<div class="garis"></div>' . form_button('btSimpan', 'Tampil Data', 'alt="#tablereport?height=300&width=400&inlineId=myOnPageContent" title="add a caption to title attribute / or leave blank" class="thickbox" type="button" value="Show"   onclick="dotampillaporan();"') . form_button('btNew', 'new', 'onclick="doClear();"') . '<div class="spacer"></div>';
         return $xBufResult;
     }
 
-    function getReport($xBulan) {
+    function  dotampillaporan(){
+     $xBulan = $_POST['edbulan'];
+     $xTahun = $_POST['edtahun'];
+     $this->load->helper('json');
+     $this->json_data['data'] =$this->getReport($xBulan,$xTahun);
+     echo json_encode($this->json_data);
+    }
+
+    function getReport($xBulan,$tahun) {
         //$xIdEdit = $_POST['edidx'];
-        $arrayrow = $this->getrow($xBulan);
-        $xBufresult ='<table border="1px">';
+        $this->load->helper('form');
+        $this->load->helper('common');
+
+        $arrayrow = $this->getrow($xBulan,$tahun);
+        $xBufresult ='<table border="1px solid">';
         for($i=0;$i<count($arrayrow);$i++){
             $xBufresult .= '<tr>'. $arrayrow[$i].'</tr>';
         }
         $xBufresult .='</table>';
-        return '<div id="tablereport" name ="tablereport" class="tablereport" style="width:700px;">' . $xBufresult . '</div>';
+        $array = getArrayBulan();
+       $nmbulan =  $array[str_pad($xBulan, 2, '0',STR_PAD_LEFT)];
+        $lokasi = $this->session->userdata('idlokasi');
+        $this->load->model('modellokasi');
+        $rowlokasi = $this->modellokasi->getDetaillokasi($lokasi);
+
+        $judul = "LAPORAN KEUANGAN FOTOKOPI,PRINT DAN JILID HARIAN ".$rowlokasi->NmLokasi.'<br />'.
+                 "PERPUSTAKAAN UNIVERSITAS SANTA DHARMA <br />".
+                 "BULAN ".$nmbulan." ".$tahun;
+        return '<div id="tablereport" name ="tablereport" class="tablereport" style="width:700px;" align="center"><h3>'.$judul.' </h3>' . $xBufresult . '</div>';
     }
 
-    function getvalcellfotokopifromdatabase($xidplu,$xtanggal,$xBulan){
+    function getvalcellfromdatabase($xidplu,$xtanggal,$xBulan,$tahun){
         //digunakan untukmenent
         $this->load->model('modeltransaksi');
 
-       return $this->modeltransaksi->getlembarsum($xidplu,$xtanggal,$xBulan);
+       return $this->modeltransaksi->getlembarsum($xidplu,$xtanggal,$xBulan,$tahun);
     }
 
 
-    function addkolomFotoKopi($xarraydata,$xidplu,$xarrayhari,$xBulan,$xArrayTotalFC){
+    function addkolom($xarraydata,$xidplu,$xarrayhari,$xBulan,$xArrayTotalStatus,$xArrayTotal,$tahun){
       //digunakan untukmenentukan tanggal
       //Tambahakan Nilai I untuk rowHeader
       /*$xBufArray[0] = '';
@@ -79,33 +105,40 @@ class ctrlapfotokopibulan extends CI_Controller {
         $xJmlLembar = 0;
         
         for($i=0;$i<count($xarrayhari);$i++){
-           $lembar =  $this->getvalcellfotokopifromdatabase($xidplu, $xarrayhari[$i],$xBulan);
+           $lembar =  $this->getvalcellfromdatabase($xidplu, $xarrayhari[$i],$xBulan,$tahun);
            //$this->arrayTotalFC[$i] +=  $lembar;
            
                          
-           $xArrayTotalFC[$i] += ($lembar*$rowplu->harga);
+           $xArrayTotalStatus[$i] += ($lembar*$rowplu->harga);
+           $xArrayTotal[$i] += ($lembar*$rowplu->harga);
            
            $xBufArray[$i] = $xarraydata[$i]. '<td align ="center">'. $lembar.'</td>';
            $xJmlLembar +=  $lembar;
         }
 
-       $xBufArray[0] = $xarraydata[0].'<td align ="center">'.$rowplu->NamaProduk.'<br />Rp.'.$rowplu->harga.'</td>';
+       $xBufArray[0] = $xarraydata[0].'<td align ="center">'.$rowplu->NamaProduk.'<br />Rp '.$rowplu->harga.'</td>';
        $xBufArray[count($xarrayhari)-1] = $xarraydata[count($xarrayhari)-1].'<td align ="center">'.$xJmlLembar.'</td>';
 
        
         $xArrayResult[0] = $xBufArray;
-        $xArrayResult[1] = $xArrayTotalFC;
+        if($xJmlLembar ==0){
+           $xArrayResult[1] = null;
+        } else
+        {
+            $xArrayResult[1] = $xArrayTotalStatus;
+
+        }
         return $xArrayResult;
 
     }
 
-    function addTotalFotoKopi($xarraydata,$xarrayhari,$xArrayTotalFC){
+    function addTotal($xarraydata,$xarrayhari,$xArrayTotal){
        $xBufTotal =0;
         for($i=0;$i<count($xarrayhari);$i++){
            
-           $xBufArray[$i] = $xarraydata[$i]. '<td align ="right">'. number_format($xArrayTotalFC[$i], 0, '.', ',').'</td>';
-           $xBufTotal += $xArrayTotalFC[$i];
-      
+           $xBufArray[$i] = $xarraydata[$i]. '<td align ="right">'. number_format($xArrayTotal[$i], 0, '.', ',').'</td>';
+           $xBufTotal += $xArrayTotal[$i];
+
         }
         $xBufArray[0] = $xarraydata[0].'<td align ="center">Total<br />Rp</td>';
         $xBufArray[count($xarrayhari)-1] = $xarraydata[count($xarrayhari)-1].'<td align ="right">'.number_format($xBufTotal, 0, '.', ',').'</td>';
@@ -114,8 +147,9 @@ class ctrlapfotokopibulan extends CI_Controller {
         return $xBufArray;
 
     }
-    
-    function getrow($xbulan){
+
+
+    function getrow($xbulan,$tahun){
         //Prepare data untuk membuat reporttable
         /*
        *
@@ -123,7 +157,7 @@ class ctrlapfotokopibulan extends CI_Controller {
        *  2. tambahkan cell
        */
        $this->load->model('modeltransaksi');
-       $ArrayHari = $this->modeltransaksi->getarrayhari($xbulan);
+       $ArrayHari = $this->modeltransaksi->getarrayhari($xbulan,$tahun);
        if(!empty($ArrayHari) ){
          for($i=0;$i<count($ArrayHari);$i++){
              //echo "Test".$ArrayHari[$i];
@@ -131,21 +165,68 @@ class ctrlapfotokopibulan extends CI_Controller {
                  $arrayrow[$i]= '<td>'.$ArrayHari[$i].'</td>';
              }else
              { $arrayrow[$i]= '<td>'.$ArrayHari[$i].'</td>';}
+             $xArrayTotal[$i] = 0;
              $xArrayTotalFC[$i] = 0;
+
+             $xArrayTotalPrintColor[$i] = 0;
+             $xArrayTotalPrintBiasa[$i] = 0;
+             $xArrayTotalJilid[$i] = 0;
 
         }
        }
        
-       $xarrayFC = $this->modeltransaksi->getarraystatusplufotocopy($xbulan);
-       
+       $xarrayFC = $this->modeltransaksi->getarraystatusplu($xbulan,"1",$tahun);
+
        if(!empty($xarrayFC) ){
          for($i=0;$i<count($xarrayFC);$i++){
-            $xBufarrayrow = $this->addkolomFotoKopi($arrayrow, $xarrayFC[$i],$ArrayHari ,$xbulan,$xArrayTotalFC);
+            $xBufarrayrow = $this->addkolom($arrayrow, $xarrayFC[$i],$ArrayHari ,$xbulan,$xArrayTotalFC,$xArrayTotal,$tahun);
             $arrayrow = $xBufarrayrow[0];
             $xArrayTotalFC = $xBufarrayrow[1];
          }
        }
-       $arrayrow = $this->addTotalFotoKopi($arrayrow, $ArrayHari, $xArrayTotalFC);
+       if($xArrayTotalFC!=null)
+       $arrayrow = $this->addTotal($arrayrow, $ArrayHari, $xArrayTotalFC);
+
+       /****** Print *///
+       $xarrayFC = $this->modeltransaksi->getarraystatusplu($xbulan,"3",$tahun);
+
+       if(!empty($xarrayFC) ){
+         for($i=0;$i<count($xarrayFC);$i++){
+            $xBufarrayrow = $this->addkolom($arrayrow, $xarrayFC[$i],$ArrayHari ,$xbulan,$xArrayTotalPrintBiasa,$xArrayTotal,$tahun);
+            $arrayrow = $xBufarrayrow[0];
+            $xArrayTotalPrintBiasa = $xBufarrayrow[1];
+         }
+       }
+       if($xArrayTotalPrintBiasa!=null)
+       $arrayrow = $this->addTotal($arrayrow, $ArrayHari, $xArrayTotalPrintBiasa);
+
+       $xarrayFC = $this->modeltransaksi->getarraystatusplu($xbulan,"2",$tahun);
+
+       if(!empty($xarrayFC) ){
+         for($i=0;$i<count($xarrayFC);$i++){
+            $xBufarrayrow = $this->addkolom($arrayrow, $xarrayFC[$i],$ArrayHari ,$xbulan,$xArrayTotalPrintColor,$xArrayTotal,$tahun);
+            $arrayrow = $xBufarrayrow[0];
+            $xArrayTotalPrintColor = $xBufarrayrow[1];
+         }
+       }
+
+       if($xArrayTotalPrintColor!=null)
+       $arrayrow = $this->addTotal($arrayrow, $ArrayHari, $xArrayTotalPrintColor);
+
+       //******************** Jilid
+       $xarrayFC = $this->modeltransaksi->getarraystatusplu($xbulan,"4",$tahun);
+
+       if(!empty($xarrayFC) ){
+         for($i=0;$i<count($xarrayFC);$i++){
+            $xBufarrayrow = $this->addkolom($arrayrow, $xarrayFC[$i],$ArrayHari ,$xbulan,$xArrayTotalJilid,$xArrayTotal,$tahun);
+            $arrayrow = $xBufarrayrow[0];
+            $xArrayTotalJilid = $xBufarrayrow[1];
+         }
+       }
+       if($xArrayTotalJilid!=null)
+       $arrayrow = $this->addTotal($arrayrow, $ArrayHari, $xArrayTotalJilid);
+
+
     return $arrayrow;
     }
 
