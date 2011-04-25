@@ -11,25 +11,26 @@ class modeltransaksi extends CI_Model {
     }
 
 //****************update 28 maret 2011**********
-    function getSQLDasar($xBulan) {
+    function getSQLDasar($xBulan,$tahun) {
         return "(Select trx.idx, trx.idplu,plu.idjnspengguna,tanggal,day(tanggal) hari,jumlahsatuan,nominalpersatuan,plu.idstatusPLU ,
                 (select JenisPengguna from jenipengguna as jnsp Where jnsp.idx=plu.idjnspengguna limit 1) as pengg
                 from transaksi as trx
-                inner join produkplu as plu on(trx.idplu=plu.KodePLU) where month(tanggal)='" . $xBulan . "' order by plu.idjnspengguna) as tb1";
+                inner join produkplu as plu on(trx.idplu=plu.KodePLU) where month(tanggal)='" . $xBulan . "' and year(tanggal)='".$tahun."' and  idlokasi = '".$this->session->userdata('idlokasi')."' order by plu.idjnspengguna) as tb1";
     }
 
-    function getlembarsum($xidplu, $xtanggal, $xBulan) {
-        $xStr = 'Select sum(jumlahsatuan) as jmllembar from ' . $this->getSQLDasar($xBulan) . ' where day(tanggal) = "' . $xtanggal . '" and  idplu= "' . $xidplu . '" ';
+    function getlembarsum($xidplu, $xtanggal, $xBulan,$tahun) {
+        $xStr = 'Select sum(jumlahsatuan) as jmllembar from ' . $this->getSQLDasar($xBulan,$tahun) . ' where day(tanggal) = "' . $xtanggal . '"  and  idplu= "' . $xidplu . '" ';
         $query = $this->db->query($xStr);
         //echo $xStr."\n";
         $row = $query->row();
         return $row->jmllembar;
     }
 
-    function getarraystatusplufotocopy($xBulan) {
-        $xStr = 'Select distinct(idplu) as idplu from ' . $this->getSQLDasar($xBulan) . '  where idstatusPLU  = "1" order by idplu ASC';
+    function getarraystatusplu($xBulan,$xIdSTatus,$tahun) {
+        $xStr = 'Select distinct(idplu) as idplu from ' . $this->getSQLDasar($xBulan,$tahun) . '  where idstatusPLU  = "'.$xIdSTatus.'" order by idplu ASC';
         $query = $this->db->query($xStr);
         $i = 0;
+        $xBuffResul =null;
         foreach ($query->result() as $row) {
             $xBuffResul[$i] = $row->idplu;
             $i++;
@@ -37,9 +38,9 @@ class modeltransaksi extends CI_Model {
         return $xBuffResul;
     }
 
-    function getarrayhari($xBulan) {
+    function getarrayhari($xBulan,$tahun) {
         $xBuffResul[0] = 'Tgl';
-        $xStr = 'Select distinct(hari) as arrayhari from ' . $this->getSQLDasar($xBulan) . ' order by arrayhari ASC';
+        $xStr = 'Select distinct(hari) as arrayhari from ' . $this->getSQLDasar($xBulan,$tahun) . ' order by arrayhari ASC';
         $query = $this->db->query($xStr);
         $i = 1;
         foreach ($query->result() as $row) {
