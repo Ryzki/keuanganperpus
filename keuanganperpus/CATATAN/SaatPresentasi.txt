@@ -11,3 +11,6 @@ Jenis transaksi ==>untuk reporting otomatisasi
 Perhatikan pengisian jenis transaksi
 
 Pertanyaan Apakah Setiap user yang login harus sesui dia ditempakan dimana?
+yang perlu di uji coba
+1. Kesesuian lokasi penginputan
+2.
