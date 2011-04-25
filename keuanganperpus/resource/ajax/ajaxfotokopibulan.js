@@ -117,6 +117,80 @@ function dotampildataPLU(){
     });
 }
 
+function exporttoexcel(data){
+window.open(getBaseURL()+"resource/SaveToExcel.php?datatodisplay="+data, "laporan", "status=1,toolbar=1");
+
+/*$(document).ready(function(){
+        $.ajax({
+            url: getBaseURL()+"resource/SaveToExcel.php",
+            data: "datatodisplay="+data,
+            cache: false,
+            type: 'POST',
+            success: function(msg){
+
+
+             alert("OK");
+
+            },
+            error: function (xmlHttpRequest, textStatus, errorThrown) {
+                start = xmlHttpRequest.responseText.search("<title>") + 7;
+                end = xmlHttpRequest.responseText.search("</title>");
+                errorMsg = "On Export ";
+                if (start > 0 && end > 0)  alert("On Edit "+errorMsg + "  [" + xmlHttpRequest.responseText.substring(start, end) + "]");
+                else
+                    alert("Error  "+errorMsg);
+            }
+        });
+    });
+   */
+}
+
+function dotampillaporan(){
+    $(document).ready(function(){
+        $.ajax({
+            url: getBaseURL()+"index.php/ctrlapfotokopibulan/dotampillaporan/",
+            data: "edbulan="+$("#edBulan").val()+"&edtahun="+$("#edTahun").val(),
+            cache: false,
+            dataType: 'json',
+            type: 'POST',
+            success: function(json){
+            //alert('tess'+json.harga);
+            $("#tablereport").html(json.data);
+           exporttoexcel(json.data);
+
+//           if(json.isdataada){
+//                  //alert('tess'+json.idjenistransaksi);
+//                   $("#ednominalpersatuan").val(json.harga);
+//                   $("#edjumlahsatuan").focus();
+//                   $("#nmproduk").html(json.NamaProduk);
+//                   $("#edidjenistransaksi").val(json.idjenistransaksi);
+//
+//                    doshownamaProduk(true);
+//
+//                  if((json.idjenistransaksi==3)||(json.idjenistransaksi==4)){
+//                       doshowpegawai(true);
+//                     }
+//            } else
+//             {
+//                    alert('Data Yang Anda Cari tidak Ditemukan');
+//             }
+            //       $("#ediduser").val(json.iduser);
+            //       $("#ednominaldenda").val(json.nominaldenda);
+            //       $("#ediddendasparta").val(json.iddendasparta);
+            //       $("#edidlokasi").val(json.idlokasi);
+            },
+            error: function (xmlHttpRequest, textStatus, errorThrown) {
+                start = xmlHttpRequest.responseText.search("<title>") + 7;
+                end = xmlHttpRequest.responseText.search("</title>");
+                errorMsg = "On Tampil laporan ";
+                if (start > 0 && end > 0)  alert("On Edit "+errorMsg + "  [" + xmlHttpRequest.responseText.substring(start, end) + "]");
+                else
+                    alert("Error  "+errorMsg);
+            }
+        });
+    });
+}
+
 function dotampilpegawai(){
     $(document).ready(function(){
         $.ajax({
