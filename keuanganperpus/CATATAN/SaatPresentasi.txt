@@ -10,6 +10,27 @@ untuk  pengguna hanya grouping
 Jenis transaksi ==>untuk reporting otomatisasi 
 Perhatikan pengisian jenis transaksi
 
+Terjadinya kesalahan dalam sistemProgram
+-Masih adanya keslahan dalam pengkodean/pembuatann
+-Beda persepsi
+-salah input data
+
+Janis Pemasukkan
+1. Denda buku
+2. Anggota Baca
+3. Fotokopi
+   - Fotokopi
+   - PRINT
+     *PRINT Biasa
+     *PRINT Warna
+   - Jilid
+
+  * Pengguna
+    * Anggota Biasa
+    * Dinas
+    * Pribadi
+    * Anggota baca
+
 Pertanyaan Apakah Setiap user yang login harus sesui dia ditempakan dimana?
 yang perlu di uji coba
 1. Kesesuian lokasi penginputan
