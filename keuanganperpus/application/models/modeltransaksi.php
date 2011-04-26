@@ -10,6 +10,38 @@ class modeltransaksi extends CI_Model {
         parent::__construct();
     }
 
+ //***************Update 26 April 2011 *************
+  function getSQLDasarRekap($xBulan,$tahun) {
+     return "  Select trx.idx, trx.idplu,tanggal,day(tanggal) hari,jumlahsatuan,nominalpersatuan,
+                (select JenisPengguna from jenipengguna as jnsp Where jnsp.idx=plu.idjnspengguna limit 1) as pengg,plu.idjnspengguna,
+                (Select jenistransaksi from jenistransaksi  where  jenistransaksi.idx = trx.idjenistransaksi) jnstrx,
+                (Select Status from statusplu  where  statusplu.idx = plu.idstatusPLU) statusPLU,plu.idstatusPLU ,
+                idpegawai,idunitkerja,trx.idjenistransaksi,idlokasi
+                from transaksi as trx
+                left join produkplu as plu on(trx.idplu=plu.KodePLU) where month(tanggal)='".$xBulan."' and year(tanggal)='".$tahun.
+                "'  order by tanggal ASC, trx.idjenistransaksi DESC ";
+    
+    }
+
+   function getRekapAll($xBulan,$tahun){
+      $query = $this->db->query(' Select *, sum(jumlahsatuan*nominalpersatuan) jumlah from ('.$this->getSQLDasarRekap($xBulan, $tahun).') as tb1 group by tanggal,idjenistransaksi,idstatusPLU ');
+      return  $query;
+   }
+
+   function getRekapTransaksiStatus($xBulan,$tahun,$jnstransaksi,$statusplu=''){
+      $xWhere  = "WHERE idjenistransaksi = '".$jnstransaksi."'";
+      if(!empty ($statusplu)){
+          $xWhere  .=" And  idstatusPLU = '".$statusplu."'";
+      }
+
+      $query = $this->db->query(' Select *, sum(jumlahsatuan*nominalpersatuan) jumlah from ('.$this->getSQLDasarRekap($xBulan, $tahun).') as tb1 '.$xWhere.' group by tanggal,idjenistransaksi,idstatusPLU ');
+      return  $query;
+   }
+
+   function getlistcombounitkerjaofthemonth($xBulan,$tahun,$idlokasi){
+      $query = $this->db->query(' Select *, sum(jumlahsatuan*nominalpersatuan) jumlah from ('.$this->getSQLDasarRekap($xBulan, $tahun).') Where idlokasi ="'.$idlokasi.'" and idjnspengguna = "2" as tb1 group by tanggal,idjenistransaksi,idstatusPLU ');
+     return  $query;
+   }
 //****************update 28 maret 2011**********
     function getSQLDasar($xBulan,$tahun) {
         return "(Select trx.idx, trx.idplu,plu.idjnspengguna,tanggal,day(tanggal) hari,jumlahsatuan,nominalpersatuan,plu.idstatusPLU ,
@@ -212,7 +244,7 @@ class modeltransaksi extends CI_Model {
         $xStr = " INSERT INTO transaksi( " .
                 "idx," .
                 "idplu," .
-                "idjenistransaksi,idgrouppengguna," .
+                "idjenistransaksi," .
                 "idpegawai," .
                 "idunitkerja," .
                 "idstatusdinas," .
