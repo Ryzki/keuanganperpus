@@ -60,7 +60,7 @@ class ctrsetoran extends CI_Controller {
 
 
 
-                            $("#stylized input#edtanggal" ).datepicker({ dateFormat: \'yy-mm-dd\'});
+                         $("#stylized input#edtanggal" ).datepicker({ dateFormat: \'yy-mm-dd\'});
                         $("#stylized input#edtanggal" ).val(yy+"-"+strpad(mm+1)+"-"+strpad(dd));
 
 
