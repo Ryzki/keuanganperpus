@@ -37,20 +37,25 @@ class ctrlaprekapfcdendaab extends CI_Controller {
                 '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/autoNumeric.js"></script>' .
                 '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/ui/jquery.ui.datepicker.js"></script>' .
                 '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/ajax/thickbox.js"></script>'.
-                '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/ajax/ajaxfotokopibulan.js"></script>';
-
-        echo $this->modelgetmenu->SetViewPerpus($xForm . $this->setDetailFormReport($xidx), $this->getReport('4','2011'), '', $xAddJs, '');
+                '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/ajax/ajaxfotokopibulan.js"></script>'.
+                '<script language="javascript" type="text/javascript">
+                    setawalrekapfotokopiperbulan();
+                 </script>   ';
+        //'<div id="tablereport" name ="tablereport"> </div>'     $this->getReport('4','2011')
+        echo $this->modelgetmenu->SetViewPerpus($xForm . $this->setDetailFormReport($xidx), '<div id="tablereport" name ="tablereport"> </div>' , '', $xAddJs, '');
     }
 
     function setDetailFormReport($xidx) {
         $this->load->helper('form');
         $this->load->helper('common');
         //$this->load->model('modeljenisanggotabaca');
+        $this->load->model('modellokasi');
         $xStrTahun = $this->session->userdata('tanggal');
 
-        $xBufResult = setForm('edBulan', 'Bulan', form_dropdown('edBulan', getArrayBulan(),'0','id="edBulan" width="150px"')) . '<div class="spacer"></div>';
+        $xBufResult = setForm('edBulan', 'Bulan', form_dropdown('edBulan', getArrayBulan(),'0','id="edBulan" width="150px"')) ;
         $xBufResult .= setForm('edTahun', 'Tahun', form_input(getArrayObj('edTahun',  substr($xStrTahun, 0, 4), '100'))) . '<div class="spacer"></div>';
-        $xBufResult .= '<div class="garis"></div>' . form_button('btSimpan', 'Tampil Data', 'alt="#tablereport?height=300&width=400&inlineId=myOnPageContent" title="add a caption to title attribute / or leave blank" class="thickbox" type="button" value="Show"   onclick="dotampillaporanrekap();"') . form_button('btNew', 'new', 'onclick="doClear();"') . '<div class="spacer"></div>';
+        //$xBufResult .= setForm('edidlokasi', 'Lokasi', form_dropdown('edidlokasi', $this->modellokasi->getArrayListlokasi(), '0', 'id="edidlokasi" width="150px"')) . '<div class="spacer"></div>';
+        $xBufResult .= '<div class="garis"></div>' . form_button('btSimpan', 'Tampil Data', 'onclick="dotampillaporanrekap(false);"') . form_button('btNew', 'Export Ke Excel', 'onclick="dotampillaporanrekap(true);"') . '<div class="spacer"></div>';
         return $xBufResult;
     }
 

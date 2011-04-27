@@ -114,7 +114,9 @@ function setAjaxLogin(){
     $this->load->model('modelgetmenu');
     $xUser = $this->session->userdata('nama');
     if(!empty ($xUser)){
-       echo $this->modelgetmenu->SetViewPerpus('$xBufResult','','','');
+       //echo $xUser.$this->session->userdata('idpegawai');
+       echo $this->modelgetmenu->SetViewPerpus('','','','');
+       // $this->createformlogin();
     } else
     {
         $this->createformlogin();
@@ -137,6 +139,7 @@ function setAjaxLogin(){
         //$this->session->sess_destroy();
         $this->load->model('modelgetmenu');
         $this->load->model('modelmenu');
+        $this->load->model('modellokasi');
         $xBufResult = '';
 
 
@@ -146,6 +149,7 @@ function setAjaxLogin(){
         //$xForm .= '<textarea name="content" type="hiden" id="edisi" class="tinymce"></textarea>';
         $xForm .= setForm('edUser', 'User', form_input(getArrayObj('edUser','', '100'))) . '<div class="spacer"></div>';
         $xForm .= setForm('edPassword', 'Password', form_password(getArrayObj('edPassword','', '100'))) . '<div class="spacer"></div>';
+        $xForm  .= setForm('edidlokasi', 'Lokasi', form_dropdown('edidlokasi', $this->modellokasi->getArrayListlokasi(), '0', 'id="edidlokasi" width="150px"')) . '<div class="spacer"></div>';
         $xForm .= '<div class="garis"></div>'.form_button('btLogin', 'login', 'onclick="dologin();"') . form_button('btCancel', 'Cancel', 'onclick="doClearLogin();"') . '<div class="spacer"></div>';
 
 
@@ -169,6 +173,7 @@ function setAjaxLogin(){
      function dologin() {
         $edUser = $_POST['edUser'];
         $edPassword = $_POST['edPassword'];
+        $edidlokasi = $_POST['edidlokasi'];
         $this->load->model('modelpegawai');
         $rowuser = $this->modelpegawai->getDataLogin($edUser,$edPassword);
         $this->json_data['data'] = false;
@@ -177,7 +182,7 @@ function setAjaxLogin(){
             $this->session->set_userdata('user', $rowuser->user);
             $this->session->set_userdata('idpegawai', $rowuser->idx);
             $this->session->set_userdata('nama', $rowuser->Nama);
-            $this->session->set_userdata('idlokasi', $rowuser->idLokasi);
+            $this->session->set_userdata('idlokasi', $edidlokasi);
             $this->session->set_userdata('tanggal', $rowuser->tanggal);
 
 

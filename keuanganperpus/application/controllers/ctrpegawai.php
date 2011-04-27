@@ -71,7 +71,7 @@ class ctrpegawai extends CI_Controller {
         $xBufResult .= setForm('edidUnitKerja', 'Unit Kerja', form_dropdown('edidUnitKerja', $this->modelunitkerja->getArrayListunitkerja(),'0','id="edidUnitKerja" width="150px"')) . '<div class="spacer"></div>';
         $xBufResult .= setForm('edNoTelpon', 'No Telpon', form_input(getArrayObj('edNoTelpon', $xNoTelpon, '125'))) . '<div class="spacer"></div>';
         $xBufResult .= setForm('eduser', 'User Sistem', form_input(getArrayObj('eduser', $xuser, '100'))) . '<div class="spacer"></div>';
-        $xBufResult .= setForm('edpassword', 'Password', form_input(getArrayObj('edpassword', $xpassword, '100'))) . '<div class="spacer"></div>';
+        $xBufResult .= setForm('edpassword', 'Password', form_password(getArrayObj('edpassword', $xpassword, '100'))) . '<div class="spacer"></div>';
         $xBufResult .= setForm('edidLokasi', 'Lokasi', form_dropdown('edidLokasi', $this->modellokasi->getArrayListlokasi(),'0','id="edidLokasi" width="150px"')) . '<div class="spacer"></div>';
         $xBufResult .= '<div class="garis"></div>' . form_button('btSimpan', 'simpan', 'onclick="dosimpan();"') . form_button('btNew', 'new', 'onclick="doClear();"') . '<div class="spacer"></div>';
         return $xBufResult;
