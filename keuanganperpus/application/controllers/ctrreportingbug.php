@@ -199,5 +199,18 @@ function search(){
   { 
     $xStr =  $this->modelreportingbug->setInsertreportingbug($xidx,$xlokasi,$xketerangan,$xtanggapan,$xiduser,$xtanggal,$xjam,$xtanggaltanggapan,$xjamtanggapan); 
   } 
- } }
+ }
+
+ function  simpansmall(){
+   $this->load->helper('json'); 
+        $xlokasi = $_POST['edlokasi'];
+        $xketerangan = $_POST['edketerangan'];
+        $this->load->model('modelreportingbug');
+       $xStr= $this->modelreportingbug->setInsertreportingbugsmall(addslashes($xlokasi), addslashes($xketerangan));
+ 
+ $this->json_data['data'] = $xStr;
+ echo json_encode($this->json_data);
+
+ }
+ }
 ?>
