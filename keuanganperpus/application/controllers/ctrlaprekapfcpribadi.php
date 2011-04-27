@@ -4,7 +4,7 @@ if (!defined('BASEPATH'))
     exit('Tidak Diperkenankan mengakses langsung');
 /* Class  Control : anggotabaca  * di Buat oleh Diar PHP Generator * Update List untuk grid karena program generatorku lom sempurna ya hehehehehe */
 
-class ctrlaprekapfcdinas extends CI_Controller {
+class ctrlaprekapfcpribadi extends CI_Controller {
     
     function __construct() {
         parent::__construct();
@@ -28,7 +28,7 @@ class ctrlaprekapfcdinas extends CI_Controller {
         $this->load->model('modelhargajenistransaksi');
         $row = $this->modelhargajenistransaksi->getDetailhargaIdJnsTransaksi('2');
         $xHarga = number_format($row->biaya, 0, '.', ',');
-        $xForm = '<div id="stylized" class="myform"><h3>Rekapitulasi Penggunan Fotokopi,Print,Jilid Untuk Keperluan Dinas </h3>' . form_open_multipart('ctranggotabaca/inserttable', array('id' => 'form', 'name' => 'form')) . '<div class="garis"></div>';
+        $xForm = '<div id="stylized" class="myform"><h3>Rekapitulasi Penggunan Fotokopi,Print,Jilid Untuk Keperluan PRIBADI </h3>' . form_open_multipart('ctranggotabaca/inserttable', array('id' => 'form', 'name' => 'form')) . '<div class="garis"></div>';
         $xAddJs = link_tag('resource/js/themes/base/jquery.ui.all.css') .
                 '<link rel="stylesheet" href="' . base_url() . 'resource/css/thickbox.css" type="text/css" media="screen" />'.
                 '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/ajax/baseurl.js"></script>' .
@@ -40,7 +40,7 @@ class ctrlaprekapfcdinas extends CI_Controller {
                 '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/ajax/ajaxfotokopibulan.js"></script>
                  <script language="javascript" type="text/javascript">
 
-                    setawaldinas();
+                    setawalpribadi();
 
                  </script>   ';
 //'<div id="tablereport" name ="tablereport"> </div>'
@@ -57,11 +57,11 @@ class ctrlaprekapfcdinas extends CI_Controller {
 
         $xBufResult = setForm('edBulan', 'Bulan', form_dropdown('edBulan', getArrayBulan(),'0','id="edBulan" width="150px"')) . '<div class="spacer"></div>';
         $xBufResult .= setForm('edTahun', 'Tahun', form_input(getArrayObj('edTahun',  substr($xStrTahun, 0, 4), '100'))) . '<div class="spacer"></div>';
-        $xBufResult .= setForm('edidlokasi', 'Lokasi', form_dropdown('edidlokasi', $this->modellokasi->getArrayListlokasi(), '0', 'id="edidlokasi" width="150px" onchange="docblokasichange();"')) . '<div class="spacer"></div>';
-        $xBufResult .= setForm('edunitkerja', 'Unit Kerja', form_dropdown('edunitkerja', $this->modelunitkerja->getArrayListunitkerja(), '0', 'id="edunitkerja" width="150px" onchange="onCbJenisTransksiChange();"')) . '<div class="spacer"></div>';
+        $xBufResult .= setForm('edidlokasi', 'Lokasi', form_dropdown('edidlokasi', $this->modellokasi->getArrayListlokasi(), '0', 'id="edidlokasi" width="150px"')) . '<div class="spacer"></div>';
+        //$xBufResult .= setForm('edunitkerja', 'Unit Kerja', form_dropdown('edunitkerja', $this->modelunitkerja->getArrayListunitkerja(), '0', 'id="edunitkerja" width="150px" onchange="onCbJenisTransksiChange();"')) . '<div class="spacer"></div>';
         //$xBufResult .= setForm('edidstatusPLU', 'Status PLU', form_dropdown('edidstatusPLU', $this->modelstatusplu->getArrayListstatusplu(), '0', 'id="edidstatusPLU" width="150px"')) . '<div class="spacer"></div>';
         
-        $xBufResult .= '<div class="garis"></div>' . form_button('btSimpan', 'Tampil Data', 'onclick="dotampillaporanrekapdinas(false);"') . form_button('btNew', 'Export Ke Excel', 'onclick="dotampillaporanrekapdinas(true);"') . '<div class="spacer"></div>';
+        $xBufResult .= '<div class="garis"></div>' . form_button('btSimpan', 'Tampil Data', 'onclick="dotampillaporanrekappribadi(false);"') . form_button('btNew', 'Export Ke Excel', 'onclick="dotampillaporanrekappribadi(true);"') . '<div class="spacer"></div>';
         return $xBufResult;
     }
 
@@ -70,13 +70,13 @@ class ctrlaprekapfcdinas extends CI_Controller {
      $xBulan = $_POST['edbulan'];
      $xTahun = $_POST['edtahun'];
      $edidlokasi = $_POST['edidlokasi'];
-     $edunitkerja = $_POST['edunitkerja'];
-     $this->json_data['data'] =$this->getReport($xBulan,$xTahun,$edidlokasi,$edunitkerja);
+     
+     $this->json_data['data'] =$this->getReport($xBulan,$xTahun,$edidlokasi);
     // $this->json_data['data'] = "coba";
      echo json_encode($this->json_data);
     }
 
-    function  setcombounitkerja(){
+/*    function  setcombounitkerja(){
      $this->load->helper('json');
      $xBulan = $_POST['edbulan'];
      $xTahun = $_POST['edtahun'];
@@ -97,13 +97,13 @@ class ctrlaprekapfcdinas extends CI_Controller {
      //$this->json_data['data'] = $xQuery;
       echo json_encode($this->json_data);
     }
-    
-    function getReport($xBulan,$tahun,$edidlokasi,$edunitkerja) {
+  */
+    function getReport($xBulan,$tahun,$edidlokasi) {
         //$xIdEdit = $_POST['edidx'];
         $this->load->helper('form');
         $this->load->helper('common');
 
-        $arrayrow = $this->getrow($xBulan,$tahun,$edidlokasi,$edunitkerja);
+        $arrayrow = $this->getrow($xBulan,$tahun,$edidlokasi);
         $xBufresult ='<table>';
         for($i=0;$i<count($arrayrow);$i++){
             $xBufresult .= '<tr>'. $arrayrow[$i].'</tr>';
@@ -114,26 +114,26 @@ class ctrlaprekapfcdinas extends CI_Controller {
         $lokasi = $this->session->userdata('idlokasi');
         $this->load->model('modellokasi');
         $rowlokasi = $this->modellokasi->getDetaillokasi($edidlokasi);
-        $this->load->model('modelunitkerja');
-        $rowunitkerja = $this->modelunitkerja->getDetailunitkerja($edunitkerja);
+//        $this->load->model('modelunitkerja');
+//        $rowunitkerja = $this->modelunitkerja->getDetailunitkerja($edunitkerja);
 
-        $judul = "PERPUSTAKAAN UNIVERSITAS SANATA DHARMA <br />".
-                 "LAPORAN KEUANGAN FOTO KOPI DAN PRINT <br />".
-                 "KEPERLUAN DINAS <br />".
-                 "BULAN ".$nmbulan." ".$tahun."<br />".
-                 "POS : ".$rowunitkerja->NmUnitKerja;
+        $judul = "LAPORAN KEUANGAN FOTO KOPI DAN PRINT <br />".
+                 "KEPERLUAN PRIBADI DAN POTONG GAJI <br />".
+                 "DI PERPUSTAKAAN USD ".$rowlokasi->NmLokasi."<br />".
+                 "BULAN ".$nmbulan." ".$tahun."<br />";
+                 //"POS : ".$rowunitkerja->NmUnitKerja;
         return '<div id="tablereport" name ="tablereport" class="tablereport" style="width:700px;" align="center"><h3>'.$judul.' </h3>' . $xBufresult . '</div>';
     }
 
-    function getvalcellfromdatabase($xidplu,$xtanggal,$xBulan,$tahun,$edidlokasi,$edunitkerja){
+    function getvalcellfromdatabase($xidplu,$xtanggal,$xBulan,$tahun,$edidlokasi){
         //digunakan untukmenent
         $this->load->model('modeltransaksi');
 
-       return $this->modeltransaksi->getlembarsumrekap($xidplu,$xtanggal,$xBulan,$tahun,$edidlokasi,$edunitkerja);
+       return $this->modeltransaksi->getlembarsumrekappribadi($xidplu,$xtanggal,$xBulan,$tahun,$edidlokasi);
     }
 
 
-    function addkolom($xarraydata,$xidplu,$xarrayhari,$xBulan,$xArrayTotalStatus,$xArrayTotal,$tahun,$edidlokasi,$edunitkerja){
+    function addkolom($xarraydata,$xidplu,$xarrayhari,$xBulan,$xArrayTotalStatus,$xArrayTotal,$tahun,$edidlokasi){
       //digunakan untukmenentukan tanggal
       //Tambahakan Nilai I untuk rowHeader
       /*$xBufArray[0] = '';
@@ -145,7 +145,7 @@ class ctrlaprekapfcdinas extends CI_Controller {
         $xJmlLembar = 0;
         
         for($i=0;$i<count($xarrayhari);$i++){
-           $lembar =  $this->getvalcellfromdatabase($xidplu, $xarrayhari[$i],$xBulan,$tahun,$edidlokasi,$edunitkerja);
+           $lembar =  $this->getvalcellfromdatabase($xidplu, $xarrayhari[$i],$xBulan,$tahun,$edidlokasi);
            //$this->arrayTotalFC[$i] +=  $lembar;
            
            
@@ -191,7 +191,7 @@ class ctrlaprekapfcdinas extends CI_Controller {
     }
 
 
-    function getrow($xbulan,$tahun,$edidlokasi,$edunitkerja){
+    function getrow($xbulan,$tahun,$edidlokasi){
         //Prepare data untuk membuat reporttable
         /*
        *
@@ -205,15 +205,17 @@ class ctrlaprekapfcdinas extends CI_Controller {
              $xArrayTotalJilid[0] = "Jumlah";
              
        $this->load->model('modeltransaksi');
-       $xQuery = $this->modeltransaksi->getarrayharirekapdinas($xbulan,$tahun,$edidlokasi,$edunitkerja);
-       $arrayrow[0] = '<td>Tgl</td><td>Nama Pengguna</td><td>Pos Rekening</td>';
+       $xQuery = $this->modeltransaksi->getarraypribadi($xbulan,$tahun,$edidlokasi);
+       $arrayrow[0] = '<td>Nama Pengguna</td><td>NPP</td>';
        $i=1;
       $xarrayhari[0]=0;
        if(!empty($xQuery) ){
            foreach($xQuery->result() as $row){
+             $this->load->model('modelpegawai');
+             $rowpeg = $this->modelpegawai->getDetailpegawai($row->idpegawai);
              //echo "Test".$ArrayHari[$i]; hari,idpegawai,idunitkerja $this->modeltransaksi->getnamapegawairekapdinas($xBulan,$tahun,$edidlokasi,$edunitkerja,$hari)
-             $arrayrow[$i]= '<td>'.$row->hari.'</td><td>'.$this->modeltransaksi->getnamapegawairekapdinas($xbulan,$tahun,$edidlokasi,$edunitkerja,$row->hari).'</td><td>'.$row->idunitkerja.'</td>';
-             $xarrayhari[$i]=$row->hari;
+             $arrayrow[$i]= '<td>'.$rowpeg->Nama.'</td><td>'.$rowpeg->npp.'</td>';
+             $xarrayhari[$i]=$row->idpegawai;
              $xArrayTotal[$i] = 0;
              $xArrayTotalFC[$i] = 0;
              $xArrayTotalPrintColor[$i] = 0;
@@ -229,14 +231,14 @@ class ctrlaprekapfcdinas extends CI_Controller {
              $xArrayTotalPrintColor[$i] = "Jumlah";
              $xArrayTotalPrintBiasa[$i] = "Jumlah";
              $xArrayTotalJilid[$i] = "Jumlah";
-       $arrayrow[$i]= '<td></td><td></td><td>Jumlah</td>';
+       $arrayrow[$i]= '<td></td><td>Jumlah</td>';
        $xarrayhari[$i]=0;
        
-       $xarrayFC = $this->modeltransaksi->getarraystatusplurekapdinas($xbulan,"1",$tahun,$edidlokasi,$edunitkerja);
+       $xarrayFC = $this->modeltransaksi->getarraystatusplurekappribadi($xbulan,"1",$tahun,$edidlokasi);
 
        if(!empty($xarrayFC) ){
          for($i=0;$i<count($xarrayFC);$i++){
-            $xBufarrayrow = $this->addkolom($arrayrow, $xarrayFC[$i],$xarrayhari ,$xbulan,$xArrayTotalFC,$xArrayTotal,$tahun,$edidlokasi,$edunitkerja);
+            $xBufarrayrow = $this->addkolom($arrayrow, $xarrayFC[$i],$xarrayhari ,$xbulan,$xArrayTotalFC,$xArrayTotal,$tahun,$edidlokasi);
             $arrayrow = $xBufarrayrow[0];
             $xArrayTotalFC = $xBufarrayrow[1];
             $xArrayTotal = $xBufarrayrow[2];
@@ -249,7 +251,7 @@ class ctrlaprekapfcdinas extends CI_Controller {
         $arrayrow = $this->addTotal($arrayrow, $xarrayhari, $xArrayTotalFC);
 
        /****** Print *///
-       $xarrayFC = $this->modeltransaksi->getarraystatusplurekapdinas($xbulan,"3",$tahun,$edidlokasi,$edunitkerja);
+       $xarrayFC = $this->modeltransaksi->getarraystatusplurekappribadi($xbulan,"3",$tahun,$edidlokasi);
 
        if(!empty($xarrayFC) ){
          for($i=0;$i<count($xarrayFC);$i++){
@@ -264,7 +266,7 @@ class ctrlaprekapfcdinas extends CI_Controller {
        if($xArrayTotalPrintBiasa!=null)
        $arrayrow = $this->addTotal($arrayrow, $xarrayhari, $xArrayTotalPrintBiasa);
 
-       $xarrayFC = $this->modeltransaksi->getarraystatusplurekapdinas($xbulan,"2",$tahun,$edidlokasi,$edunitkerja);
+       $xarrayFC = $this->modeltransaksi->getarraystatusplurekappribadi($xbulan,"2",$tahun,$edidlokasi);
        if(!empty($xarrayFC) ){
          for($i=0;$i<count($xarrayFC);$i++){
             $xBufarrayrow = $this->addkolom($arrayrow, $xarrayFC[$i],$xarrayhari ,$xbulan,$xArrayTotalPrintColor,$xArrayTotal,$tahun,$edidlokasi,$edunitkerja);
@@ -280,11 +282,11 @@ class ctrlaprekapfcdinas extends CI_Controller {
        $arrayrow = $this->addTotal($arrayrow, $xarrayhari, $xArrayTotalPrintColor);
 
        //******************** Jilid
-       $xarrayFC = $this->modeltransaksi->getarraystatusplurekapdinas($xbulan,"4",$tahun,$edidlokasi,$edunitkerja);
+       $xarrayFC = $this->modeltransaksi->getarraystatusplurekappribadi($xbulan,"4",$tahun,$edidlokasi);
 
        if(!empty($xarrayFC) ){
          for($i=0;$i<count($xarrayFC);$i++){
-            $xBufarrayrow = $this->addkolom($arrayrow, $xarrayFC[$i],$xarrayhari ,$xbulan,$xArrayTotalJilid,$xArrayTotal,$tahun,$edidlokasi,$edunitkerja);
+            $xBufarrayrow = $this->addkolom($arrayrow, $xarrayFC[$i],$xarrayhari ,$xbulan,$xArrayTotalJilid,$xArrayTotal,$tahun,$edidlokasi);
             $arrayrow = $xBufarrayrow[0];
             $xArrayTotalJilid = $xBufarrayrow[1];
             $xArrayTotal = $xBufarrayrow[2];

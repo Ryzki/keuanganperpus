@@ -101,7 +101,7 @@ class ctrprodukplu extends CI_Controller {
     }
 
     function getlistprodukplu($xAwal, $xSearch) {
-        $xLimit = 3;
+        $xLimit = 5;
         $this->load->helper('form');
         $this->load->helper('common');
         $xbufResult = addRow(addCell('idx', 'width:100px;', true) .

@@ -80,7 +80,7 @@ class ctrlapfotokopibulan extends CI_Controller {
         $rowlokasi = $this->modellokasi->getDetaillokasi($lokasi);
 
         $judul = "LAPORAN KEUANGAN FOTOKOPI,PRINT DAN JILID HARIAN ".$rowlokasi->NmLokasi.'<br />'.
-                 "PERPUSTAKAAN UNIVERSITAS SANTA DHARMA <br />".
+                 "PERPUSTAKAAN UNIVERSITAS SANATA DHARMA <br />".
                  "BULAN ".$nmbulan." ".$tahun;
         return '<div id="tablereport" name ="tablereport" class="tablereport" style="width:700px;" align="center"><h3>'.$judul.' </h3>' . $xBufresult . '</div>';
     }

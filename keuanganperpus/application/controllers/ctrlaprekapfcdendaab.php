@@ -79,7 +79,7 @@ class ctrlaprekapfcdendaab extends CI_Controller {
         $this->load->model('modellokasi');
         $rowlokasi = $this->modellokasi->getDetaillokasi($lokasi);
 
-        $judul = "PERPUSTAKAAN UNIVERSITAS SANTA DHARMA <br />".
+        $judul = "PERPUSTAKAAN UNIVERSITAS SANATA DHARMA <br />".
                  "DATA PEMASUKKAN : FOTOKOPI,PRINT,DENDA, DAN ANGGOTA BACA <br />".
                  "BULAN ".$nmbulan." ".$tahun;
         return '<div id="tablereport" name ="tablereport" class="tablereport" style="width:700px;" align="center"><h3>'.$judul.' </h3>' . $xBufresult . '</div>';

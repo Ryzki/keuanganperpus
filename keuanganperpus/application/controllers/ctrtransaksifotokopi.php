@@ -28,7 +28,7 @@ class ctrtransaksifotokopi extends CI_Controller {
                   '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/autoNumeric.js"></script>' .
                   '<script  type=text/javascript>
                             $(function() {
-                             $("#stylized input#edjumlahsatuan").autoNumeric();
+                            // $("#stylized input#edjumlahsatuan").autoNumeric();
                              //$("#edjumlahsatuan").autoNumeric();
                              });
                         </script>';

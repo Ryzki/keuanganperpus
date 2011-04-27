@@ -99,7 +99,7 @@ class ctrlaprekapfcdendaabdetail extends CI_Controller {
              $Judul = $rowjudul->jenistransaksi;
         }
 
-        $judul = "PERPUSTAKAAN UNIVERSITAS SANTA DHARMA <br />".
+        $judul = "PERPUSTAKAAN UNIVERSITAS SANATA DHARMA <br />".
                  "DATA PEMASUKKAN : ".$Judul." <br />".
                  "BULAN ".$nmbulan." ".$tahun;
         return '<div id="tablereport" name ="tablereport" class="tablereport" style="width:700px;" align="center"><h3>'.$judul.' </h3>' . $xBufresult . '</div>';
