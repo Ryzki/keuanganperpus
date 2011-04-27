@@ -9,6 +9,61 @@ class modelrealisasirab extends CI_Model {
     function __construct() {
         parent::__construct();
     }
+   /****** update tanggal 27 April 2011 */
+   function getlistrealisasirabreport($xbulan,$tahun,$idrab){
+           $xStr = "SELECT " .
+                "idx," .
+                "tanggal," .
+                "jam," .
+                "idrab,(Select JudulRAB from rab Where rab.idx = realisasirab.idrab) as JudulRAB," .
+                "keterangan," .
+                "nominal," .
+                "iduser," .
+                "idthnanggaran,(Select TahunAnggaran from tahunanggaran where tahunanggaran.idx=realisasirab.idthnanggaran) as TahunAnggaran" .
+                " FROM realisasirab  WHERE month(tanggal) = '" . $xbulan . "' and idthnanggaran = '".$tahun."' and idrab = '".$idrab."'";
+
+        $query = $this->db->query($xStr);
+        
+        return $query;
+   }
+
+   function getrealisasibulan($xbulan,$tahun,$idrab){
+           $xStr = "SELECT " .
+                "idx," .
+                "tanggal," .
+                "jam," .
+                "idrab,(Select JudulRAB from rab Where rab.idx = realisasirab.idrab) as JudulRAB," .
+                "keterangan," .
+                "sum(nominal) nominal," .
+                "iduser," .
+                "idthnanggaran,(Select TahunAnggaran from tahunanggaran where tahunanggaran.idx=realisasirab.idthnanggaran) as TahunAnggaran" .
+                " FROM realisasirab  WHERE month(tanggal) = '" . $xbulan . "' and idthnanggaran = '".$tahun."' and idrab = '".$idrab."' group by idrab";
+
+        $query = $this->db->query($xStr);
+        $row = $query->row();
+        return $row;
+   }
+
+function getrealisasisampaibulan($xbulan,$tahun,$idrab){
+           $xStr = "SELECT " .
+                "idx," .
+                "tanggal," .
+                "jam," .
+                "idrab,(Select JudulRAB from rab Where rab.idx = realisasirab.idrab) as JudulRAB," .
+                "keterangan," .
+                "SUM(nominal) as nominal," .
+                "iduser," .
+                "idthnanggaran,(Select TahunAnggaran from tahunanggaran where tahunanggaran.idx=realisasirab.idthnanggaran) as TahunAnggaran" .
+                " FROM realisasirab  WHERE month(tanggal) <= '" . $xbulan . "' and idthnanggaran = '".$tahun."' and idrab = '".$idrab."' group by idrab";
+
+        $query = $this->db->query($xStr);
+        
+
+        $row = $query->row();
+        return $row;
+   }
+
+   /*endd   */
 
     function getArrayListrealisasirab() { /* spertinya perlu lock table */
         $xBuffResul = array();

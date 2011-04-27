@@ -11,6 +11,20 @@ class modelsetoran extends CI_Model {
     }
 
  //***************Update 26 April 2011 *************
+
+    function getlistSetoranBulan($xbulan,$xtahun,$xidrekanan){
+       $xWhere =" WHERE month(tanggal)= '".$xbulan."' and year(tanggal) = '".$xtahun."' and idrekanan = '".$xidrekanan."'";
+
+        $xStr = "SELECT " .
+                "idx," .
+                "tanggal," .
+                "idrekanan, (Select NamaRekanan from rekanan where  rekanan.idx  = setoran.idrekanan) as NamaRekanan," .
+                "nominal,idstatusplu " .
+                " FROM setoran ".$xWhere."  group by idrekanan order by idx ASC ";
+         $query = $this->db->query($xStr);
+         return $query;
+    }
+
     function getSumSetoranBulan($xbulan,$xtahun,$idstatusplu=''){
        $xWhere =" WHERE month(tanggal)= '".$xbulan."' and year(tanggal) = '".$xtahun."' ";
        if(!empty ($idstatusplu))

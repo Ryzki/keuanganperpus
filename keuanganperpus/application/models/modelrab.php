@@ -10,6 +10,9 @@ class modelrab extends CI_Model {
         parent::__construct();
     }
 
+    /*Update 27 April 2011 ***************/
+
+
     /*     * **********edit  02 april 2011 ******** */
 
     function getDetailrabparent($xidparent) {
@@ -46,7 +49,7 @@ class modelrab extends CI_Model {
                 "idparent," .
                 "kodeRAB," .
                 "kodeRABUSD" .
-                " FROM rab  order by idx ASC ";
+                " FROM rab  order by kodeRAB ASC ";
         $query = $this->db->query($xStr);
         return $query;
     }
@@ -133,7 +136,7 @@ class modelrab extends CI_Model {
                 // $xRowUrl = 'ctrblueprint/index/'.$row->id;
                 //}
 
-                $xChild = $this->GetChild($this->getListForTree($row->idx));
+                $xChild = $this->GetChildforposting($this->getListForTree($row->idx));
                 if (!empty($xChild)) {
                     $xBufResult .= setlitree(site_url('#'), '<span class="folder" onclick="doeditposting(' . $row->idx . ');">' . $row->JudulRAB . '</span>', $xChild);
                 } else {
@@ -165,6 +168,39 @@ class modelrab extends CI_Model {
         return $xBufResult;
     }
 
+    function chforreport($xQuery) {
+        $xBufResult = "";
+        if (!empty($xQuery)) {
+            foreach ($xQuery->result() as $row) {
+                 $xChild = $this->chforreport($this->getListForTree($row->idx));
+                if (!empty($xChild)) {
+                    $xBufResult .= setlitree(site_url('#'), '<span class="folder" onclick="dosetcb(' . $row->idx . ');">' . $row->JudulRAB . '</span>', $xChild);
+                } else {
+                    $xBufResult .= setlitree(site_url('#'), '<span class="file" onclick="dosetcb(' . $row->idx . ');">' . $row->JudulRAB . '</span>', $xChild);
+              }
+
+            if (!empty($xBufResult))
+                $xBufResult = setul('', $xBufResult);
+        }
+        return $xBufResult;
+    }
+    }
+    
+    function gettreereport() {
+        $xBufResult = "";
+        $this->load->helper('menu');
+        $this->load->helper('url');
+        $xQuery = $this->getListForTree("");
+        foreach ($xQuery->result() as $row) {
+            $xChild = $this->chforreport($this->getListForTree($row->idx));
+            $xBufResult .= setlitree(site_url('#'), '<span class="folder" onclick="dosetcb(' . $row->idx . ');">' . $row->JudulRAB . '</span>', $xChild);
+            
+        }
+        
+        $xBufResult = setultree(' id="browser" class="filetree" ', $xBufResult);
+
+        return $xBufResult;
+    }
 
     function getArrayListrabnotarray() {
         //$xBuffResul = array();
@@ -278,6 +314,20 @@ class modelrab extends CI_Model {
                 "kodeRAB," .
                 "kodeRABUSD" .
                 " FROM rab  WHERE idx = '" . $xidx . "'";
+
+        $query = $this->db->query($xStr);
+        $row = $query->row();
+        return $row;
+    }
+
+    function getDetailrabbykode($xidx) {
+        $xStr = "SELECT " .
+                "idx," .
+                "JudulRAB," .
+                "idparent," .
+                "kodeRAB," .
+                "kodeRABUSD" .
+                " FROM rab  WHERE kodeRAB = '" . $xidx . "'";
 
         $query = $this->db->query($xStr);
         $row = $query->row();
