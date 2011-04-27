@@ -2,6 +2,8 @@ Kesepakatan Penyebutan Penamaan
 Contoh 
 Transaksi adalah ...
 
+
+
 Menggambatrakan Aplikasi Ini dibanngun dengan Codeiginiter-->Bahas pemrograman lain sesuai proposal
 
 Pengisian pengguna dan Jenis transaksi pada PLU  Datanya Hampir sama namun berbeda Sifat kegunaannya

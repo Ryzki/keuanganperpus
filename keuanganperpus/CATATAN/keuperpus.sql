@@ -27,9 +27,12 @@ CREATE TABLE `anggotabaca` (
   `tanggalgabung` date DEFAULT NULL,
   `biaya` int(15) DEFAULT NULL,
   PRIMARY KEY (`idx`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 /*Data for the table `anggotabaca` */
+
+insert into `anggotabaca` values 
+(1,'KTP.0998777','coba trx',1,'alamat','jogja','555432','02747474898','testemail',NULL,NULL);
 
 /*Table structure for table `bahasa` */
 
@@ -215,12 +218,9 @@ CREATE TABLE `jenistransaksi` (
 
 insert into `jenistransaksi` values 
 (1,'Denda Buku','N'),
-(2,'Anggota BACA','N'),
-(3,'Fotocopy Potonggaji','N'),
-(4,'Fotocopy Dinas','N'),
-(5,'Fotocopy','Y'),
-(6,'Print Warna','Y'),
-(7,'Print Biasa','Y');
+(2,'Anggota Baca','N'),
+(3,'Fotocopy','N'),
+(4,'Lainnya','Y');
 
 /*Table structure for table `komponen` */
 
@@ -297,7 +297,7 @@ CREATE TABLE `menu` (
   `parentmenu` int(10) DEFAULT NULL,
   `urlci` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`idmenu`)
-) ENGINE=MyISAM AUTO_INCREMENT=81 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=91 DEFAULT CHARSET=latin1;
 
 /*Data for the table `menu` */
 
@@ -322,7 +322,7 @@ insert into `menu` values
 (64,'Status PLU',1,2,0,13,'ctrstatusplu'),
 (66,'Rekanan',1,2,0,59,'ctrrekanan'),
 (67,'Denda Buku',1,2,0,0,''),
-(68,'Setting Priviledges',1,2,0,0,''),
+(68,'User Priviledges',1,2,0,0,''),
 (69,'Jenis Anggota Baca',1,2,0,13,'ctrjenisanggotabaca'),
 (70,'Isi Data Anggota Baca',1,2,0,12,'ctranggotabaca'),
 (71,'Laporan',1,2,0,0,''),
@@ -333,7 +333,17 @@ insert into `menu` values
 (76,'Tahun Anggran',1,2,0,11,'ctrtahunanggaran'),
 (77,'Posting Anggaran ',1,2,0,11,'ctrpostingrab'),
 (78,'Realisasi RAB',1,2,0,11,'ctrrealisasirab'),
-(79,'Denda',1,2,0,67,'ctrdenda');
+(79,'Denda',1,2,0,67,'ctrdenda'),
+(81,'RAB Priviledges',1,2,0,68,'ctruserrab'),
+(82,'Pembayaran ke Rekanan',1,2,0,1,'ctrsetoran'),
+(83,'Detail Fotokopi Perbulan',1,2,0,71,'ctrlapfotokopibulan'),
+(84,'Rekapitulasi Fotokopi,Anggota baca dan Denda Buku',1,2,0,71,'ctrlaprekapfcdendaab'),
+(85,'Detail Fotokopi,Anggota baca dan Denda Buku',1,2,0,71,'ctrlaprekapfcdendaabdetail'),
+(86,'Fotokopi,Print,Jilid Keperluan Dinas',1,2,0,71,'ctrlaprekapfcdinas'),
+(87,'Fotokopi,Print,Jilid Keperluan  Pribadi',1,2,0,71,'ctrlaprekapfcpribadi'),
+(88,'Laporan Realisasi RAB',1,2,0,71,'ctrlaprealisasirab'),
+(89,'Laporan Realisasi RAB Detail',1,2,0,71,'ctrlaprealisasirabdetail'),
+(90,'Laporan Setoran Kerekanan Perbulan',1,2,0,71,'ctrlapsetoran');
 
 /*Table structure for table `menuatasbawah` */
 
@@ -438,14 +448,18 @@ CREATE TABLE `produkplu` (
   `harga` int(15) DEFAULT NULL,
   `idjenistransaksi` int(10) DEFAULT NULL COMMENT 'untuk otomatisasi transaksi',
   PRIMARY KEY (`idx`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
 /*Data for the table `produkplu` */
 
 insert into `produkplu` values 
-(1,'001',1,'Copy A3','A3',1,1,10000,5),
+(1,'001',1,'Copy A3','A3',1,1,100,5),
 (2,'023',2,'Coba Dinas','A3',1,1,120,4),
-(3,'024',3,'coba Potong Gaji','A4',1,1,130,3);
+(3,'024',3,'coba Potong Gaji','A4',1,1,130,3),
+(4,'002',1,'Fotokopi Folio 70 ','FC 70 gram',1,1,125,5),
+(5,'017',1,'Print Laser A4 iR500','',3,1,150,3),
+(6,'018',1,'Print Collour A4 Full Colour','',4,1,1500,3),
+(7,'041',3,'Fotokopi KUARTO 70','KUARTO',1,1,120,3);
 
 /*Table structure for table `rab` */
 
@@ -458,7 +472,7 @@ CREATE TABLE `rab` (
   `kodeRAB` varchar(50) DEFAULT NULL,
   `kodeRABUSD` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`idx`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 
 /*Data for the table `rab` */
 
@@ -466,7 +480,13 @@ insert into `rab` values
 (1,'Eksploitasi',0,'001',''),
 (2,'Investasi',0,'002',''),
 (3,'Gaji',1,'001.001',''),
-(4,'Administrasi',1,'001.002','');
+(4,'Administrasi',1,'001.002',''),
+(5,'Rapat Kerja',1,'001.003','-'),
+(6,'Kegiatan Pengambangan',1,'001.004','-'),
+(7,'Biaya Perawatan',1,'001.005','-'),
+(8,'Lain-lain',1,'001.006','-'),
+(9,'Sarana Pendukung Kegiatan Rutin',2,'002.001','-'),
+(10,'Investasi Buku',8,'001.006.001','-');
 
 /*Table structure for table `realisasirab` */
 
@@ -482,12 +502,13 @@ CREATE TABLE `realisasirab` (
   `iduser` int(10) DEFAULT NULL,
   `idthnanggaran` int(10) DEFAULT NULL,
   PRIMARY KEY (`idx`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 /*Data for the table `realisasirab` */
 
 insert into `realisasirab` values 
-(1,'2011-04-07','15:25:06',4,'cobbaaa',20000,1,12);
+(1,'2011-04-07','15:25:06',4,'Pembelian Meja',20000,1,12),
+(2,'2011-04-26','22:03:23',4,'Pembelian Pensil',12000,1,12);
 
 /*Table structure for table `rekanan` */
 
@@ -508,22 +529,45 @@ CREATE TABLE `rekanan` (
 insert into `rekanan` values 
 (1,'Istana Fotokopi','','','Th.Anda Halim','');
 
+/*Table structure for table `reportingbug` */
+
+DROP TABLE IF EXISTS `reportingbug`;
+
+CREATE TABLE `reportingbug` (
+  `idx` int(10) NOT NULL AUTO_INCREMENT,
+  `lokasi` varchar(200) DEFAULT NULL,
+  `keterangan` text,
+  `tanggapan` text,
+  `iduser` int(10) DEFAULT NULL,
+  `tanggal` date DEFAULT NULL,
+  `jam` time DEFAULT NULL,
+  `tanggaltanggapan` date DEFAULT NULL,
+  `jamtanggapan` time DEFAULT NULL,
+  PRIMARY KEY (`idx`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+/*Data for the table `reportingbug` */
+
 /*Table structure for table `setoran` */
 
 DROP TABLE IF EXISTS `setoran`;
 
 CREATE TABLE `setoran` (
   `idx` int(10) NOT NULL AUTO_INCREMENT,
-  `BuktiSetoran` varchar(40) DEFAULT NULL,
+  `NoBuktiSetoran` varchar(40) DEFAULT NULL,
   `tanggal` date DEFAULT NULL,
   `idrekanan` int(10) DEFAULT NULL,
   `nominal` int(15) DEFAULT NULL,
   `idstatusplu` int(10) DEFAULT NULL,
   `iduser` int(10) DEFAULT NULL,
+  `idlokasi` int(10) DEFAULT NULL,
   PRIMARY KEY (`idx`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 /*Data for the table `setoran` */
+
+insert into `setoran` values 
+(1,'1234','2011-04-26',1,10000,1,1,2);
 
 /*Table structure for table `statusplu` */
 
@@ -533,14 +577,15 @@ CREATE TABLE `statusplu` (
   `idx` int(10) NOT NULL AUTO_INCREMENT,
   `Status` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`idx`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 /*Data for the table `statusplu` */
 
 insert into `statusplu` values 
-(1,'Fotokopi'),
+(1,'Fotocopy'),
 (2,'Jilid'),
-(3,'Print');
+(3,'Print Biasa'),
+(4,'Print Warna');
 
 /*Table structure for table `tahunanggaran` */
 
@@ -583,6 +628,8 @@ CREATE TABLE `transaksi` (
   `idx` int(10) NOT NULL AUTO_INCREMENT,
   `idplu` varchar(20) DEFAULT NULL,
   `idjenistransaksi` int(10) DEFAULT NULL,
+  `idstatusplu` int(10) DEFAULT NULL,
+  `idgrouppengguna` int(10) DEFAULT NULL,
   `idpegawai` int(10) DEFAULT NULL,
   `idunitkerja` int(10) DEFAULT NULL,
   `idstatusdinas` int(10) DEFAULT NULL,
@@ -594,18 +641,39 @@ CREATE TABLE `transaksi` (
   `iduser` int(10) DEFAULT NULL,
   `nominaldenda` int(10) DEFAULT NULL,
   `iddendasparta` varchar(30) DEFAULT NULL,
+  `NIM` varchar(20) DEFAULT NULL,
   `idlokasi` int(10) DEFAULT NULL,
   PRIMARY KEY (`idx`)
-) ENGINE=MyISAM AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=43 DEFAULT CHARSET=latin1;
 
 /*Data for the table `transaksi` */
 
 insert into `transaksi` values 
-(12,'1',5,0,0,0,'2011-04-02','18:17:48',2,10000,20000,1,0,'undefined',2),
-(13,'23',4,0,0,0,'2011-04-02','19:27:14',3,120,360,1,0,'undefined',2),
-(14,'023',4,0,0,0,'2011-04-05','09:38:51',1,120,120,1,0,'undefined',2),
-(15,'023',4,0,0,0,'2011-04-06','05:26:36',10,120,1200,1,0,'undefined',2),
-(16,'023',4,0,0,0,'2011-04-06','05:52:44',10,120,1200,1,0,'undefined',2);
+(32,'001',3,1,1,0,0,1,'2011-04-19','10:44:46',10,100,1000,1,0,'undefined',NULL,2),
+(14,'023',3,NULL,NULL,0,0,0,'2011-04-05','09:38:51',1,120,120,1,0,'undefined',NULL,2),
+(15,'023',3,NULL,NULL,0,0,0,'2011-04-06','05:26:36',10,120,1200,1,0,'undefined',NULL,2),
+(16,'023',3,NULL,NULL,0,0,0,'2011-04-06','05:52:44',10,120,1200,1,0,'undefined',NULL,2),
+(17,'0',1,NULL,NULL,81234,0,0,'2011-04-14','10:59:47',1,0,0,1,0,'',NULL,2),
+(18,'0',1,NULL,NULL,0,0,0,'2011-04-14','23:05:41',1,0,0,1,0,'','0927272',2),
+(19,'0',1,NULL,NULL,0,0,0,'2011-04-14','23:23:37',1,12,12323,1,23213,'','21323',2),
+(20,'02747474',1,NULL,NULL,0,0,0,'2011-04-15','00:08:11',1,2,2323,1,2323,'',NULL,2),
+(21,'02382382',1,NULL,NULL,0,0,0,'2011-04-15','00:09:29',1,12,12323,1,213213,'',NULL,2),
+(22,'0865544',1,NULL,NULL,0,0,0,'2011-04-15','00:12:06',1,1212,1212,1,1212,'',NULL,2),
+(31,'023',3,1,2,1,1,2,'2011-04-19','05:44:26',2,120,240,1,0,'undefined',NULL,2),
+(24,'002',3,1,2,0,0,0,'2011-04-15','02:58:47',10,125,1250,1,0,'undefined',NULL,2),
+(25,'002',3,1,1,0,0,0,'2011-04-15','03:04:00',10,125,1250,1,0,'undefined',NULL,2),
+(26,'023',3,1,2,0,0,0,'2011-04-15','03:05:32',10,120,1200,1,0,'undefined',NULL,2),
+(27,'023',3,1,2,0,0,0,'2011-04-15','23:57:24',10,120,1200,1,0,'undefined',NULL,2),
+(28,'023',3,1,2,0,1,2,'2011-04-16','00:05:23',10,120,1200,1,0,'undefined',NULL,2),
+(29,'023',3,1,2,1,1,2,'2011-04-16','00:07:07',10,120,1200,1,0,'undefined',NULL,2),
+(33,'017',3,3,1,0,0,1,'2011-04-22','13:54:14',10,150,1500,1,0,'undefined',NULL,2),
+(34,'018',3,4,1,0,0,1,'2011-04-22','14:18:09',10,1500,15000,1,0,'undefined',NULL,2),
+(35,'0',2,NULL,NULL,1,0,0,'2011-04-26','01:01:01',1,60000,60000,1,0,'',NULL,2),
+(36,'002',3,1,1,0,0,1,'2011-04-26','22:31:37',10,125,1250,1,0,'undefined',NULL,2),
+(37,'001',3,1,1,0,0,1,'2011-04-26','22:34:08',5,100,500,1,0,'undefined',NULL,2),
+(38,'002',3,1,1,0,0,1,'2011-04-26','22:36:17',9,125,1125,1,0,'undefined',NULL,2),
+(41,NULL,1,NULL,NULL,0,0,0,'2011-04-26','23:05:21',1,1500,1500,1,2000,'','065314093',2),
+(42,'041',3,1,3,1,1,3,'2011-04-27','12:32:38',10,120,1200,1,0,'undefined',NULL,2);
 
 /*Table structure for table `translete` */
 
@@ -669,22 +737,53 @@ CREATE TABLE `usermenu` (
   `iduser` int(10) DEFAULT NULL,
   `idmenu` int(10) DEFAULT NULL,
   PRIMARY KEY (`idx`)
-) ENGINE=MyISAM AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=59 DEFAULT CHARSET=latin1;
 
 /*Data for the table `usermenu` */
 
 insert into `usermenu` values 
-(10,1,66),
-(9,1,61),
-(8,1,59),
-(7,1,58),
-(6,1,11),
-(11,1,75),
-(12,1,76),
-(13,1,77),
-(14,1,78),
-(15,2,1),
-(16,2,74);
+(25,1,59),
+(24,1,58),
+(23,1,57),
+(22,1,56),
+(21,1,55),
+(20,1,13),
+(19,1,12),
+(18,1,11),
+(17,1,1),
+(57,2,73),
+(56,2,1),
+(26,1,60),
+(27,1,61),
+(28,1,62),
+(29,1,64),
+(30,1,65),
+(31,1,66),
+(32,1,67),
+(33,1,68),
+(34,1,69),
+(35,1,70),
+(36,1,71),
+(37,1,72),
+(38,1,73),
+(39,1,74),
+(40,1,75),
+(41,1,76),
+(42,1,77),
+(43,1,78),
+(44,1,79),
+(45,1,80),
+(46,1,81),
+(47,1,82),
+(48,1,83),
+(49,1,84),
+(50,1,85),
+(51,1,86),
+(52,1,87),
+(53,1,88),
+(54,1,89),
+(55,1,90),
+(58,2,74);
 
 /*Table structure for table `userrab` */
 
@@ -695,6 +794,12 @@ CREATE TABLE `userrab` (
   `iduser` int(10) DEFAULT NULL,
   `idrab` int(10) DEFAULT NULL,
   PRIMARY KEY (`idx`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 
 /*Data for the table `userrab` */
+
+insert into `userrab` values 
+(11,1,4),
+(5,2,1),
+(6,2,3),
+(10,1,1);
