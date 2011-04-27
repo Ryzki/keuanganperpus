@@ -44,7 +44,7 @@ p{margin:0 10px 10px}
 a{display:block;color: #981793;padding:10px}
 
 #utama {
-       text-align: left;
+       text-align: center;
 	margin: auto;
 	width: 950px;
        position: relative;
@@ -240,8 +240,8 @@ text-align: center;
 div#navigation{position: absolute;
                float:left;
                width:150px;
-               margin-left:750px;
-               top : 200px;
+               margin-left:680px;
+               top : 40px;
                background:transparent;
                color: black;}
 
