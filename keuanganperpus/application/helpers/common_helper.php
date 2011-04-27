@@ -49,7 +49,11 @@
            $xBufResult  = '<p> <label for="'.$xName.'">'.$xCaption.'<span class="small">'.$xAtrib.'</span>'.'</label> '.$xForm.'</p>';    
           return $xBufResult;
     }   
-    
+    function setForm2($xName,$xCaption,$xForm,$xAtrib=''){
+           $xBufResult  = '<p>'.$xCaption.'<br /> '.$xForm.'</p>';
+          return $xBufResult;
+    }
+
     function setFormNF($xName,$xCaption,$xForm,$xAtrib=''){
            $xBufResult  = '<dl> <dt> <label for="'.$xName.'">'.$xCaption.'</label></dt> <dd>'.$xForm.'</dd> </dl> ';    
           return $xBufResult;
