@@ -3,18 +3,21 @@ function exporttoexcel(data){
   window.open(getBaseURL()+"resource/SaveToExcel.php?datatodisplay="+data, "laporan", "status=1,toolbar=1");
 }
 
-function dotampillaporan(){
+function dotampillaporanfotokopibulan(isexport){
     $(document).ready(function(){
         $.ajax({
             url: getBaseURL()+"index.php/ctrlapfotokopibulan/dotampillaporan/",
-            data: "edbulan="+$("#edBulan").val()+"&edtahun="+$("#edTahun").val(),
+            data: "edbulan="+$("#edBulan").val()+"&edtahun="+$("#edTahun").val()+"&edidlokasi="+$("#edidlokasi").val(),
             cache: false,
             dataType: 'json',
             type: 'POST',
             success: function(json){
             //alert('tess'+json.harga);
             $("#tablereport").html(json.data);
-           exporttoexcel(json.data);
+             if(isexport){
+               exporttoexcel(json.data);
+            }
+
 
             },
             error: function (xmlHttpRequest, textStatus, errorThrown) {
@@ -30,7 +33,7 @@ function dotampillaporan(){
 }
 
 
-function dotampillaporanrekap(){
+function dotampillaporanrekap(isexport){
     $(document).ready(function(){
         $.ajax({
             url: getBaseURL()+"index.php/ctrlaprekapfcdendaab/dotampillaporan/",
@@ -41,7 +44,9 @@ function dotampillaporanrekap(){
             success: function(json){
             //alert('tess'+json.harga);
             $("#tablereport").html(json.data);
-           exporttoexcel(json.data);
+           if(isexport){
+               exporttoexcel(json.data);
+            }
 
             },
             error: function (xmlHttpRequest, textStatus, errorThrown) {
@@ -84,6 +89,66 @@ function dotampillaporanrekapdetail(isexport){
         });
     });
 }
+
+function dotampillaporanrekapdinas(isexport){
+
+    $(document).ready(function(){
+        $.ajax({
+            url: getBaseURL()+"index.php/ctrlaprekapfcdinas/dotampillaporan/",
+            data: "edbulan="+$("#edBulan").val()+"&edtahun="+$("#edTahun").val()+"&edidlokasi="+$("#edidlokasi").val()+"&edunitkerja="+$("#edunitkerja").val(),
+            cache: false,
+            dataType: 'json',
+            type: 'POST',
+            success: function(json){
+            //alert('tess'+json.harga);
+            $("#tablereport").html(json.data);
+
+            if(isexport){
+               exporttoexcel(json.data);
+            }
+
+            },
+            error: function (xmlHttpRequest, textStatus, errorThrown) {
+                start = xmlHttpRequest.responseText.search("<title>") + 7;
+                end = xmlHttpRequest.responseText.search("</title>");
+                errorMsg = "On Tampil laporan ";
+                if (start > 0 && end > 0)  alert("On Edit "+errorMsg + "  [" + xmlHttpRequest.responseText.substring(start, end) + "]");
+                else
+                    alert("Error  "+errorMsg);
+            }
+        });
+    });
+}
+
+function dotampillaporanrekappribadi(isexport){
+
+    $(document).ready(function(){
+        $.ajax({
+            url: getBaseURL()+"index.php/ctrlaprekapfcpribadi/dotampillaporan/",
+            data: "edbulan="+$("#edBulan").val()+"&edtahun="+$("#edTahun").val()+"&edidlokasi="+$("#edidlokasi").val(),
+            cache: false,
+            dataType: 'json',
+            type: 'POST',
+            success: function(json){
+            //alert('tess'+json.harga);
+            $("#tablereport").html(json.data);
+
+            if(isexport){
+               exporttoexcel(json.data);
+            }
+
+            },
+            error: function (xmlHttpRequest, textStatus, errorThrown) {
+                start = xmlHttpRequest.responseText.search("<title>") + 7;
+                end = xmlHttpRequest.responseText.search("</title>");
+                errorMsg = "On Tampil laporan ";
+                if (start > 0 && end > 0)  alert("On Edit "+errorMsg + "  [" + xmlHttpRequest.responseText.substring(start, end) + "]");
+                else
+                    alert("Error  "+errorMsg);
+            }
+        });
+    });
+}
 function onCbJenisTransksiChange(){
  $(document).ready(function(){
     if($("#edidjenistransaksi").val()!="3"){
@@ -106,6 +171,11 @@ var mm = date.getMonth();
 var yy = date.getYear();
 return strpad(mm+1);
 }
+function setawalrekapfotokopiperbulan(){
+$(document).ready(function(){
+       $("#edBulan").val(getbulan());
+  });
+}
 
 function setawalrekapdetail(){
 $(document).ready(function(){
@@ -114,9 +184,48 @@ $(document).ready(function(){
 
  });
 }
+
+function setawaldinas(){
+$(document).ready(function(){
+       $("#edBulan").val(getbulan());
+       $("#edunitkerja").attr('disabled', true);
+
+ });
+}
+
+function setawalpribadi(){
+$(document).ready(function(){
+       $("#edBulan").val(getbulan());
+       
+ });
+}
 function docblokasichange(){
 //Celar combo $(“#ComboBox”).html(“”);
 //Add to the list: $(“<option value=’9’>Value 9</option>”).appendTo(“#ComboBox”);
+$(document).ready(function(){
+        $.ajax({
+            url: getBaseURL()+"index.php/ctrlaprekapfcdinas/setcombounitkerja/",
+            data: "edbulan="+$("#edBulan").val()+"&edtahun="+$("#edTahun").val()+"&edidlokasi="+$("#edidlokasi").val(),
+            cache: false,
+            dataType: 'json',
+            type: 'POST',
+            success: function(json){
+            //alert('tess'+json.harga);
+            $("#edunitkerja").html("");
+            $(json.data).appendTo("#edunitkerja");
+             $("#edunitkerja").attr('disabled', false);
+
+            },
+            error: function (xmlHttpRequest, textStatus, errorThrown) {
+                start = xmlHttpRequest.responseText.search("<title>") + 7;
+                end = xmlHttpRequest.responseText.search("</title>");
+                errorMsg = "On Tampil laporan ";
+                if (start > 0 && end > 0)  alert("On Edit "+errorMsg + "  [" + xmlHttpRequest.responseText.substring(start, end) + "]");
+                else
+                    alert("Error  "+errorMsg);
+            }
+        });
+    });
 
 }
 

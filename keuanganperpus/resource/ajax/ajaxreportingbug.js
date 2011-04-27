@@ -12,7 +12,7 @@
     } 
   $(document).ready(function(){ 
   $.ajax({ 
-          url: getBaseURL()+"index.php/ctrsetoran/search/", 
+          url: getBaseURL()+"index.php/ctrreportingbug/search/", 
           data: "xAwal="+xAwal+"&xSearch="+xSearch, 
           cache: false, 
           dataType: 'json', 
@@ -36,20 +36,21 @@
    function doedit(edidx){ 
  $(document).ready(function(){ 
  $.ajax({ 
-    url: getBaseURL()+"index.php/ctrsetoran/editrec/", 
+    url: getBaseURL()+"index.php/ctrreportingbug/editrec/", 
    data: "edidx="+edidx, 
   cache: false, 
  dataType: 'json', 
      type: 'POST', 
   success: function(json){ 
        $("#edidx").val(json.idx); 
-       $("#edNoBuktiSetoran").val(json.NoBuktiSetoran); 
-       $("#edtanggal").val(json.tanggal); 
-       $("#edidrekanan").val(json.idrekanan); 
-       $("#ednominal").val(json.nominal); 
-       $("#edidstatusplu").val(json.idstatusplu); 
+       $("#edlokasi").val(json.lokasi); 
+       $("#edketerangan").val(json.keterangan); 
+       $("#edtanggapan").val(json.tanggapan); 
        $("#ediduser").val(json.iduser); 
-       $("#edidlokasi").val(json.idlokasi); 
+       $("#edtanggal").val(json.tanggal); 
+       $("#edjam").val(json.jam); 
+       $("#edtanggaltanggapan").val(json.tanggaltanggapan); 
+       $("#edjamtanggapan").val(json.jamtanggapan); 
      }, 
  error: function (xmlHttpRequest, textStatus, errorThrown) { 
  start = xmlHttpRequest.responseText.search("<title>") + 7; 
@@ -65,20 +66,21 @@
  function doClear(){ 
  $(document).ready(function(){ 
  $("#edidx").val("0"); 
- $("#edNoBuktiSetoran").val(""); 
- $("#edtanggal").val(""); 
- $("#edidrekanan").val(""); 
- $("#ednominal").val(""); 
- $("#edidstatusplu").val(""); 
+ $("#edlokasi").val(""); 
+ $("#edketerangan").val(""); 
+ $("#edtanggapan").val(""); 
  $("#ediduser").val(""); 
- $("#edidlokasi").val(""); 
+ $("#edtanggal").val(""); 
+ $("#edjam").val(""); 
+ $("#edtanggaltanggapan").val(""); 
+ $("#edjamtanggapan").val(""); 
   }); 
  } 
          function dosimpan(){ 
          $(document).ready(function(){ 
            $.ajax({ 
-                 url: getBaseURL()+"index.php/ctrsetoran/simpan/", 
-   data: "edidx="+$("#edidx").val()+"&edNoBuktiSetoran="+$("#edNoBuktiSetoran").val()+"&edtanggal="+$("#edtanggal").val()+"&edidrekanan="+$("#edidrekanan").val()+"&ednominal="+$("#ednominal").val()+"&edidstatusplu="+$("#edidstatusplu").val()+"&ediduser="+$("#ediduser").val()+"&edidlokasi="+$("#edidlokasi").val(), 
+                 url: getBaseURL()+"index.php/ctrreportingbug/simpan/", 
+   data: "edidx="+$("#edidx").val()+"&edlokasi="+$("#edlokasi").val()+"&edketerangan="+$("#edketerangan").val()+"&edtanggapan="+$("#edtanggapan").val()+"&ediduser="+$("#ediduser").val()+"&edtanggal="+$("#edtanggal").val()+"&edjam="+$("#edjam").val()+"&edtanggaltanggapan="+$("#edtanggaltanggapan").val()+"&edjamtanggapan="+$("#edjamtanggapan").val(), 
                  cache: false, 
                  dataType: 'json', 
                  type: 'POST', 
@@ -99,12 +101,12 @@
          }); 
          } 
 
-         function dohapus(edidx,edNoBuktiSetoran){ 
-         if (confirm("Anda yakin Akan menghapus data "+edNoBuktiSetoran+"?")) 
+         function dohapus(edidx,edlokasi){ 
+         if (confirm("Anda yakin Akan menghapus data "+edlokasi+"?")) 
      { 
          $(document).ready(function(){ 
            $.ajax({ 
-                 url: getBaseURL()+"index.php/ctrsetoran/deletetable/", 
+                 url: getBaseURL()+"index.php/ctrreportingbug/deletetable/", 
                  data: "edidx="+edidx, 
                  cache: false, 
                  dataType: 'json', 
@@ -127,55 +129,6 @@
         } 
         } 
 
-
-function strpad(val){
-   return (!isNaN(val) && val.toString().length==1)?"0"+val:val;
-  }
-function getbulan(){
-var date = new Date();
-var dd = date.getDate();
-var mm = date.getMonth();
-var yy = date.getYear();
-return strpad(mm+1);
-}
-
-function setlapsetoran(){
-$(document).ready(function(){
-       $("#edBulan").val(getbulan());
- });
-}
-function exporttoexcel(data){
-  window.open(getBaseURL()+"resource/SaveToExcel.php?datatodisplay="+data, "laporan", "status=1,toolbar=1");
-}
-function dotampillaporansetoran(isexport){
-
-    $(document).ready(function(){
-        $.ajax({
-            url: getBaseURL()+"index.php/ctrlapsetoran/dotampillaporan/",
-            data: "edbulan="+$("#edBulan").val()+"&edtahun="+$("#edTahun").val()+"&edidrekanan="+$("#edidrekanan").val(),
-            cache: false,
-            dataType: 'json',
-            type: 'POST',
-            success: function(json){
-            //alert('tess'+json.harga);
-            $("#tablereport").html(json.data);
-
-            if(isexport){
-               exporttoexcel(json.data);
-            }
-
-            },
-            error: function (xmlHttpRequest, textStatus, errorThrown) {
-                start = xmlHttpRequest.responseText.search("<title>") + 7;
-                end = xmlHttpRequest.responseText.search("</title>");
-                errorMsg = "On Tampil laporan ";
-                if (start > 0 && end > 0)  alert("On Edit "+errorMsg + "  [" + xmlHttpRequest.responseText.substring(start, end) + "]");
-                else
-                    alert("Error  "+errorMsg);
-            }
-        });
-    });
-}
 
      function initCorners() { 
              var setting = { 

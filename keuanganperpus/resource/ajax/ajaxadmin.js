@@ -156,7 +156,7 @@ function dohapus(edidtranslete){
           //alert($("#edUser").val()+"  "+$("#edPassword").val()+getBaseURL()+"index.php/perpus/dologin/");
            $.ajax({
                  url: getBaseURL()+"index.php/perpus/dologin/",
-                 data: "edUser="+$("#edUser").val()+"&edPassword="+$("#edPassword").val(),
+                 data: "edUser="+$("#edUser").val()+"&edPassword="+$("#edPassword").val()+"&edidlokasi="+$("#edidlokasi").val(),
                  cache: false,
                  dataType: 'json',
                  type: 'POST',

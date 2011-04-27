@@ -18,7 +18,22 @@ background-color: #666666;
 */
 background-image: url(img/bgpage.png);
 }
+table
+{
+    border-color: #600;
+    border-width: 0 0 1px 1px;
+    border-style: solid;
+}
 
+td
+{
+    border-color: #600;
+    border-width: 1px 1px 0 0;
+    border-style: solid;
+    margin: 0;
+    padding: 0px;
+    background-color: #FFC;
+}
 img {
 	border: 0;
 }
