@@ -100,6 +100,24 @@ $query = $this->db->query($xStr);
  return $xidx;
 }
 
+Function setInsertreportingbugsmall($xlokasi,$xketerangan)
+{
+
+$xiduser =$this->session->userdata('idpegawai');
+if(empty ($xiduser)){
+     $xiduser = 0;
+ }
+
+ $xStr =  " INSERT INTO reportingbug( ".
+              "lokasi,".
+              "keterangan,".
+              "iduser,".
+              "tanggal,".
+              "jam
+              ) VALUES('".$xlokasi."','".$xketerangan."','".$xiduser."',current_date,current_time)";
+$query = $this->db->query($xStr);
+ return $xStr;
+}
 
  Function setUpdatereportingbug($xidx,$xlokasi,$xketerangan,$xtanggapan,$xiduser,$xtanggal,$xjam,$xtanggaltanggapan,$xjamtanggapan)
 {

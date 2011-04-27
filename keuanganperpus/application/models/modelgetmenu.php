@@ -114,7 +114,7 @@ class modelgetmenu extends CI_Model {
     }
 
     function getMenuSampingKanan() {
-        $xQuery = $this->getListmenu("4");
+       /* $xQuery = $this->getListmenu("4");
         $xBufResult = "";
         $this->load->helper('menu');
         $this->load->helper('url');
@@ -127,6 +127,16 @@ class modelgetmenu extends CI_Model {
         }
         $xBufResult = setul('menusamping', $xBufResult);
         return $xBufResult;
+        * *
+        */
+        $this->load->helper('form');
+        $this->load->helper('common');
+        $xBufResult = '<div id="stylized" class="myform2">'.form_open_multipart('ctrreportingbug/inserttable',array('id'=>'form','name'=>'form')).
+                       setForm2('edketerangan','Tuliskan Temuan Kesalahan,Saran, dsb',  form_textarea(getArrayObj('edketerangan','','230','10','200'))).
+                       form_button('btSimpan','kirim','onclick="dosimpanreportingbug();"');
+                       ;
+                
+        return $xBufResult."</div>";
     }
 
     function getMenuAtas($xIsView=false) {
@@ -234,7 +244,7 @@ class modelgetmenu extends CI_Model {
         }
         $xUser = $this->session->userdata('nama');
         if(!empty ($xUser)){
-           $xMenuKanan = $this->getMenuSampingKanan();
+        $xMenuKanan = $this->getMenuSampingKanan();
            $xMnHeader = $this->getMenuAtas();
            $xBufResult = $xContent . '</form></div> ' . $xList;
         } else
@@ -257,15 +267,14 @@ class modelgetmenu extends CI_Model {
                 link_tag('resource/css/perpus.css') .
                 link_tag('resource/css/frmlayout.css') .
                 '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/curvycorners.src.js"></script>' .
-                '
-                     
-                             <script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/jquery.js"></script>' .
-                             '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/jquery.cycle.all.min.js"></script>' .
+                '  <script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/jquery.js"></script>' .
+                   '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/jquery.cycle.all.min.js"></script>' .
                            link_tag('resource/css/jqmenuatas.css') .
                            link_tag('resource/css/menusamping.css').
-                              '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/jqmenuatas.js"></script>'.
-                                $xAddJs.
-                                ' 
+               '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/ajax/ajaxreportingbugsmall.js"></script>' .
+               '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/jqmenuatas.js"></script>'.
+                $xAddJs.
+               ' 
                                 <!--[if lte IE 7]>
                     <style type="text/css">
                       html .jqueryslidemenu{height: 1%;} /*Holly Hack for IE7 and below*/
