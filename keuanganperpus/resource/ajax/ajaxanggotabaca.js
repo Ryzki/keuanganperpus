@@ -145,7 +145,12 @@ function doCetak(){
             dataType: 'json',
             type: 'POST',
             success: function(json){
-                alert(json.data);
+               // alert(json.data);
+                $('#cetak').html(json.data);
+                $('#cetak').hide();
+                $('#toPrint').printElement({ printMode: 'popup' });
+
+
             },
             error: function (xmlHttpRequest, textStatus, errorThrown) {
                 start = xmlHttpRequest.responseText.search("<title>") + 7;

@@ -46,6 +46,7 @@ function doedit(edidx){
                 $("#edidx").val(json.idx);
                 $("#edidsparta").val(json.iddendasparta);
                 $("#edNoIdentitas").val(json.NoIdentitas);
+                $("#edNama").val(json.Nama);
                 $("#edDendaSparta").val(json.nominaldenda);
                 $("#edDenda").val(json.nominalpersatuan);
             },
@@ -79,7 +80,8 @@ function dosimpan(){
                 "&edidsparta="+$("#edidsparta").val()+
                 "&edNoIdentitas="+$("#edNoIdentitas").val()+
                 "&edDendaSparta="+$("#edDendaSparta").val()+
-                "&edDenda="+$("#edDenda").val(),
+                "&edDenda="+$("#edDenda").val()+
+                "&edNama="+$("#edNama").val(),
             cache: false,
             dataType: 'json',
             type: 'POST',
