@@ -1,0 +1,1 @@
+alter table `keuperpususd`.`transaksi` add column `NamaMHS` varchar (100)   NULL  after `prosenpotong`
