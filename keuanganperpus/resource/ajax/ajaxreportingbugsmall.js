@@ -24,7 +24,7 @@
          $(document).ready(function(){ 
            $.ajax({ 
                  url: getBaseUR()+"index.php/ctrreportingbug/simpansmall/",
-                 data: "edlokasi="+document.URL+"&edketerangan="+$("#edketeranganbug").val(),
+                 data: "edlokasi="+document.URL+"&edketeranganbug="+$("#edketeranganbug").val(),
                  cache: false, 
                  dataType: 'json', 
                  type: 'POST', 
