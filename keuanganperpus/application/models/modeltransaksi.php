@@ -160,7 +160,8 @@ class modeltransaksi extends CI_Model {
         $query = $this->db->query($xStr);
     }
 
-    Function setInserttransaksiFC($xidx, $xidplu, $xidjenistransaksi, $xidstatusplu, $xidgrouppengguna, $xidpegawai, $xidunitkerja, $xidstatusdinas, $xjumlahsatuan, $xnominalpersatuan, $xtotal, $xiduser, $xnominaldenda, $xiddendasparta, $xidlokasi) {
+    Function setInserttransaksiFC($xidx, $xidplu, $xidjenistransaksi, $xidstatusplu, $xidgrouppengguna, $xidpegawai, $xidunitkerja, $xidstatusdinas,
+                                  $xjumlahsatuan, $xnominalpersatuan, $xtotal, $xiduser, $xnominaldenda, $xiddendasparta, $xidlokasi,$xisbukuperpus='N',$xprosenpotong='0') {
         $xStr = " INSERT INTO transaksi( " .
                 "idx," .
                 "idplu," .
@@ -178,14 +179,21 @@ class modeltransaksi extends CI_Model {
                 "iduser," .
                 "nominaldenda," .
                 "iddendasparta," .
-                "idlokasi) VALUES('" . $xidx . "','" . $xidplu . "','" . $xidjenistransaksi . "','" . $xidstatusplu . "','" . $xidgrouppengguna . "','" . $xidpegawai . "','" . $xidunitkerja . "','" . $xidstatusdinas . "',current_date,current_time,'" . $xjumlahsatuan . "','" . $xnominalpersatuan . "','" . $xtotal . "','" . $xiduser . "','" . $xnominaldenda . "','" . $xiddendasparta . "','" . $xidlokasi . "')";
+                "idlokasi,
+                    isbukuperpus,
+                    prosenpotong) VALUES('" . $xidx . "','" . $xidplu . "','" . $xidjenistransaksi . "','" . $xidstatusplu . "','" .
+                                         $xidgrouppengguna . "','" . $xidpegawai . "','" . $xidunitkerja . "','" .
+                                         $xidstatusdinas . "',current_date,current_time,'" . $xjumlahsatuan . "','" .
+                                         $xnominalpersatuan . "','" . $xtotal . "','" . $xiduser . "','" .
+                                         $xnominaldenda . "','" . $xiddendasparta . "','" . $xidlokasi . "','".$xisbukuperpus."','".$xprosenpotong."')";
 
 // return $xStr;
         $query = $this->db->query($xStr);
         return $xidx;
     }
 
-    Function setUpdatetransaksiFC($xidx, $xidplu, $xidjenistransaksi, $xidstatusplu, $xidgrouppengguna, $xidpegawai, $xidunitkerja, $xidstatusdinas, $xjumlahsatuan, $xnominalpersatuan, $xtotal, $xiduser, $xnominaldenda, $xiddendasparta, $xidlokasi) {
+    Function setUpdatetransaksiFC($xidx, $xidplu, $xidjenistransaksi, $xidstatusplu, $xidgrouppengguna, $xidpegawai, $xidunitkerja, $xidstatusdinas,
+                                  $xjumlahsatuan, $xnominalpersatuan, $xtotal, $xiduser, $xnominaldenda, $xiddendasparta, $xidlokasi,$xisbukuperpus='N',$xprosenpotong='0') {
         $xStr = " UPDATE transaksi SET " .
                 "idx='" . $xidx . "'," .
                 "idplu='" . $xidplu . "'," .
@@ -203,7 +211,10 @@ class modeltransaksi extends CI_Model {
                 "iduser='" . $xiduser . "'," .
                 "nominaldenda='" . $xnominaldenda . "'," .
                 "iddendasparta='" . $xiddendasparta . "'," .
-                "idlokasi='" . $xidlokasi . "' WHERE idx = '" . $xidx . "'";
+                "idlokasi='" . $xidlokasi ."',".
+                "isbukuperpus ='" . $xisbukuperpus ."',".
+                "prosenpotong ='" . $xprosenpotong."'".
+                " WHERE idx = '" . $xidx . "'";
         $query = $this->db->query($xStr);
         return $xidx;
     }
@@ -228,7 +239,9 @@ class modeltransaksi extends CI_Model {
                 "iduser," .
                 "nominaldenda," .
                 "iddendasparta," .
-                "idlokasi" .
+                "idlokasi,
+                    isbukuperpus,
+                    prosenpotong" .
                 " FROM transaksi   order by idx ASC ";
         $query = $this->db->query($xStr);
         foreach ($query->result() as $row) {
@@ -258,7 +271,9 @@ class modeltransaksi extends CI_Model {
                 "iduser," .
                 "nominaldenda," .
                 "iddendasparta," .
-                "idlokasi " .
+                "idlokasi,
+                    isbukuperpus,
+                    prosenpotong " .
                 " FROM transaksi $xSearch order by idx DESC limit " . $xAwal . "," . $xLimit;
         $query = $this->db->query($xStr);
         return $query;
@@ -280,7 +295,9 @@ class modeltransaksi extends CI_Model {
                 "iduser," .
                 "nominaldenda," .
                 "iddendasparta," .
-                "idlokasi" .
+                "idlokasi,
+                    isbukuperpus,
+                    prosenpotong" .
                 " FROM transaksi  WHERE idx = '" . $xidx . "'";
 
         $query = $this->db->query($xStr);
@@ -304,7 +321,9 @@ class modeltransaksi extends CI_Model {
                 "iduser," .
                 "nominaldenda," .
                 "iddendasparta," .
-                "idlokasi" .
+                "idlokasi,
+                 isbukuperpus,
+                 prosenpotong" .
                 " FROM transaksi order by idx DESC limit 1 ";
         $query = $this->db->query($xStr);
         $row = $query->row();

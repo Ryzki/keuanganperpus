@@ -11,6 +11,21 @@ class modelsetoran extends CI_Model {
     }
 
  //***************Update 26 April 2011 *************
+   function getSetoranBulan($xtanggal,$xidstatusplu){
+       $xStr ="select  (round(sum((jumlahsatuan*nominalpersatuan)))- round(sum((jumlahsatuan*nominalpersatuan)*(prosenpotong /100)),0)) as setoran
+                 from transaksi where (idplu <> 0 or idplu is not null) and (prosenpotong <> 0 or prosenpotong is not null) and 
+                 (month(tanggal)= month('".$xtanggal."') and year(tanggal)= year('".$xtanggal."')) and
+                  idstatusplu  = '".$xidstatusplu."'";
+         $query = $this->db->query($xStr);
+         $row = $query->row();
+         if(!empty ($row->setoran)){
+           return $row->setoran;
+         } else
+         {
+           return 0;
+         }
+        // return $x;
+    }
 
     function getlistSetoranBulan($xbulan,$xtahun,$xidrekanan){
        $xWhere =" WHERE month(tanggal)= '".$xbulan."' and year(tanggal) = '".$xtahun."' and idrekanan = '".$xidrekanan."'";
