@@ -16,7 +16,7 @@ class modeldenda extends CI_Model {
 
 Function setInserttransaksidenda($xidx,$xNIM,$xidjenistransaksi,$xidpegawai,$xidunitkerja,
                               $xidstatusdinas,$xjumlahsatuan,$xnominalpersatuan,
-                              $xtotal,$xiduser,$xnominaldenda,$xiddendasparta,$xidlokasi)
+                              $xtotal,$xiduser,$xnominaldenda,$xiddendasparta,$xidlokasi,$xNama)
 {
   $xStr =  " INSERT INTO transaksi( ".
               "idx,".
@@ -33,7 +33,7 @@ Function setInserttransaksidenda($xidx,$xNIM,$xidjenistransaksi,$xidpegawai,$xid
               "iduser,".
               "nominaldenda,".
               "iddendasparta,".
-              "idlokasi) VALUES('".$xidx."','".$xNIM."','".$xidjenistransaksi."','".$xidpegawai."','".$xidunitkerja."','".$xidstatusdinas."',current_date,current_time,'".$xjumlahsatuan."','".$xnominalpersatuan."','".$xtotal."','".$xiduser."','".$xnominaldenda."','".$xiddendasparta."','".$xidlokasi."')";
+              "idlokasi,NamaMhs) VALUES('".$xidx."','".$xNIM."','".$xidjenistransaksi."','".$xidpegawai."','".$xidunitkerja."','".$xidstatusdinas."',current_date,current_time,'".$xjumlahsatuan."','".$xnominalpersatuan."','".$xtotal."','".$xiduser."','".$xnominaldenda."','".$xiddendasparta."','".$xidlokasi."','".$xNama."')";
 
 // return $xStr;
 $query = $this->db->query($xStr);
@@ -43,7 +43,7 @@ return $xidx;
 
 
  Function setUpdatetransaksidenda($xidx,$xNIM,$xidjenistransaksi,$xidpegawai,$xidunitkerja,$xidstatusdinas,$xjumlahsatuan,
-                               $xnominalpersatuan,$xtotal,$xiduser,$xnominaldenda,$xiddendasparta,$xidlokasi)
+                               $xnominalpersatuan,$xtotal,$xiduser,$xnominaldenda,$xiddendasparta,$xidlokasi,$xNama)
 {
   $xStr =  " UPDATE transaksi SET ".
              "idx='".$xidx."',".
@@ -60,7 +60,9 @@ return $xidx;
              "iduser='".$xiduser."',".
              "nominaldenda='".$xnominaldenda."',".
              "iddendasparta='".$xiddendasparta."',".
-             "idlokasi='".$xidlokasi."' WHERE idx = '".$xidx."'";
+             "idlokasi='".$xidlokasi."',".
+             "NamaMHS = '".$xNama."'".
+             "  WHERE idx = '".$xidx."'";
  $query = $this->db->query($xStr);
  return $xidx;
 }
@@ -115,7 +117,7 @@ if(!empty($xSearch)){
       "iduser,".
       "nominaldenda,".
       "iddendasparta,".
-      "idlokasi ".
+      "idlokasi,NamaMhs ".
 " FROM transaksi $xSearch order by idx DESC limit ".$xAwal.",".$xLimit;
  $query = $this->db->query($xStr);
  return $query ;
@@ -138,7 +140,7 @@ function getDetailtransaksi($xidx){
       "iduser,".
       "nominaldenda,".
       "iddendasparta,".
-      "idlokasi".
+      "idlokasi,NamaMhs ".
 " FROM transaksi  WHERE idx = '".$xidx."'";
 
  $query = $this->db->query($xStr);
@@ -163,7 +165,7 @@ function getLastIndextransaksi(){ /* spertinya perlu lock table*/
       "iduser,".
       "nominaldenda,".
       "iddendasparta,".
-      "idlokasi".
+      "idlokasi,NamaMhs".
 " FROM transaksi order by idx DESC limit 1 ";
  $query = $this->db->query($xStr);
 $row = $query->row();
