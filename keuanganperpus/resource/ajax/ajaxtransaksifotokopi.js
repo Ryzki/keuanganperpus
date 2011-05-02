@@ -136,7 +136,7 @@ function dotampilpegawai(){
             type: 'POST',
             success: function(json){
             if(json.isdataada){
-                   alert('tess '+json.idUnitKerja);
+                  // alert('tess '+json.idUnitKerja);
                    $("#nmpegawai").val(json.npp);
                    $("#nmpegawai").html(json.Nama);
                    $("#edunitkerja").val(json.idUnitKerja);
