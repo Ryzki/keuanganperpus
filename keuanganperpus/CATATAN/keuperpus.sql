@@ -26,13 +26,15 @@ CREATE TABLE `anggotabaca` (
   `email` varchar(40) DEFAULT NULL,
   `tanggalgabung` date DEFAULT NULL,
   `biaya` int(15) DEFAULT NULL,
+  `idjnsbiaya` int(10) DEFAULT NULL,
   PRIMARY KEY (`idx`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 /*Data for the table `anggotabaca` */
 
 insert into `anggotabaca` values 
-(1,'KTP.0998777','coba trx',1,'alamat','jogja','555432','02747474898','testemail',NULL,NULL);
+(1,'KTP.0998777','coba trx',1,'alamat','jogja','555432','02747474898','testemail',NULL,NULL,2),
+(3,'coba','testss',2,'sad','sadsd','','','',NULL,NULL,2);
 
 /*Table structure for table `bahasa` */
 
@@ -103,7 +105,7 @@ CREATE TABLE `hargajenistransaksi` (
 /*Data for the table `hargajenistransaksi` */
 
 insert into `hargajenistransaksi` values 
-(1,2,60000);
+(1,2,50000);
 
 /*Table structure for table `image` */
 
@@ -222,6 +224,23 @@ insert into `jenistransaksi` values
 (3,'Fotocopy','N'),
 (4,'Lainnya','Y');
 
+/*Table structure for table `jnsbiayaagtbaca` */
+
+DROP TABLE IF EXISTS `jnsbiayaagtbaca`;
+
+CREATE TABLE `jnsbiayaagtbaca` (
+  `idx` int(10) NOT NULL AUTO_INCREMENT,
+  `nmbiaya` varchar(30) DEFAULT NULL,
+  `biaya` int(10) DEFAULT NULL,
+  PRIMARY KEY (`idx`)
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+/*Data for the table `jnsbiayaagtbaca` */
+
+insert into `jnsbiayaagtbaca` values 
+(1,'Umum',50000),
+(2,'Jogja LIB 1 bln',30000);
+
 /*Table structure for table `komponen` */
 
 DROP TABLE IF EXISTS `komponen`;
@@ -297,7 +316,7 @@ CREATE TABLE `menu` (
   `parentmenu` int(10) DEFAULT NULL,
   `urlci` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`idmenu`)
-) ENGINE=MyISAM AUTO_INCREMENT=91 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=93 DEFAULT CHARSET=latin1;
 
 /*Data for the table `menu` */
 
@@ -343,7 +362,8 @@ insert into `menu` values
 (87,'Fotokopi,Print,Jilid Keperluan  Pribadi',1,2,0,71,'ctrlaprekapfcpribadi'),
 (88,'Laporan Realisasi RAB',1,2,0,71,'ctrlaprealisasirab'),
 (89,'Laporan Realisasi RAB Detail',1,2,0,71,'ctrlaprealisasirabdetail'),
-(90,'Laporan Setoran Kerekanan Perbulan',1,2,0,71,'ctrlapsetoran');
+(90,'Laporan Setoran Kerekanan Perbulan',1,2,0,71,'ctrlapsetoran'),
+(91,'Jenis Biaya Anggota Baca',1,2,0,13,'ctrjnsbiayaagtbaca');
 
 /*Table structure for table `menuatasbawah` */
 
@@ -425,11 +445,12 @@ CREATE TABLE `postingrab` (
   `jam` time DEFAULT NULL,
   `iduser` int(10) DEFAULT NULL,
   PRIMARY KEY (`idx`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 /*Data for the table `postingrab` */
 
 insert into `postingrab` values 
+(5,5,12,50000,'2011-04-28','00:00:00',1),
 (4,4,12,30000,'2011-04-06','00:00:00',1),
 (3,3,12,3000,'2011-04-05','00:00:00',1);
 
@@ -448,7 +469,7 @@ CREATE TABLE `produkplu` (
   `harga` int(15) DEFAULT NULL,
   `idjenistransaksi` int(10) DEFAULT NULL COMMENT 'untuk otomatisasi transaksi',
   PRIMARY KEY (`idx`)
-) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 
 /*Data for the table `produkplu` */
 
@@ -457,9 +478,10 @@ insert into `produkplu` values
 (2,'023',2,'Coba Dinas','A3',1,1,120,4),
 (3,'024',3,'coba Potong Gaji','A4',1,1,130,3),
 (4,'002',1,'Fotokopi Folio 70 ','FC 70 gram',1,1,125,5),
-(5,'017',1,'Print Laser A4 iR500','',3,1,150,3),
+(5,'017',1,'Print Laser A4 iR500','',3,1,300,3),
 (6,'018',1,'Print Collour A4 Full Colour','',4,1,1500,3),
-(7,'041',3,'Fotokopi KUARTO 70','KUARTO',1,1,120,3);
+(7,'041',3,'Fotokopi KUARTO 70','KUARTO',1,1,120,3),
+(8,'037',2,'Print Laser A4 irR500','Print',3,1,150,3);
 
 /*Table structure for table `rab` */
 
@@ -502,13 +524,14 @@ CREATE TABLE `realisasirab` (
   `iduser` int(10) DEFAULT NULL,
   `idthnanggaran` int(10) DEFAULT NULL,
   PRIMARY KEY (`idx`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 /*Data for the table `realisasirab` */
 
 insert into `realisasirab` values 
 (1,'2011-04-07','15:25:06',4,'Pembelian Meja',20000,1,12),
-(2,'2011-04-26','22:03:23',4,'Pembelian Pensil',12000,1,12);
+(2,'2011-04-26','22:03:23',4,'Pembelian Pensil',12000,1,12),
+(3,'2011-04-28','12:46:41',5,'Pembelian Snack Untuk Demo Program',10000,1,12);
 
 /*Table structure for table `rekanan` */
 
@@ -544,9 +567,15 @@ CREATE TABLE `reportingbug` (
   `tanggaltanggapan` date DEFAULT NULL,
   `jamtanggapan` time DEFAULT NULL,
   PRIMARY KEY (`idx`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 /*Data for the table `reportingbug` */
+
+insert into `reportingbug` values 
+(1,'http://localhost/keuanganperpus/index.php/ctrrealisasirab','keterangan tidak masuk ke database',NULL,1,'2011-04-28','10:46:18',NULL,NULL),
+(2,'http://localhost/keuanganperpus/index.php/ctranggotabaca','',NULL,1,'2011-05-02','12:12:57',NULL,NULL),
+(3,'http://localhost/keuanganperpus/index.php/ctranggotabaca','',NULL,1,'2011-05-02','12:14:58',NULL,NULL),
+(4,'http://localhost/keuanganperpus/index.php/ctranggotabaca','assdsd',NULL,1,'2011-05-02','12:17:19',NULL,NULL);
 
 /*Table structure for table `setoran` */
 
@@ -576,16 +605,18 @@ DROP TABLE IF EXISTS `statusplu`;
 CREATE TABLE `statusplu` (
   `idx` int(10) NOT NULL AUTO_INCREMENT,
   `Status` varchar(20) DEFAULT NULL,
+  `prosenreguler` int(10) DEFAULT NULL,
+  `prosenperpus` int(10) DEFAULT NULL,
   PRIMARY KEY (`idx`)
 ) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 /*Data for the table `statusplu` */
 
 insert into `statusplu` values 
-(1,'Fotocopy'),
-(2,'Jilid'),
-(3,'Print Biasa'),
-(4,'Print Warna');
+(1,'Fotocopy',15,20),
+(2,'Jilid',15,20),
+(3,'Print Biasa',20,20),
+(4,'Print Warna',20,20);
 
 /*Table structure for table `tahunanggaran` */
 
@@ -643,37 +674,47 @@ CREATE TABLE `transaksi` (
   `iddendasparta` varchar(30) DEFAULT NULL,
   `NIM` varchar(20) DEFAULT NULL,
   `idlokasi` int(10) DEFAULT NULL,
+  `isbukuperpus` enum('Y','N') DEFAULT 'N',
+  `prosenpotong` int(10) DEFAULT NULL,
   PRIMARY KEY (`idx`)
-) ENGINE=MyISAM AUTO_INCREMENT=43 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=51 DEFAULT CHARSET=latin1;
 
 /*Data for the table `transaksi` */
 
 insert into `transaksi` values 
-(32,'001',3,1,1,0,0,1,'2011-04-19','10:44:46',10,100,1000,1,0,'undefined',NULL,2),
-(14,'023',3,NULL,NULL,0,0,0,'2011-04-05','09:38:51',1,120,120,1,0,'undefined',NULL,2),
-(15,'023',3,NULL,NULL,0,0,0,'2011-04-06','05:26:36',10,120,1200,1,0,'undefined',NULL,2),
-(16,'023',3,NULL,NULL,0,0,0,'2011-04-06','05:52:44',10,120,1200,1,0,'undefined',NULL,2),
-(17,'0',1,NULL,NULL,81234,0,0,'2011-04-14','10:59:47',1,0,0,1,0,'',NULL,2),
-(18,'0',1,NULL,NULL,0,0,0,'2011-04-14','23:05:41',1,0,0,1,0,'','0927272',2),
-(19,'0',1,NULL,NULL,0,0,0,'2011-04-14','23:23:37',1,12,12323,1,23213,'','21323',2),
-(20,'02747474',1,NULL,NULL,0,0,0,'2011-04-15','00:08:11',1,2,2323,1,2323,'',NULL,2),
-(21,'02382382',1,NULL,NULL,0,0,0,'2011-04-15','00:09:29',1,12,12323,1,213213,'',NULL,2),
-(22,'0865544',1,NULL,NULL,0,0,0,'2011-04-15','00:12:06',1,1212,1212,1,1212,'',NULL,2),
-(31,'023',3,1,2,1,1,2,'2011-04-19','05:44:26',2,120,240,1,0,'undefined',NULL,2),
-(24,'002',3,1,2,0,0,0,'2011-04-15','02:58:47',10,125,1250,1,0,'undefined',NULL,2),
-(25,'002',3,1,1,0,0,0,'2011-04-15','03:04:00',10,125,1250,1,0,'undefined',NULL,2),
-(26,'023',3,1,2,0,0,0,'2011-04-15','03:05:32',10,120,1200,1,0,'undefined',NULL,2),
-(27,'023',3,1,2,0,0,0,'2011-04-15','23:57:24',10,120,1200,1,0,'undefined',NULL,2),
-(28,'023',3,1,2,0,1,2,'2011-04-16','00:05:23',10,120,1200,1,0,'undefined',NULL,2),
-(29,'023',3,1,2,1,1,2,'2011-04-16','00:07:07',10,120,1200,1,0,'undefined',NULL,2),
-(33,'017',3,3,1,0,0,1,'2011-04-22','13:54:14',10,150,1500,1,0,'undefined',NULL,2),
-(34,'018',3,4,1,0,0,1,'2011-04-22','14:18:09',10,1500,15000,1,0,'undefined',NULL,2),
-(35,'0',2,NULL,NULL,1,0,0,'2011-04-26','01:01:01',1,60000,60000,1,0,'',NULL,2),
-(36,'002',3,1,1,0,0,1,'2011-04-26','22:31:37',10,125,1250,1,0,'undefined',NULL,2),
-(37,'001',3,1,1,0,0,1,'2011-04-26','22:34:08',5,100,500,1,0,'undefined',NULL,2),
-(38,'002',3,1,1,0,0,1,'2011-04-26','22:36:17',9,125,1125,1,0,'undefined',NULL,2),
-(41,NULL,1,NULL,NULL,0,0,0,'2011-04-26','23:05:21',1,1500,1500,1,2000,'','065314093',2),
-(42,'041',3,1,3,1,1,3,'2011-04-27','12:32:38',10,120,1200,1,0,'undefined',NULL,2);
+(32,'001',3,1,1,0,0,1,'2011-04-19','10:44:46',10,100,1000,1,0,'undefined',NULL,2,'N',NULL),
+(14,'023',3,NULL,NULL,0,0,0,'2011-04-05','09:38:51',1,120,120,1,0,'undefined',NULL,2,'N',NULL),
+(15,'023',3,NULL,NULL,0,0,0,'2011-04-06','05:26:36',10,120,1200,1,0,'undefined',NULL,2,'N',NULL),
+(16,'023',3,NULL,NULL,0,0,0,'2011-04-06','05:52:44',10,120,1200,1,0,'undefined',NULL,2,'N',NULL),
+(17,'0',1,NULL,NULL,81234,0,0,'2011-04-14','10:59:47',1,0,0,1,0,'',NULL,2,'N',NULL),
+(18,'0',1,NULL,NULL,0,0,0,'2011-04-14','23:05:41',1,0,0,1,0,'','0927272',2,'N',NULL),
+(19,'0',1,NULL,NULL,0,0,0,'2011-04-14','23:23:37',1,12,12323,1,23213,'','21323',2,'N',NULL),
+(20,'02747474',1,NULL,NULL,0,0,0,'2011-04-15','00:08:11',1,2,2323,1,2323,'',NULL,2,'N',NULL),
+(21,'02382382',1,NULL,NULL,0,0,0,'2011-04-15','00:09:29',1,12,12323,1,213213,'',NULL,2,'N',NULL),
+(22,'0865544',1,NULL,NULL,0,0,0,'2011-04-15','00:12:06',1,1212,1212,1,1212,'',NULL,2,'N',NULL),
+(31,'023',3,1,2,1,1,2,'2011-04-19','05:44:26',2,120,240,1,0,'undefined',NULL,2,'N',NULL),
+(24,'002',3,1,2,0,0,0,'2011-04-15','02:58:47',10,125,1250,1,0,'undefined',NULL,2,'N',NULL),
+(25,'002',3,1,1,0,0,0,'2011-04-15','03:04:00',10,125,1250,1,0,'undefined',NULL,2,'N',NULL),
+(26,'023',3,1,2,0,0,0,'2011-04-15','03:05:32',10,120,1200,1,0,'undefined',NULL,2,'N',NULL),
+(27,'023',3,1,2,0,0,0,'2011-04-15','23:57:24',10,120,1200,1,0,'undefined',NULL,2,'N',NULL),
+(28,'023',3,1,2,0,1,2,'2011-04-16','00:05:23',10,120,1200,1,0,'undefined',NULL,2,'N',NULL),
+(29,'023',3,1,2,1,1,2,'2011-04-16','00:07:07',10,120,1200,1,0,'undefined',NULL,2,'N',NULL),
+(33,'017',3,3,1,0,0,1,'2011-04-22','13:54:14',10,150,1500,1,0,'undefined',NULL,2,'N',NULL),
+(34,'018',3,4,1,0,0,1,'2011-04-22','14:18:09',10,1500,15000,1,0,'undefined',NULL,2,'N',NULL),
+(35,'0',2,NULL,NULL,1,0,0,'2011-04-26','01:01:01',1,60000,60000,1,0,'',NULL,2,'N',NULL),
+(36,'002',3,1,1,0,0,1,'2011-04-26','22:31:37',10,125,1250,1,0,'undefined',NULL,2,'N',NULL),
+(37,'001',3,1,1,0,0,1,'2011-04-26','22:34:08',5,100,500,1,0,'undefined',NULL,2,'N',NULL),
+(38,'002',3,1,1,0,0,1,'2011-04-26','22:36:17',9,125,1125,1,0,'undefined',NULL,2,'N',NULL),
+(43,'018',3,4,1,0,0,1,'2011-04-28','00:36:03',10,1500,15000,1,0,'undefined',NULL,1,'N',NULL),
+(41,NULL,1,NULL,NULL,0,0,0,'2011-04-26','23:05:21',1,1500,1500,1,2000,'','065314093',2,'N',NULL),
+(42,'041',3,1,3,1,1,3,'2011-04-27','12:32:38',10,120,1200,1,0,'undefined',NULL,2,'N',NULL),
+(44,'037',3,3,2,1,1,2,'2011-04-28','11:27:16',15,150,2250,1,0,'undefined',NULL,1,'N',NULL),
+(45,'0',2,NULL,NULL,2,0,0,'2011-04-30','01:01:01',1,50000,50000,1,0,'',NULL,1,'N',NULL),
+(46,'023',3,1,2,1,1,2,'2011-05-02','05:24:29',10,120,1200,1,0,'undefined',NULL,1,'N',15),
+(47,'023',3,1,2,1,1,2,'2011-05-02','05:36:10',10,120,1200,1,0,'undefined',NULL,1,'N',15),
+(48,'023',3,1,2,0,0,2,'2011-05-02','05:37:00',10,120,1200,1,0,'undefined',NULL,1,'Y',20),
+(49,'001',3,1,1,0,0,1,'2011-05-02','11:27:55',10,100,1000,1,0,'undefined',NULL,1,'Y',20),
+(50,'0',2,NULL,NULL,3,0,0,'2011-05-02','00:00:00',1,30000,30000,1,0,'',NULL,1,'N',NULL);
 
 /*Table structure for table `translete` */
 
@@ -737,53 +778,54 @@ CREATE TABLE `usermenu` (
   `iduser` int(10) DEFAULT NULL,
   `idmenu` int(10) DEFAULT NULL,
   PRIMARY KEY (`idx`)
-) ENGINE=MyISAM AUTO_INCREMENT=59 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=99 DEFAULT CHARSET=latin1;
 
 /*Data for the table `usermenu` */
 
 insert into `usermenu` values 
-(25,1,59),
-(24,1,58),
-(23,1,57),
-(22,1,56),
-(21,1,55),
-(20,1,13),
-(19,1,12),
-(18,1,11),
-(17,1,1),
+(97,1,90),
+(96,1,89),
+(95,1,88),
+(94,1,87),
+(93,1,86),
+(92,1,85),
+(91,1,84),
+(90,1,83),
+(89,1,82),
 (57,2,73),
 (56,2,1),
-(26,1,60),
-(27,1,61),
-(28,1,62),
-(29,1,64),
-(30,1,65),
-(31,1,66),
-(32,1,67),
-(33,1,68),
-(34,1,69),
-(35,1,70),
-(36,1,71),
-(37,1,72),
-(38,1,73),
-(39,1,74),
-(40,1,75),
-(41,1,76),
-(42,1,77),
-(43,1,78),
-(44,1,79),
-(45,1,80),
-(46,1,81),
-(47,1,82),
-(48,1,83),
-(49,1,84),
-(50,1,85),
-(51,1,86),
-(52,1,87),
-(53,1,88),
-(54,1,89),
-(55,1,90),
-(58,2,74);
+(88,1,81),
+(87,1,80),
+(86,1,79),
+(85,1,78),
+(84,1,77),
+(83,1,76),
+(82,1,75),
+(81,1,74),
+(80,1,73),
+(79,1,72),
+(78,1,71),
+(77,1,70),
+(76,1,69),
+(75,1,68),
+(74,1,67),
+(73,1,66),
+(72,1,65),
+(71,1,64),
+(70,1,62),
+(69,1,61),
+(68,1,60),
+(67,1,59),
+(66,1,58),
+(65,1,57),
+(64,1,56),
+(63,1,55),
+(62,1,13),
+(61,1,12),
+(60,1,11),
+(59,1,1),
+(58,2,74),
+(98,1,91);
 
 /*Table structure for table `userrab` */
 
