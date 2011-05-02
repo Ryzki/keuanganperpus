@@ -27,10 +27,10 @@ class ctranggotabaca extends CI_Controller {
        // $xHarga  =number_format($row->biaya, 0, '.', ',');
         $xForm = '<div id="stylized" class="myform"><h3>Isi / Edit  Anggota Baca </h3>' . form_open_multipart('ctranggotabaca/inserttable', array('id' => 'form', 'name' => 'form')).'<div class="garis"></div>';
         $xAddJs = '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/ajax/baseurl.js"></script>' .
-                '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/ajax/ajaxanggotabaca.js"></script>' .
-                '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/jquery.printElement.js"></script>' ;
+                  '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/jquery.printElement.js"></script>'.
+                   '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/ajax/ajaxanggotabaca.js"></script>';
                 
-        echo $this->modelgetmenu->SetViewPerpus($xForm . $this->setDetailFormanggotabaca($xidx), $this->getlistanggotabaca($xAwal, $xSearch), '', $xAddJs, '');
+        echo $this->modelgetmenu->SetViewPerpus($xForm . $this->setDetailFormanggotabaca($xidx), $this->getlistanggotabaca($xAwal, $xSearch).'<br /><div id="cetak"></div>', '', $xAddJs, '');
     }
 
     function setDetailFormanggotabaca($xidx) {
@@ -150,19 +150,21 @@ class ctranggotabaca extends CI_Controller {
          $xjenisbiaya = $_POST['edjenisbiaya'];
          $xBufResult = '<div id="toprint">';
          $this->load->model('modeljnsbiayaagtbaca');
+         $this->load->helper('umum');
 
          $rowbiaya= $this->modeljnsbiayaagtbaca->getDetailjnsbiayaagtbaca($xjenisbiaya);
-         $xBufResult = '<div id="toprint">
-                       Perpustakaan Universitas Sanata Dharma </br>
-                       Mrican,Tromol Pos 29,yogyakarta 55002</br>
-                       telp .(0274) 513301,515352 </br>
-                       FAX (0274)562383</br>
-                       ===========================================================</br>
-                       Telah terima dari :</br>
-                       NAMA : '.$xNama.' </br>
-                       Uang Sebesar : Rp.'.number_format($rowbiaya->biaya, 0, '.', ',') .' </br>
-                       Guna Membayar Kenggotaan Perpustakaan </br>
-                       ===========================================================</br>
+         $xBufResult = '<div id="toPrint">
+                       Perpustakaan Universitas Sanata Dharma <br />
+                       Mrican,Tromol Pos 29,yogyakarta 55002<br />
+                       telp .(0274) 513301,515352 <br />
+                       FAX (0274)562383<br />
+                       ===========================================================<br />
+                       Telah terima dari :<br />
+                       NAMA : '.$xNama.' <br />
+                       Uang Sebesar : Rp.'.number_format($rowbiaya->biaya, 0, '.', ',') .' <br />
+                       Guna Membayar Keanggotaan Perpustakaan <br />
+                       =========================================================== <br />
+                       Petugas : '.$this->session->userdata('nama').' <br />
                        </div>';
         $this->load->helper('json');
         $this->json_data['data'] = $xBufResult;

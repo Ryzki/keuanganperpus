@@ -2,7 +2,10 @@
 
 if (!defined('BASEPATH'))
     exit('Tidak Diperkenankan mengakses langsung');
-/* Class  Control : anggotabaca  * di Buat oleh Diar PHP Generator * Update List untuk grid karena program generatorku lom sempurna ya hehehehehe */
+/* Class  Control : anggotabaca  * di Buat oleh Diar PHP Generator
+ * * Update List untuk grid karena program generatorku lom sempurna ya hehehehehe
+ * alter table `keuperpususd`.`transaksi` add column `NamaMHS` varchar (100)   NULL  after `prosenpotong`
+ */
 
 class ctrdenda extends CI_Controller {
 
@@ -68,16 +71,15 @@ class ctrdenda extends CI_Controller {
         }
 
         $this->load->helper('common');
-        $this->load->model('modeljenisanggotabaca');
         $xBufResult = '<input type="hidden" name="edidx" id="edidx" value="0" />';
         $xBufResult .= '<input type="hidden" name="edidsparta" id="edidsparta" value="'.$xiddendasparta.'" />';
         $xBufResult .= setForm('edtgldenda', 'Tanggal Denda', form_input(getArrayObj('edtgldenda', '', '120'))) . '<div class="spacer"></div>';
         $xBufResult .= setForm('edNoIdentitas', 'NIM', form_input(getArrayObj('edNoIdentitas', $xNoIdentitas, '150'))) . '<div class="spacer"></div>';
         $xBufResult .= setForm('edNama', 'Nama', form_input(getArrayObj('edNama', $xNama, '200'))) . '<div class="spacer"></div>';
-        $xBufResult .= setForm('edDendaSparta', 'Denda', form_input(getArrayObj('edDendaSparta', $xnominaldenda, '100'))) . '<div class="spacer"></div>';
-        $xBufResult .= form_button('btGetSparta', 'Get From Sparta', 'onclick="dogetsparta();"') . '<div class="spacer"></div>';
-        $xBufResult .= setForm('edDenda', 'Di Bayar', form_input(getArrayObj('edDenda', $xnominalpersatuan, '100'))) . '<div class="spacer"></div>';
-        $xBufResult .= '<div class="garis"></div>' . form_button('btSimpan', 'simpan', 'onclick="dosimpan();"') . form_button('btNew', 'new', 'onclick="doClear();"') . '<div class="spacer"></div>';
+        $xBufResult .= setForm('edDendaSparta', 'Denda', form_input(getArrayObj('edDendaSparta', $xnominaldenda, '100')),'Nominal Denda yang muncul di Sparta') . '<div class="spacer"></div>';
+       //$xBufResult .= form_button('btGetSparta', 'Get From Sparta', 'onclick="dogetsparta();"') . '<div class="spacer"></div>';
+        $xBufResult .= setForm('edDenda', 'Di Bayar', form_input(getArrayObj('edDenda', $xnominalpersatuan, '100')),'Nominal Denda yang dibayar Mahasiswa') . '<div class="spacer"></div>';
+        $xBufResult .= '<div class="garis"></div>' . form_button('btSimpan', 'Simpan', 'onclick="dosimpan();"') . form_button('btNew', 'Baru', 'onclick="doClear();"') . '<div class="spacer"></div>';
         return $xBufResult;
     }
 
@@ -85,8 +87,9 @@ class ctrdenda extends CI_Controller {
         $xLimit = 3;
         $this->load->helper('form');
         $this->load->helper('common');
-        $xbufResult = addRow(addCell('idx', 'width:100px;', true) .
-                        addCell('NIM', 'width:100px;', true) .
+        $xbufResult = addRow(addCell('idx', 'width:45px;', true) .
+                        addCell('NIM', 'width:80px;', true) .
+                        addCell('Nama Mhs', 'width:200px;', true) .
                         addCell('Denda', 'width:100px;text-align:right;', true) .
                         addCell('Dibayar', 'width:100px;text-align:right;', true) .
                         addCell('Edit/Hapus', 'width:100px;text-align:center;', true));
@@ -95,8 +98,9 @@ class ctrdenda extends CI_Controller {
         foreach ($xQuery->result() as $row) {
             $xButtonEdit = '<img src="' . base_url() . 'resource/imgbtn/edit.png" alt="Edit Data" onclick = "doedit(\'' . $row->idx . '\');" style="border:none;width:20px"/>';
             $xButtonHapus = '<img src="' . base_url() . 'resource/imgbtn/delete_table.png" alt="Hapus Data" onclick = "dohapus(\'' . $row->idx . '\',\'' . substr($row->NIM, 0, 20) . '\');" style="border:none;">';
-            $xbufResult .= addRow(addCell($row->idx, 'width:100px;') .
-                            addCell($row->NIM, 'width:100px;') .
+            $xbufResult .= addRow(addCell($row->idx, 'width:45px;') .
+                            addCell($row->NIM, 'width:80px;') .
+                            addCell($row->NamaMhs, 'width:200px;') .
                             addCell(number_format( $row->nominaldenda, 2, ',', '.'), 'width:100px;text-align:right;') .
                             addCell( number_format($row->nominalpersatuan,2, ',', '.'), 'width:100px;text-align:right;') .
                             addCell($xButtonEdit . '&nbsp/&nbsp' . $xButtonHapus, 'width:100px;'));
@@ -108,9 +112,9 @@ class ctrdenda extends CI_Controller {
         $xButtonNext = '<img src="' . base_url() . 'resource/imgbtn/b_nextpage.png" style="border:none;width:20px;" onclick = "dosearch(' . ($xAwal + $xLimit) . ');" />';
         $xRowCells = addCell($xButtonADD, 'width:100px;', true) .
                 addCell($xInput, 'width:200px;border-right:0px;', true) .
-                addCell($xButtonSearch, 'width:40px;border-right:0px;border-left:0px;', true) .
+                addCell($xButtonSearch, 'width:245px;border-right:0px;border-left:0px;', true) .
                 addCell($xButtonPrev . '&nbsp&nbsp' . $xButtonNext, 'width:100px;border-left:0px;', true);
-        return '<div id="tabledata" name ="tabledata" class="tc1" style="width:550px;">' . $xbufResult . $xRowCells . '</div>';
+        return '<div id="tabledata" name ="tabledata" class="tc1" style="width:680px;">' . $xbufResult . $xRowCells . '</div>';
     }
 
     function actionrecord($xIdRec='', $xAction='') {
@@ -130,26 +134,26 @@ class ctrdenda extends CI_Controller {
     }
 
     function editrec() {
-        $xIdEdit = $_POST['edidx'];
-        $this->load->model('modelanggotabaca');
-        $row = $this->modelanggotabaca->getDetailanggotabaca($xIdEdit);
         $this->load->helper('json');
-        $this->json_data['idx'] = $row->idx;
+        $xIdEdit = $_POST['edidx'];
+        $this->load->model('modeldenda');
+        $row = $this->modeldenda->getDetailtransaksi($xIdEdit);
+        $this->json_data['idx'] = $xIdEdit;
+         
         $this->json_data['iddendasparta'] = $row->iddendasparta;
         $this->json_data['NoIdentitas'] = $row->NIM;
-        //$this->json_data['Nama'] = $row->Nama;
-        $this->json_data['nominalpersatuan'] = $row->nominalpersatuan;
+         $this->json_data['Nama'] = $row->NamaMhs;
         $this->json_data['nominaldenda'] = $row->nominaldenda;
+        $this->json_data['nominalpersatuan'] = $row->nominalpersatuan;
+        
         
         echo json_encode($this->json_data);
     }
 
     function deletetable() {
         $edidx = $_POST['edidx'];
-        $this->load->model('modelanggotabaca');
-        $this->load->model('modelhargajenistransaksi');
-        $this->modelanggotabaca->setDeleteanggotabaca($edidx);
-        $this->modelhargajenistransaksi->setDeletetransaksianggotabaca($xidx);
+        $this->load->model('modeldenda');
+        $this->modeldenda->setDeletetransaksi($edidx);
     }
 
     function search() {
@@ -203,20 +207,22 @@ class ctrdenda extends CI_Controller {
         $xiduser = $this->session->userdata('idpegawai');
         $xnominaldenda = $_POST['edDendaSparta'];
         $xiddendasparta = $_POST['edidsparta'];
+
         $xidlokasi = $this->session->userdata('idlokasi');
         $this->load->model('modeldenda');
         $xStr = 'kosong';
+        $xNama = $_POST['edNama'];
 
 
         if ($xidx != '0') {
             $xStr = $this->modeldenda->setUpdatetransaksidenda($xidx, $xNIM, $xidjenistransaksi, $xidpegawai, $xidunitkerja,
                                $xidstatusdinas, str_replace('.', '', $xjumlahsatuan),
                                str_replace('.', '', $xnominalpersatuan), str_replace('.', '', $xtotal), $xiduser,
-                               str_replace('.', '', $xnominaldenda), $xiddendasparta, $xidlokasi);
+                               str_replace('.', '', $xnominaldenda), $xiddendasparta, $xidlokasi,$xNama);
         } else {
             $xStr = $this->modeldenda->setInserttransaksidenda($xidx, $xNIM, $xidjenistransaksi, $xidpegawai, $xidunitkerja,
                             $xidstatusdinas, str_replace('.', '', $xjumlahsatuan), str_replace('.', '', $xnominalpersatuan),
-                            str_replace('.', '', $xtotal), $xiduser, str_replace('.', '', $xnominaldenda), $xiddendasparta, $xidlokasi);
+                            str_replace('.', '', $xtotal), $xiduser, str_replace('.', '', $xnominaldenda), $xiddendasparta, $xidlokasi,$xNama);
         }
         $this->json_data['data'] = $xStr;
         echo json_encode($this->json_data);
