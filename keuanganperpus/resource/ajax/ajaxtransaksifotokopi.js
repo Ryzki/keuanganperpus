@@ -56,6 +56,14 @@ function doedit(edidx){
                 $("#edjumlahsatuan").val(json.jumlahsatuan);
                 $("#ednominalpersatuan").val(json.nominalpersatuan);
                 $("#edtotal").val(json.total);
+                if(json.edchkispusd=="Y"){
+                  $("#edchkispusd").val('Y');
+                  $("#edchkispusd").attr('checked', true);
+                }else
+                {
+                  $("#edchkispusd").val('N');
+                  $("#edchkispusd").attr('checked', false);
+                }
 
                 //       $("#ediduser").val(json.iduser);
                 //       $("#ednominaldenda").val(json.nominaldenda);
@@ -128,10 +136,10 @@ function dotampilpegawai(){
             type: 'POST',
             success: function(json){
             if(json.isdataada){
-                   //alert('tess'+json.Nama);
+                   alert('tess '+json.idUnitKerja);
                    $("#nmpegawai").val(json.npp);
                    $("#nmpegawai").html(json.Nama);
-                   $("#edidunitkerja").val(json.nmunitkerja);
+                   $("#edunitkerja").val(json.idUnitKerja);
                    doshownmpegawai(true);                    
             } else
              {
@@ -154,10 +162,36 @@ function dotampilpegawai(){
     });
 }
 
+function doclickchkbkusd(){
+ if ($("#edchkispusd").val()=='N'){
+    $("#edchkispusd").val('Y');
+ } else
+  {
+    $("#edchkispusd").val('N');
+  }
+ //alert($("#edchkispusd").val());
+}
+
+function onCbunitkerjaChange(){
+ if($("#edunitkerja").val()!='0'){
+
+    $("#edidpegawai").val("P.0000");
+
+ }else{
+   $("#edidpegawai").val("");  
+ }
+
+
+}
+
 function doClear(){ 
     $(document).ready(function(){
+        $("#edchkispusd").val("N");
+        $("#edchkispusd").attr('checked', false);
+
         $("#edidx").val("0");
         $("#edidplu").val("");
+
         $("#edidjenistransaksi").val("");
         $("#edidgrouppengguna").val("");
         $("#edidpegawai").val("");
@@ -184,7 +218,7 @@ function dosimpan(){
                   "&edidplu="+$("#edidplu").val()+
                   "&edidjenistransaksi="+$("#edidjenistransaksi").val()+
                   "&edidpegawai="+$("#edidpegawai").val()+
-                  "&edidunitkerja="+$("#edidunitkerja").val()+
+                  "&edidunitkerja="+$("#edunitkerja").val()+
                   "&edidstatusdinas="+$("#edidstatusdinas").val()+
                   "&edtanggal="+$("#edtanggal").val()+
                   "&edjam="+$("#edjam").val()+
@@ -194,7 +228,8 @@ function dosimpan(){
                   "&ediduser="+$("#ediduser").val()+
                   "&ednominaldenda="+$("#ednominaldenda").val()+
                   "&ediddendasparta="+$("#ediddendasparta").val()+
-                  "&edidlokasi="+$("#edidlokasi").val(),
+                  "&edidlokasi="+$("#edidlokasi").val()+
+                  "&edchkispusd="+$("#edchkispusd").val(),
             cache: false,
             dataType: 'json',
             type: 'POST',
@@ -340,7 +375,7 @@ function doshownamaProduk(isshow){
        position :"relative",
        left:350,
        width:200,
-       top :-145
+       top :-175
        //background:"blue",
       });
         if(isshow){

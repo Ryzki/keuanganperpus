@@ -13,7 +13,7 @@ function dosearch(xAwal){
     } 
     $(document).ready(function(){
         $.ajax({
-            url: getBaseURL()+"index.php/ctrstatusplu/search/",
+            url: getBaseURL()+"index.php/ctrjnsbiayaagtbaca/search/",
             data: "xAwal="+xAwal+"&xSearch="+xSearch,
             cache: false,
             dataType: 'json',
@@ -37,16 +37,15 @@ function dosearch(xAwal){
 function doedit(edidx){ 
     $(document).ready(function(){
         $.ajax({
-            url: getBaseURL()+"index.php/ctrstatusplu/editrec/",
+            url: getBaseURL()+"index.php/ctrjnsbiayaagtbaca/editrec/",
             data: "edidx="+edidx,
             cache: false,
             dataType: 'json',
             type: 'POST',
             success: function(json){
                 $("#edidx").val(json.idx);
-                $("#edStatus").val(json.Status);
-                $("#edProsenReguler").val(json.prosenreguler);
-                $("#edProsenPusd").val(json.prosenperpus);                
+                $("#ednmbiaya").val(json.nmbiaya);
+                $("#edbiaya").val(json.biaya);
             },
             error: function (xmlHttpRequest, textStatus, errorThrown) {
                 start = xmlHttpRequest.responseText.search("<title>") + 7;
@@ -62,16 +61,15 @@ function doedit(edidx){
 function doClear(){ 
     $(document).ready(function(){
         $("#edidx").val("0");
-        $("#edStatus").val("");
-        $("#edProsenReguler").val("");
-        $("#edProsenPusd").val("");
+        $("#ednmbiaya").val("");
+        $("#edbiaya").val("");
     });
 } 
 function dosimpan(){ 
     $(document).ready(function(){
         $.ajax({
-            url: getBaseURL()+"index.php/ctrstatusplu/simpan/",
-            data: "edidx="+$("#edidx").val()+"&edStatus="+$("#edStatus").val()+"&edProsenReguler="+$("#edProsenReguler").val()+"&edProsenPusd="+$("#edProsenPusd").val() ,
+            url: getBaseURL()+"index.php/ctrjnsbiayaagtbaca/simpan/",
+            data: "edidx="+$("#edidx").val()+"&ednmbiaya="+$("#ednmbiaya").val()+"&edbiaya="+$("#edbiaya").val(),
             cache: false,
             dataType: 'json',
             type: 'POST',
@@ -92,12 +90,12 @@ function dosimpan(){
     });
 } 
 
-function dohapus(edidx,edStatus){ 
-    if (confirm("Anda yakin Akan menghapus data "+edStatus+"?"))
+function dohapus(edidx,ednmbiaya){ 
+    if (confirm("Anda yakin Akan menghapus data "+ednmbiaya+"?"))
     {
         $(document).ready(function(){
             $.ajax({
-                url: getBaseURL()+"index.php/ctrstatusplu/deletetable/",
+                url: getBaseURL()+"index.php/ctrjnsbiayaagtbaca/deletetable/",
                 data: "edidx="+edidx,
                 cache: false,
                 dataType: 'json',

@@ -24,12 +24,12 @@
          $(document).ready(function(){ 
            $.ajax({ 
                  url: getBaseUR()+"index.php/ctrreportingbug/simpansmall/",
-                 data: "edlokasi="+document.URL+"&edketerangan="+$("#edketerangan").val(),
+                 data: "edlokasi="+document.URL+"&edketerangan="+$("#edketeranganbug").val(),
                  cache: false, 
                  dataType: 'json', 
                  type: 'POST', 
                  success: function(json){
-                 $("#edketerangan").val("");
+                 $("#edketeranganbug").val("");
                  alert("Terimakasih Anda Sudah Berpartisipasi dalam pengembangan Software ini");
                  }, 
                error: function (xmlHttpRequest, textStatus, errorThrown) { 
