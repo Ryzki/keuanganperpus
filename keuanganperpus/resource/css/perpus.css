@@ -260,3 +260,9 @@ height:35px;
   left: -1px;
 
   }
+
+  div#toPrint{
+  background-image: none;
+  background-color: white;
+  text-align: left;
+}
