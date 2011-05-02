@@ -71,7 +71,7 @@ class ctrsetoran extends CI_Controller {
                     <script  type=text/javascript>
                             $(function() {
                              $("#stylized input#ednominal").autoNumeric();
-                             //$("#ednominal").autoNumeric();
+                             $("#stylized input#ednominal").attr(\'disabled\', true);
                              });
                         </script>
                     ';
@@ -109,11 +109,12 @@ class ctrsetoran extends CI_Controller {
 
         $xBufResult = '<input type="hidden" name="edidx" id="edidx" value="0" />';
         $xBufResult .= setForm('edNoBuktiSetoran', 'NoBuktiSetoran', form_input(getArrayObj('edNoBuktiSetoran', $xNoBuktiSetoran, '100'))) ;
-        $xBufResult .= setForm('edtanggal', 'tanggal', form_input(getArrayObj('edtanggal', $xtanggal, '100'))) . '<div class="spacer"></div>';
+        $xBufResult .= setForm('edtanggal', 'Tanggal ', form_input(getArrayObj('edtanggal', $xtanggal, '100'))) . '<div class="spacer"></div>';
 
-        $xBufResult .= setForm('edidrekanan', 'idrekanan', form_dropdown('edidrekanan', $this->modelrekanan->getArrayListrekanan(), '0', 'id="edidrekanan" width="150px"')) . '<div class="spacer"></div>';
-        $xBufResult .= setForm('ednominal', 'nominal', form_input(getArrayObj('ednominal', $xnominal, '100'))) ;
-        $xBufResult .= setForm('edidstatusplu', 'idstatusplu', form_dropdown('edidstatusplu', $this->modelstatusplu->getArrayListstatusplu(), '0', 'id="edidstatusplu" width="150px"')) . '<div class="spacer"></div>';
+        $xBufResult .= setForm('edidrekanan', 'Rekanan ', form_dropdown('edidrekanan', $this->modelrekanan->getArrayListrekanan(), '0', 'id="edidrekanan" width="150px"')) ;
+        $xBufResult .= setForm('edidstatusplu', 'Status PLU', form_dropdown('edidstatusplu', $this->modelstatusplu->getArrayListstatusplu(), '0', 'id="edidstatusplu" width="150px" onchange="gethargaplu();"')) . '<div class="spacer"></div>';
+        $xBufResult .= setForm('ednominal', 'Nominal ', form_input(getArrayObj('ednominal', $xnominal, '100'))). '<div class="spacer"></div>' ;
+        
 //        $xBufResult .= setForm('ediduser', 'iduser', form_input(getArrayObj('ediduser', $xiduser, '100'))) . '<div class="spacer"></div>';
 //        $xBufResult .= setForm('edidlokasi', 'idlokasi', form_input(getArrayObj('edidlokasi', $xidlokasi, '100'))) . '<div class="spacer"></div>';
         $xBufResult .= '<div class="garis"></div>' . form_button('btSimpan', 'simpan', 'onclick="dosimpan();"') . form_button('btNew', 'new', 'onclick="doClear();"') . '<div class="spacer"></div>';
@@ -207,6 +208,17 @@ class ctrsetoran extends CI_Controller {
             $this->session->set_userdata('awal', $xAwal);
         }
         $this->json_data['tabledata'] = $this->getlistsetoran($xAwal, $xSearch);
+        echo json_encode($this->json_data);
+    }
+
+    function gethargastatusplu(){
+        $xidstatusplu = $_POST['xidstatusplu'];
+        $xtanggal = $_POST['xtanggal'];
+
+        $this->load->model('modelsetoran');
+        $xjmlsetoran =  $this->modelsetoran->getSetoranBulan($xtanggal,$xidstatusplu);
+        $this->load->helper('json');
+        $this->json_data['setoran'] = $xjmlsetoran;
         echo json_encode($this->json_data);
     }
 

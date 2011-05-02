@@ -206,13 +206,13 @@ class ctrlaprekapfcdinas extends CI_Controller {
              
        $this->load->model('modeltransaksi');
        $xQuery = $this->modeltransaksi->getarrayharirekapdinas($xbulan,$tahun,$edidlokasi,$edunitkerja);
-       $arrayrow[0] = '<td>Tgl</td><td>Nama Pengguna</td><td>Pos Rekening</td>';
+       $arrayrow[0] = '<td>Tgl</td><td>Nama Pengguna</td>';
        $i=1;
       $xarrayhari[0]=0;
        if(!empty($xQuery) ){
            foreach($xQuery->result() as $row){
              //echo "Test".$ArrayHari[$i]; hari,idpegawai,idunitkerja $this->modeltransaksi->getnamapegawairekapdinas($xBulan,$tahun,$edidlokasi,$edunitkerja,$hari)
-             $arrayrow[$i]= '<td>'.$row->hari.'</td><td>'.$this->modeltransaksi->getnamapegawairekapdinas($xbulan,$tahun,$edidlokasi,$edunitkerja,$row->hari).'</td><td>'.$row->idunitkerja.'</td>';
+             $arrayrow[$i]= '<td>'.$row->hari.'</td><td>'.$this->modeltransaksi->getnamapegawairekapdinas($xbulan,$tahun,$edidlokasi,$edunitkerja,$row->hari).'</td>';
              $xarrayhari[$i]=$row->hari;
              $xArrayTotal[$i] = 0;
              $xArrayTotalFC[$i] = 0;
@@ -229,7 +229,7 @@ class ctrlaprekapfcdinas extends CI_Controller {
              $xArrayTotalPrintColor[$i] = "Jumlah";
              $xArrayTotalPrintBiasa[$i] = "Jumlah";
              $xArrayTotalJilid[$i] = "Jumlah";
-       $arrayrow[$i]= '<td></td><td></td><td>Jumlah</td>';
+       $arrayrow[$i]= '<td></td><td>Jumlah</td>';
        $xarrayhari[$i]=0;
        
        $xarrayFC = $this->modeltransaksi->getarraystatusplurekapdinas($xbulan,"1",$tahun,$edidlokasi,$edunitkerja);
@@ -296,7 +296,7 @@ class ctrlaprekapfcdinas extends CI_Controller {
        if($xArrayTotalJilid!=null)
          $arrayrow = $this->addTotal($arrayrow, $xarrayhari, $xArrayTotalJilid);
 
-       $arrayrow = $this->addTotal($arrayrow, $xarrayhari, $xArrayTotal);
+         $arrayrow = $this->addTotal($arrayrow, $xarrayhari, $xArrayTotal);
 
 
     return $arrayrow;

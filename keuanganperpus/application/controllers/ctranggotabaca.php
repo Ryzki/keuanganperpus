@@ -23,11 +23,12 @@ class ctranggotabaca extends CI_Controller {
         $this->load->helper('html');
         $this->load->model('modelgetmenu');
         $this->load->model('modelhargajenistransaksi');
-        $row= $this->modelhargajenistransaksi->getDetailhargaIdJnsTransaksi('2');
-        $xHarga  =number_format($row->biaya, 0, '.', ',');
-        $xForm = '<div id="stylized" class="myform"><h3>Isi / Edit  Anggota Baca (Biaya Rp. '.$xHarga.')</h3>' . form_open_multipart('ctranggotabaca/inserttable', array('id' => 'form', 'name' => 'form')).'<div class="garis"></div>';
+       // $row= $this->modelhargajenistransaksi->getDetailhargaIdJnsTransaksi('2');
+       // $xHarga  =number_format($row->biaya, 0, '.', ',');
+        $xForm = '<div id="stylized" class="myform"><h3>Isi / Edit  Anggota Baca </h3>' . form_open_multipart('ctranggotabaca/inserttable', array('id' => 'form', 'name' => 'form')).'<div class="garis"></div>';
         $xAddJs = '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/ajax/baseurl.js"></script>' .
-                '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/ajax/ajaxanggotabaca.js"></script>' ;
+                '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/ajax/ajaxanggotabaca.js"></script>' .
+                '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/jquery.printElement.js"></script>' ;
                 
         echo $this->modelgetmenu->SetViewPerpus($xForm . $this->setDetailFormanggotabaca($xidx), $this->getlistanggotabaca($xAwal, $xSearch), '', $xAddJs, '');
     }
@@ -60,7 +61,8 @@ class ctranggotabaca extends CI_Controller {
         }
         $this->load->helper('common');
         $this->load->model('modeljenisanggotabaca');
-        $xBufResult = '<input type="hidden" name="edidx" id="edidx" value="0" />' .
+        $this->load->model('modeljnsbiayaagtbaca');
+        $xBufResult = '<input type="hidden" name="edidx" id="edidx" value="0" />';
         $xBufResult .= setForm('edNoIdentitas', 'No.Identitas', form_input(getArrayObj('edNoIdentitas', $xNoIdentitas, '150'))) . '<div class="spacer"></div>';
         $xBufResult .= setForm('edNama', 'Nama', form_input(getArrayObj('edNama', $xNama, '200'))) . '<div class="spacer"></div>';
         $xBufResult .= setForm('edidJenisAnggota', 'Jenis Anggota', form_dropdown('edidJenisAnggota', $this->modeljenisanggotabaca->getArrayListjenisanggotabaca(),'0','id="edidJenisAnggota" width="150px"')) . '<div class="spacer"></div>';
@@ -69,31 +71,12 @@ class ctranggotabaca extends CI_Controller {
         $xBufResult .= setForm('edkodepos', 'Kode Pos', form_input(getArrayObj('edkodepos', $xkodepos, '100'))) . '<div class="spacer"></div>';
         $xBufResult .= setForm('edNotelp', 'No Telp', form_input(getArrayObj('edNotelp', $xNotelp, '100'))) ;
         $xBufResult .= setForm('edemail', 'Email', form_input(getArrayObj('edemail', $xemail, '120'))) . '<div class="spacer"></div>';
-        $xBufResult .= '<div class="garis"></div>' . form_button('btSimpan', 'simpan', 'onclick="dosimpan();"') . form_button('btNew', 'new', 'onclick="doClear();"') . '<div class="spacer"></div>';
+        $xBufResult .= setForm('edjenisbiaya', 'Jenis biaya', form_dropdown('edjenisbiaya', $this->modeljnsbiayaagtbaca->getArrayListjnsbiayaagtbaca(),'0','id="edjenisbiaya" width="150px"')) . '<div class="spacer"></div>';
+        $xBufResult .= '<div class="garis"></div>' . form_button('btSimpan', 'simpan', 'onclick="dosimpan();"') . form_button('btNew', 'baru', 'onclick="doClear();"'). form_button('btcetak', 'cetak', 'onclick="doCetak();"') . '<div class="spacer"></div>';
         return $xBufResult;
     }
 
-    function inserttable() {
-        $xidx = $_POST['edidx'];
-        $xNoIdentitas = $_POST['edNoIdentitas'];
-        $xNama = $_POST['edNama'];
-        $xidJenisAnggota = $_POST['edidJenisAnggota'];
-        $xAlamat = $_POST['edAlamat'];
-        $xKota = $_POST['edKota'];
-        $xkodepos = $_POST['edkodepos'];
-        $xNotelp = $_POST['edNotelp'];
-        $xemail = $_POST['edemail'];
-
-        $this->load->model('modelanggotabaca');
-        if ($xidx != '0') {
-            $this->modelanggotabaca->setUpdateanggotabaca($xidx, $xNoIdentitas, $xNama, $xidJenisAnggota, $xAlamat, $xKota, $xkodepos, $xNotelp, $xemail);
-        } else {
-            $this->modelanggotabaca->setInsertanggotabaca($xidx, $xNoIdentitas, $xNama, $xidJenisAnggota, $xAlamat, $xKota, $xkodepos, $xNotelp, $xemail);
-        }
-        $this->createform('0');
-    }
-
-    function getlistanggotabaca($xAwal, $xSearch) {
+        function getlistanggotabaca($xAwal, $xSearch) {
         $xLimit = 3;
         $this->load->helper('form');
         $this->load->helper('common');
@@ -158,6 +141,31 @@ class ctranggotabaca extends CI_Controller {
         $this->json_data['kodepos'] = $row->kodepos;
         $this->json_data['Notelp'] = $row->Notelp;
         $this->json_data['email'] = $row->email;
+        $this->json_data['idjnsbiaya'] = $row->idjnsbiaya;
+        echo json_encode($this->json_data);
+    }
+
+    function setprintnota(){
+         $xNama = $_POST['edNama'];
+         $xjenisbiaya = $_POST['edjenisbiaya'];
+         $xBufResult = '<div id="toprint">';
+         $this->load->model('modeljnsbiayaagtbaca');
+
+         $rowbiaya= $this->modeljnsbiayaagtbaca->getDetailjnsbiayaagtbaca($xjenisbiaya);
+         $xBufResult = '<div id="toprint">
+                       Perpustakaan Universitas Sanata Dharma </br>
+                       Mrican,Tromol Pos 29,yogyakarta 55002</br>
+                       telp .(0274) 513301,515352 </br>
+                       FAX (0274)562383</br>
+                       ===========================================================</br>
+                       Telah terima dari :</br>
+                       NAMA : '.$xNama.' </br>
+                       Uang Sebesar : Rp.'.number_format($rowbiaya->biaya, 0, '.', ',') .' </br>
+                       Guna Membayar Kenggotaan Perpustakaan </br>
+                       ===========================================================</br>
+                       </div>';
+        $this->load->helper('json');
+        $this->json_data['data'] = $xBufResult;
         echo json_encode($this->json_data);
     }
 
@@ -201,20 +209,22 @@ class ctranggotabaca extends CI_Controller {
         $xkodepos = $_POST['edkodepos'];
         $xNotelp = $_POST['edNotelp'];
         $xemail = $_POST['edemail'];
+        $xjenisbiaya = $_POST['edjenisbiaya'];
+
         $this->load->model('modelanggotabaca');
         $this->load->model('modeltransaksi');
-        $this->load->model('modelhargajenistransaksi');
+        $this->load->model('modeljnsbiayaagtbaca');
         if ($xidx != '0') {
-            $xStr = $this->modelanggotabaca->setUpdateanggotabaca($xidx, $xNoIdentitas, $xNama, $xidJenisAnggota, $xAlamat, $xKota, $xkodepos, $xNotelp, $xemail);
+            $xStr = $this->modelanggotabaca->setUpdateanggotabaca($xidx, $xNoIdentitas, $xNama, $xidJenisAnggota, $xAlamat, $xKota, $xkodepos, $xNotelp, $xemail,$xjenisbiaya);
         } else {
-            $xStr = $this->modelanggotabaca->setInsertanggotabaca($xidx, $xNoIdentitas, $xNama, $xidJenisAnggota, $xAlamat, $xKota, $xkodepos, $xNotelp, $xemail);
-            $row= $this->modelhargajenistransaksi->getDetailhargaIdJnsTransaksi('2');
+            $xStr = $this->modelanggotabaca->setInsertanggotabaca($xidx, $xNoIdentitas, $xNama, $xidJenisAnggota, $xAlamat, $xKota, $xkodepos, $xNotelp, $xemail,$xjenisbiaya);
+            $rowbiaya= $this->modeljnsbiayaagtbaca->getDetailjnsbiayaagtbaca($xjenisbiaya);
             //$xHarga  =number_format($row->biaya, 0, '.', ',');
             $xiduser =  $this->session->userdata('idpegawai');
             $xidlokasi =  $this->session->userdata('idlokasi');
            $xtanggal =  $this->session->userdata('tanggal');
            $rowlast =   $this->modelanggotabaca->getLastIndexanggotabaca();
-           $xStr = $this->modeltransaksi->setInserttransaksi($xidx, '0', '2', $rowlast->idx, '0', '0', $xtanggal, '01:01:01', '1', $row->biaya, $row->biaya, $xiduser, '0', '', $xidlokasi);
+           $xStr = $this->modeltransaksi->setInserttransaksi($xidx, '0', '2', $rowlast->idx, '0', '0', $xtanggal, 'current_time', '1', $rowbiaya->biaya, $rowbiaya->biaya, $xiduser, '0', '', $xidlokasi);
 
             //$xStr = $this->modeltransaksi->setInserttransaksi($xidx, $xidplu, $xidjenistransaksi, $xidpegawai, $xidunitkerja, $xidstatusdinas, $xtanggal, $xjam, $xjumlahsatuan, $xnominalpersatuan, $xtotal, $xiduser, $xnominaldenda, $xiddendasparta, $xidlokasi);
         }

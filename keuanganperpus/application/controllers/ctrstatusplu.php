@@ -23,17 +23,16 @@ class ctrstatusplu extends CI_Controller {
         $this->load->helper('html');
         $this->load->model('modelgetmenu');
         $xForm = '<div id="stylized" class="myform"><h3>Isi / Edit Status PLU</h3>' . form_open_multipart('ctrstatusplu/inserttable', array('id' => 'form', 'name' => 'form')).'<div class="garis"></div>';
-        $xAddJs = '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/tiny_mce/jquery.tinymce.js"></script>' .
-                '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/thickbox.js"></script>' .
-                '<link rel="stylesheet" href="' . base_url() . 'resource/css/thickbox.css" type="text/css" media="screen" />' .
-                link_tag('resource/css/screenshot.css') .
-                link_tag('resource/js/uploadify/uploadify.css') .
-                '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/uploadify/swfobject.js"></script>' .
-                '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/uploadify/jquery.uploadify.v2.1.4.js"></script>' .
-                '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/ajax/baseurl.js"></script>' .
-                '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/ajax/ajaxstatusplu.js"></script>' .
-                '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/ajax/ajaxuploadfy.js"></script>' .
-                '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/ajax/ajaxmce.js"></script>';
+        $xAddJs = '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/ajax/baseurl.js"></script>' .
+                '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/ajax/ajaxstatusplu.js"></script>'.
+                '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/autoNumeric.js"></script>' .
+                 '
+                 <script  type=text/javascript>
+                            $(function() {
+                             $("#edProsenReguler").autoNumeric();
+                             $("#edProsenPusd").autoNumeric();
+                             });
+                        </script>';
         echo $this->modelgetmenu->SetViewPerpus($xForm . $this->setDetailFormstatusplu($xidx), $this->getliststatusplu($xAwal, $xSearch), '', $xAddJs, '');
     }
 
@@ -50,24 +49,15 @@ class ctrstatusplu extends CI_Controller {
             $xStatus = $row->Status;
         }
         $this->load->helper('common');
-        $xBufResult = '<input type="hidden" name="edidx" id="edidx" value="0" />' .
+        $xBufResult = '<input type="hidden" name="edidx" id="edidx" value="0" />' ;
         $xBufResult .= setForm('edStatus', 'Status PLU', form_input(getArrayObj('edStatus', $xStatus, '200'))) . '<div class="spacer"></div>';
-        $xBufResult .= '<div class="garis"></div>' . form_button('btSimpan', 'simpan', 'onclick="dosimpan();"') . form_button('btNew', 'new', 'onclick="doClear();"') . '<div class="spacer"></div>';
+        $xBufResult .= setForm('edProsenReguler', 'Prosentase Reguler', form_input(getArrayObj('edProsenReguler', $xStatus, '50')),'Prosentase Untuk Pemotongan Non PUSD').'%' . '<div class="spacer"></div>';
+        $xBufResult .= setForm('edProsenPusd', 'Prosentase PUSD', form_input(getArrayObj('edProsenPusd', $xStatus, '50')),'Prosentase Untuk Pemotongan  PUSD').'%' . '<div class="spacer"></div>';
+        $xBufResult .= '<div class="garis"></div>' . form_button('btSimpan', 'Simpan', 'onclick="dosimpan();"') . form_button('btNew', 'Baru', 'onclick="doClear();"') . '<div class="spacer"></div>';
         return $xBufResult;
     }
 
-    function inserttable() {
-        $xidx = $_POST['edidx'];
-        $xStatus = $_POST['edStatus'];
-
-        $this->load->model('modelstatusplu');
-        if ($xidx != '0') {
-            $this->modelstatusplu->setUpdatestatusplu($xidx, $xStatus);
-        } else {
-            $this->modelstatusplu->setInsertstatusplu($xidx, $xStatus);
-        }
-        $this->createform('0');
-    }
+    
 
     function getliststatusplu($xAwal, $xSearch) {
         $xLimit = 3;
@@ -121,6 +111,9 @@ class ctrstatusplu extends CI_Controller {
         $this->load->helper('json');
         $this->json_data['idx'] = $row->idx;
         $this->json_data['Status'] = $row->Status;
+        $this->json_data['prosenreguler'] = $row->prosenreguler;
+        $this->json_data['prosenperpus'] = $row->prosenperpus;
+
         echo json_encode($this->json_data);
     }
 
@@ -155,11 +148,14 @@ class ctrstatusplu extends CI_Controller {
             $xidx = '0';
         }
         $xStatus = $_POST['edStatus'];
+        $xprosenreguler = $_POST['edProsenReguler'];
+        $xprosenperpus = $_POST['edProsenPusd'];
+
         $this->load->model('modelstatusplu');
         if ($xidx != '0') {
-            $xStr = $this->modelstatusplu->setUpdatestatusplu($xidx, $xStatus);
+            $xStr = $this->modelstatusplu->setUpdatestatusplu($xidx, $xStatus,$xprosenreguler,$xprosenperpus);
         } else {
-            $xStr = $this->modelstatusplu->setInsertstatusplu($xidx, $xStatus);
+            $xStr = $this->modelstatusplu->setInsertstatusplu($xidx, $xStatus,$xprosenreguler,$xprosenperpus);
         }
     }
 

@@ -77,6 +77,7 @@ class ctrtransaksifotokopi extends CI_Controller {
             $xidlokasi = $row->idlokasi;
         }
         $this->load->helper('common');
+        $this->load->model('modelunitkerja');
         $xBufResult  = '<input type="hidden" name="edidx" id="edidx" value="0" />'.
                        '<input type="hidden" name="edidjenistransaksi" id="edidjenistransaksi" value="0" />'.
                        '<input type="hidden" name="edidgrouppengguna" id="edidgrouppengguna" value="0" />';
@@ -89,15 +90,17 @@ class ctrtransaksifotokopi extends CI_Controller {
         $xBufResult .= setForm('edjumlahsatuan', 'Jumlah', form_input(getArrayObj('edjumlahsatuan', $xjumlahsatuan, '100')),'Masukkan Jumlah dan Tekan ENTER');
         $xBufResult .= setForm('ednominalpersatuan', 'Harga', form_input(getArrayObj('ednominalpersatuan', $xnominalpersatuan, '100')));
         $xBufResult .= setForm('edtotal', 'Total', form_input(getArrayObj('edtotal', $xtotal, '100'))) . '<div class="spacer"></div>';
+        //$xBufResult .= setForm('edchkispusd', 'buku pusd', form_button(getArrayObj('edchkispusd', $xtotal, '40'))) . '<div class="spacer"></div>';
+        $xBufResult .= setForm('edchkispusd', 'Buku USD ',form_checkbox(getArrayObjCheckBox('edchkispusd', 'N', FALSE, "0"),'Y',TRUE,'onclick=doclickchkbkusd();'),'Check Bila untuk Buku milik PUSD(Pot 20%)') . '<div class="spacer"></div>'; //form_checkbox( $row->nmmenu, $row->idmenu);
         $xBufResult .='<div id="nmproduk"></div>'. '<div class="spacer"></div>';
         $xBufResult .='<div id="nmpegawai"></div>'. '<div class="spacer"></div>';
         $xBufResult .='<div id="showhide">'. setForm('edidpegawai', 'NPP', form_input(getArrayObj('edidpegawai', $xidpegawai, '100'))) ;
-        $xBufResult .= setForm('edidunitkerja', 'Unit Kerja', form_input(getArrayObj('edidunitkerja', $xidunitkerja, '200'))).'</div>'.'<div class="spacer"></div>';
+        $xBufResult .= setForm('edunitkerja', 'Unit Kerja', form_dropdown('edunitkerja', $this->modelunitkerja->getArrayListunitkerja(), '0', 'id="edunitkerja" width="100px" onchange="onCbunitkerjaChange();"')) . '<div class="spacer"></div></div>';
         /*$xBufResult .= setForm('ediduser', 'iduser', form_input(getArrayObj('ediduser', $xiduser, '100'))) . '<div class="spacer"></div>';
         $xBufResult .= setForm('ednominaldenda', 'nominaldenda', form_input(getArrayObj('ednominaldenda', $xnominaldenda, '100'))) . '<div class="spacer"></div>';
         $xBufResult .= setForm('ediddendasparta', 'iddendasparta', form_input(getArrayObj('ediddendasparta', $xiddendasparta, '100'))) . '<div class="spacer"></div>';
         $xBufResult .= setForm('edidlokasi', 'idlokasi', form_input(getArrayObj('edidlokasi', $xidlokasi, '100'))) . '<div class="spacer"></div>';*/
-        $xBufResult .= '<div class="garis"></div>' . form_button('btSimpan', 'simpan', 'onclick="dosimpan();"') . form_button('btNew', 'new', 'onclick="doClear();"') . '<div class="spacer"></div>';
+        $xBufResult .= '<div class="garis"></div>' . form_button('btSimpan', 'Simpan', 'onclick="dosimpan();"') . form_button('btNew', 'Baru', 'onclick="doClear();"') . '<div class="spacer"></div>';
         return $xBufResult;
     }
 
@@ -180,6 +183,8 @@ class ctrtransaksifotokopi extends CI_Controller {
         $this->json_data['nominaldenda'] = $row->nominaldenda;
         $this->json_data['iddendasparta'] = $row->iddendasparta;
         $this->json_data['idlokasi'] = $row->idlokasi;
+        $this->json_data['edchkispusd'] = $row->isbukuperpus;
+        
         echo json_encode($this->json_data);
     }
 
@@ -230,6 +235,7 @@ class ctrtransaksifotokopi extends CI_Controller {
           $this->json_data['npp'] = $rowpegawai->npp;
           $this->json_data['Nama'] = $rowpegawai->Nama;
           $this->json_data['nmunitkerja'] = $rowpegawai->nmunitkerja;
+          $this->json_data['idUnitKerja'] = $rowpegawai->idUnitKerja;
         }else{
           $this->json_data['isdataada'] = false;
         }
@@ -260,6 +266,8 @@ class ctrtransaksifotokopi extends CI_Controller {
  * 2. field dinas atau pribadi disi otomatis berdasrkan kode PLU
 
  */
+
+
     function simpan() {
         $this->load->helper('json');
         if (!empty($_POST['edidx'])) {
@@ -270,15 +278,14 @@ class ctrtransaksifotokopi extends CI_Controller {
         $xkodeplu = $_POST['edidplu'];
         $xidjenistransaksi = $_POST['edidjenistransaksi'];
         $xidpegawai = $_POST['edidpegawai'];
+        $xidunitkerja = $_POST['edidunitkerja'];
         $this->load->model('modelpegawai');
         $rowpegawai = $this->modelpegawai->getDataPegawai($xidpegawai);
-        
         if(!empty($rowpegawai)){
            $xidunitkerja = $rowpegawai->idUnitKerja;
            $xidpegawai = $rowpegawai->idx;
         }
-        else
-        $xidunitkerja ='0';
+        
 
         
         //$xtanggal = $_POST['edtanggal'];
@@ -290,27 +297,33 @@ class ctrtransaksifotokopi extends CI_Controller {
         $xiduser = $this->session->userdata('idpegawai');
         $xnominaldenda = $_POST['ednominaldenda'];
         $xiddendasparta = $_POST['ediddendasparta'];
+        $xchkispusd = $_POST['edchkispusd'];
+
         $xidlokasi = $this->session->userdata('idlokasi');
         $this->load->model('modeltransaksi');
         $this->load->model('modelprodukplu');
+        
         $xRowPLU = $this->modelprodukplu->getDetailprodukbykode($xkodeplu);
-        $xidstatusdinas = '0';
-        if(!empty($xRowPLU->idJnsPengguna)){
 
+        $xidstatusdinas = '0';
+        
+        if(!empty($xRowPLU->idJnsPengguna)){
            $xidstatusdinas = $xRowPLU->idJnsPengguna;//nilai di transaksi 1 if dinas
 
         }
-
+        $this->load->model('modelstatusplu');
+        $xProsentase = $this->modelstatusplu->getprosenstatusplu($xRowPLU->idstatusPLU,$xchkispusd);
          $xStr ='kosong';
         if ($xidx != '0') {
             $xStr = $this->modeltransaksi->setUpdatetransaksiFC($xidx,$xkodeplu,'3',$xRowPLU->idstatusPLU,$xRowPLU->idJnsPengguna,
                                          $xidpegawai,$xidunitkerja,$xidstatusdinas,str_replace('.','',$xjumlahsatuan),
-                                         $xnominalpersatuan,$xtotal,$xiduser,$xnominaldenda,$xiddendasparta,$xidlokasi);
+                                         $xnominalpersatuan,$xtotal,$xiduser,$xnominaldenda,$xiddendasparta,$xidlokasi,$xchkispusd,$xProsentase);
         } else {
             $xStr = $this->modeltransaksi->setInserttransaksiFC($xidx,$xkodeplu,'3',$xRowPLU->idstatusPLU,$xRowPLU->idJnsPengguna,$xidpegawai,$xidunitkerja,
                               $xidstatusdinas,str_replace('.','',$xjumlahsatuan),$xnominalpersatuan,
-                              $xtotal,$xiduser,$xnominaldenda,$xiddendasparta,$xidlokasi);
+                              $xtotal,$xiduser,$xnominaldenda,$xiddendasparta,$xidlokasi,$xchkispusd,$xProsentase);
         }
+        
         $this->json_data['data'] = $xStr." Coba ".$xidpegawai;
         echo json_encode($this->json_data);
     }
