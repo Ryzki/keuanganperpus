@@ -174,9 +174,9 @@ class ctranggotabaca extends CI_Controller {
     function deletetable() {
         $edidx = $_POST['edidx'];
         $this->load->model('modelanggotabaca');
-        $this->load->model('modelhargajenistransaksi');
+        $this->load->model('modeltransaksi');
         $this->modelanggotabaca->setDeleteanggotabaca($edidx);
-        $this->modelhargajenistransaksi->setDeletetransaksianggotabaca($xidx);
+        $this->modeltransaksi->setDeletetransaksianggotabaca($edidx);
     }
 
     function search() {
