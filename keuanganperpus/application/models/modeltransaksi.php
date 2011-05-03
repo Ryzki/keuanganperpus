@@ -155,7 +155,7 @@ class modeltransaksi extends CI_Model {
     }
 
     function setDeletetransaksianggotabaca($xidx) {
-        $xStr = " DELETE FROM transaksi WHERE transaksi.idpegawai = '" . $xidx . "'";
+        $xStr = " DELETE FROM transaksi WHERE transaksi.idpegawai = '" . $xidx . "' and idjenistransaksi ='2'";
 
         $query = $this->db->query($xStr);
     }
