@@ -79,9 +79,9 @@ class ctrlapdendaharian extends CI_Controller {
         }
         $xBufresult .='</table>';
         
-        $lokasi = $this->session->userdata('idlokasi');
+        //$lokasi = $this->session->userdata('idlokasi');
         $this->load->model('modellokasi');
-        $rowlokasi = $this->modellokasi->getDetaillokasi($lokasi);
+        $rowlokasi = $this->modellokasi->getDetaillokasi($edidlokasi);
 
         $judul = "PERPUSTAKAAN UNIVERSITAS SANATA DHARMA <br />".
                  "LAPORAN DENDA KETERLAMBATAN PENGEMBALIAN KOLEKSI  <br />".
