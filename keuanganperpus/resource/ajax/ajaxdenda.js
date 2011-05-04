@@ -199,5 +199,37 @@ function setnominal(){
     });
 }
 
+function exporttoexcel(data){
+  window.open(getBaseURL()+"resource/SaveToExcel.php?datatodisplay="+data, "laporan", "status=1,toolbar=1");
+}
+
+function dotampillapdendaharian(isexport){
+    $(document).ready(function(){
+        $.ajax({
+            url: getBaseURL()+"index.php/ctrlapdendaharian/dotampillaporan/",
+            data: "edidlokasi="+$("#edidlokasi").val()+"&edtgldenda="+$("#edtgldenda").val(),
+            cache: false,
+            dataType: 'json',
+            type: 'POST',
+            success: function(json){
+            //alert('tess'+json.harga);
+            $("#tablereport").html(json.data);
+           if(isexport){
+               exporttoexcel(json.data);
+            }
+
+            },
+            error: function (xmlHttpRequest, textStatus, errorThrown) {
+                start = xmlHttpRequest.responseText.search("<title>") + 7;
+                end = xmlHttpRequest.responseText.search("</title>");
+                errorMsg = "On Tampil laporan ";
+                if (start > 0 && end > 0)  alert("On Edit "+errorMsg + "  [" + xmlHttpRequest.responseText.substring(start, end) + "]");
+                else
+                    alert("Error  "+errorMsg);
+            }
+        });
+    });
+}
+
 settanggal();
 setnominal();
