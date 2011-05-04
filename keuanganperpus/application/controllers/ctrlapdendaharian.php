@@ -109,14 +109,14 @@ class ctrlapdendaharian extends CI_Controller {
             $arrayrow[$i]= '<td>'.$i.'.</td>';
             $arrayrow[$i].= '<td>'.$row->NIM.'</td>';
             $arrayrow[$i].= '<td>'.$row->NamaMHS.'</td>';
-            $arrayrow[$i].= '<td align="right">'.number_format($row->nominalpersatuan, 0, '.', ',').'</td>';
+            $arrayrow[$i].= '<td align="right">'.number_format($row->nominalpersatuan, 0, ',', '.').'</td>';
             $jumlahtotal += $row->nominalpersatuan;
             $i++;
         }
        $arrayrow[$i] = '<td></td>';
        $arrayrow[$i] .= '<td></td>';
        $arrayrow[$i] .= '<td width="500px">Jumlah</td>';
-       $arrayrow[$i] .= '<td align="right">'.number_format($jumlahtotal, 0, '.', ',').'</td>';
+       $arrayrow[$i] .= '<td align="right">'.number_format($jumlahtotal, 0, ',', '.').'</td>';
         //$this->load->model('modelsetoran');
 //        $xQuery = $this->modelsetoran->getSumSetoranBulan($xbulan,$tahun);
 //
