@@ -2,7 +2,8 @@
 
 if (!defined('BASEPATH'))
     exit('Tidak Diperkenankan mengakses langsung');
-/* Class  Control : reportingbug  * di Buat oleh Diar PHP Generator * Update List untuk grid karena program generatorku lom sempurna ya hehehehehe */
+/* Class  Control : reportingbug  * di Buat oleh Diar PHP Generator *
+ * Update List untuk grid karena program generatorku lom sempurna ya hehehehehe */
 
 class ctrreportingbug extends CI_Controller {
 
