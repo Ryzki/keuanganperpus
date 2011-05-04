@@ -231,5 +231,53 @@ function dotampillapdendaharian(isexport){
     });
 }
 
+function dotampilnamamhs(){
+  $(document).ready(function(){
+        $.ajax({
+            url: getBaseURL()+"index.php/ctrdenda/dogetnamamhs/",
+            data: "edNoIdentitas="+$("#edNoIdentitas").val(),
+            cache: false,
+            dataType: 'json',
+            type: 'POST',
+            success: function(json){
+           // alert('tess'+json.harga);
+             if(json.isada){
+              $("#edNama").val(json.Nama);
+             } else{
+                alert('Data Yang Anda Cari Tidak Ditemukan');    
+             }
+           
+            },
+            error: function (xmlHttpRequest, textStatus, errorThrown) {
+                start = xmlHttpRequest.responseText.search("<title>") + 7;
+                end = xmlHttpRequest.responseText.search("</title>");
+                errorMsg = "On Tampil search nama ";
+                if (start > 0 && end > 0)  alert("On Edit "+errorMsg + "  [" + xmlHttpRequest.responseText.substring(start, end) + "]");
+                else
+                    alert("Error  "+errorMsg);
+            }
+        });
+    });
+}
+
+function dokeypresseed(){
+    $(document).ready(function(){
+        $("#edNama").attr('disabled', true);
+        $('#edNoIdentitas').bind('keypress', function(e) {
+            if(e.keyCode==13){
+               if($('#edjumlahsatuan').val!=''){
+                  dotampilnamamhs();
+
+               }
+
+            }
+        });
+
+
+
+
+    });
+}
 settanggal();
 setnominal();
+dokeypresseed()
