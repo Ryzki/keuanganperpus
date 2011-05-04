@@ -158,12 +158,12 @@ class ctranggotabaca extends CI_Controller {
                        Mrican, Tromol Pos 29,Yogyakarta 55022<br />
                        Telp.(0274) 513301, 515352 <br />
                        FAX (0274)562383<br />
-                       ==========================================<br />
+                       =============================================<br />
                        Telah terima dari :<br />
                        NAMA : '.$xNama.' <br />
                        Uang Sebesar : Rp. '.number_format($rowbiaya->biaya, 0, '.', ',') .' <br />
                        Guna Membayar Keanggotaan Perpustakaan <br />
-                       ==========================================<br />
+                       =============================================<br />
                        Tanggal : '.$this->session->userdata('tanggal').' <br /><br /><br /><br />
                        Petugas : '.$this->session->userdata('nama').' <br />
                        </div>';
