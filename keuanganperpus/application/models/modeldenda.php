@@ -8,7 +8,19 @@ class modeldenda extends CI_Model {
 
 
  //***************** Update 4 april ********************************
-     function getdendaperharilokasi($TglDenda,$xLokasi) {
+ function getNamaMhs($xNim){
+  $xStr = " select Nama  from anggota WHERE No_Anggota like '%".$xNim."%' limit 1";
+  $query = $this->db->query($xStr);
+  $row = $query->row();
+  if(!empty ($row->Nama))
+  {return $row->Nama; }
+  else{
+      return "";
+  }
+
+ }
+
+ function getdendaperharilokasi($TglDenda,$xLokasi) {
         $xStr = "SELECT " .
                 "NamaMHS,  " .
                 "NIM," .
