@@ -148,7 +148,8 @@ function doCetak(){
                // alert(json.data);
                 $('#cetak').html(json.data);
                 $('#cetak').hide();
-                $('#toPrint').printElement({ printMode: 'popup' });
+                $('#toPrint').printElement({printMode: 'popup'});
+                dosimpan();
 
 
             },
