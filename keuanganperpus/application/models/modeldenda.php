@@ -6,6 +6,21 @@ class modeldenda extends CI_Model {
     parent::__construct();
  }
 
+
+ //***************** Update 4 april ********************************
+     function getdendaperharilokasi($TglDenda,$xLokasi) {
+        $xStr = "SELECT " .
+                "NamaMHS,  " .
+                "NIM," .
+                "idjenistransaksi,".
+                "jumlahsatuan," .
+                "nominalpersatuan " .
+                " FROM transaksi  WHERE tanggal = '" . $TglDenda. "' and idlokasi ='".$xLokasi."' and idjenistransaksi = '1' ";
+        $query = $this->db->query($xStr);
+        //$row = $query->row();
+        return $query;
+    }
+
 //****************update 28 maret 2011**********
  function setDeletetransaksianggotabaca($xidx)
 {
