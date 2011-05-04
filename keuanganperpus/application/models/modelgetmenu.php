@@ -265,6 +265,9 @@ class modelgetmenu extends CI_Model {
         $xShow = setviewperpus($xMnHeader, $xBufResult, '$xImageView', '$xMenuKiri', $xMenuKanan);
         $xecho = '<!doctype html>
               <html>
+              <Title>
+              Administrasi Keuangan PUSD
+              </Title>
               <head>' .
                 link_tag('resource/css/perpus.css') .
                 link_tag('resource/css/frmlayout.css') .
