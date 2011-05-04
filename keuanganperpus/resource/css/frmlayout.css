@@ -28,6 +28,16 @@ font-size:12px;
 
 }
 
+.myLogin{
+/*margin:0 auto; */
+/* IE position: fixed; */
+
+  position: relative;
+  width:400px;
+  padding:14px;
+  z-index: 2;
+
+}
 /* ----------- stylized ----------- */
 #stylized{
 border:solid 2px #b7ddf2;
