@@ -129,6 +129,8 @@ class modelgetmenu extends CI_Model {
 //        $xBufResult = setul('menusamping', $xBufResult);
 //        return $xBufResult;
         
+        $this->load->helper('menu');
+        $this->load->helper('url');
         $this->load->helper('form');
         $this->load->helper('common');
         $xBufResult = '<div id="stylized" class="myform2">'.form_open_multipart('ctrreportingbug/inserttable',array('id'=>'form','name'=>'form')).
