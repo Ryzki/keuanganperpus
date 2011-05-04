@@ -1,0 +1,8 @@
+Tambahan:
+1. laporan Harian denda perhari per lokasi (Mrican/Paingan)
+2. Laporan Fotokopi/Print per User per hari
+
+Handling Error:
+1. Pada menu transaksi fotokopi/print, data tidak akan masuk(simpan) 
+ke database jika PLU masih kosong.
+2. Pada menu denda sama pada nmr 1
