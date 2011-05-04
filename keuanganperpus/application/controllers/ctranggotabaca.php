@@ -155,16 +155,16 @@ class ctranggotabaca extends CI_Controller {
          $rowbiaya= $this->modeljnsbiayaagtbaca->getDetailjnsbiayaagtbaca($xjenisbiaya);
          $xBufResult = '<div id="toPrint">
                        Perpustakaan Universitas Sanata Dharma <br />
-                       Mrican,Tromol Pos 29,yogyakarta 55002<br />
-                       telp .(0274) 513301,515352 <br />
+                       Mrican, Tromol Pos 29,Yogyakarta 55022<br />
+                       Telp.(0274) 513301, 515352 <br />
                        FAX (0274)562383<br />
                        ==========================================<br />
                        Telah terima dari :<br />
                        NAMA : '.$xNama.' <br />
-                       Uang Sebesar : Rp.'.number_format($rowbiaya->biaya, 0, '.', ',') .' <br />
+                       Uang Sebesar : Rp. '.number_format($rowbiaya->biaya, 0, '.', ',') .' <br />
                        Guna Membayar Keanggotaan Perpustakaan <br />
                        ==========================================<br />
-                       Tanggal : '.$this->session->userdata('tanggal').' <br />
+                       Tanggal : '.$this->session->userdata('tanggal').' <br /><br /><br /><br />
                        Petugas : '.$this->session->userdata('nama').' <br />
                        </div>';
         $this->load->helper('json');
