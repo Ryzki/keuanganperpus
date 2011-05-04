@@ -12,11 +12,11 @@
         var index2 = url.indexOf("/", index1 + 1);
         var baseLocalUrl = url.substr(0, index2);
 
-        return baseLocalUrl + "/";
+        return "http://172.21.8.7/keuanganperpus/" + "/";
     }
     else {
         // Root Url for domain name
-        return baseURL + "/";
+        return "http://172.21.8.7/keuanganperpus/" + "/";
     }
  }
 
