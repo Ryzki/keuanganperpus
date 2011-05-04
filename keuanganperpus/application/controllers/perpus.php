@@ -143,7 +143,7 @@ class perpus extends CI_Controller {
         $xBufResult = '';
 
 
-        $xForm = '<div id="stylized" class="myform" style="margin-left:150px;text-align:center;" ><h1>Login</h1><div class="garis"> </div>';
+        $xForm = '<div id="stylized" class="myLogin" style="margin-left:250px;text-align:center;" ><h1>Login</h1><div class="garis"> </div>';
 
         $xForm .= form_open_multipart('ctrtranslete/inserttable', array('id' => 'form', 'name' => 'form'));
         //$xForm .= '<textarea name="content" type="hiden" id="edisi" class="tinymce"></textarea>';

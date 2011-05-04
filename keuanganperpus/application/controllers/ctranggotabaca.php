@@ -164,6 +164,7 @@ class ctranggotabaca extends CI_Controller {
                        Uang Sebesar : Rp.'.number_format($rowbiaya->biaya, 0, '.', ',') .' <br />
                        Guna Membayar Keanggotaan Perpustakaan <br />
                        =========================================================== <br />
+                       Tanggal : '.$this->session->userdata('tanggal').' <br />
                        Petugas : '.$this->session->userdata('nama').' <br />
                        </div>';
         $this->load->helper('json');
