@@ -135,9 +135,7 @@ class modelgetmenu extends CI_Model {
                        setForm2('edketeranganbug','Tuliskan Temuan Kesalahan,Saran, dsb',  form_textarea(getArrayObj('edketeranganbug','','230','10','200'))).
                        form_button('btSimpan','kirim','onclick="dosimpanreportingbug();"');
                        ;
-                
-        return $xBufResult."</div>";
-       
+       return $xBufResult;
     }
 
     function getMenuAtas($xIsView=false) {
