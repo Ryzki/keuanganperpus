@@ -74,7 +74,7 @@ class ctrdenda extends CI_Controller {
         $xBufResult = '<input type="hidden" name="edidx" id="edidx" value="0" />';
         $xBufResult .= '<input type="hidden" name="edidsparta" id="edidsparta" value="'.$xiddendasparta.'" />';
         $xBufResult .= setForm('edtgldenda', 'Tanggal Denda', form_input(getArrayObj('edtgldenda', '', '120'))) . '<div class="spacer"></div>';
-        $xBufResult .= setForm('edNoIdentitas', 'NIM', form_input(getArrayObj('edNoIdentitas', $xNoIdentitas, '150'))) . '<div class="spacer"></div>';
+        $xBufResult .= setForm('edNoIdentitas', 'NIM', form_input(getArrayObj('edNoIdentitas', $xNoIdentitas, '150')),'Isikan NIM/Nomor NPP TEKAN ENTER(Sorot barcode)') . '<div class="spacer"></div>';
         $xBufResult .= setForm('edNama', 'Nama', form_input(getArrayObj('edNama', $xNama, '200'))) . '<div class="spacer"></div>';
         $xBufResult .= setForm('edDendaSparta', 'Denda', form_input(getArrayObj('edDendaSparta', $xnominaldenda, '100')),'Nominal Denda yang muncul di Sparta') . '<div class="spacer"></div>';
        //$xBufResult .= form_button('btGetSparta', 'Get From Sparta', 'onclick="dogetsparta();"') . '<div class="spacer"></div>';
@@ -148,6 +148,21 @@ class ctrdenda extends CI_Controller {
         
         
         echo json_encode($this->json_data);
+    }
+
+    function dogetnamamhs(){
+     $this->load->helper('json');
+     $edNoIdentitas = $_POST['edNoIdentitas'];
+     $this->load->model('modeldenda');
+     $xnama = $this->modeldenda->getNamaMhs($edNoIdentitas);
+     $this->json_data['isada'] = false;
+     $this->json_data['Nama'] = false;
+     if(!empty ($xnama)){
+      $this->json_data['Nama'] = $this->modeldenda->getNamaMhs($edNoIdentitas);
+      $this->json_data['isada'] = true;
+     }
+     
+     echo json_encode($this->json_data);
     }
 
     function deletetable() {
