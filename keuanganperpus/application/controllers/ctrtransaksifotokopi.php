@@ -100,7 +100,7 @@ class ctrtransaksifotokopi extends CI_Controller {
         $xBufResult .= setForm('ednominaldenda', 'nominaldenda', form_input(getArrayObj('ednominaldenda', $xnominaldenda, '100'))) . '<div class="spacer"></div>';
         $xBufResult .= setForm('ediddendasparta', 'iddendasparta', form_input(getArrayObj('ediddendasparta', $xiddendasparta, '100'))) . '<div class="spacer"></div>';
         $xBufResult .= setForm('edidlokasi', 'idlokasi', form_input(getArrayObj('edidlokasi', $xidlokasi, '100'))) . '<div class="spacer"></div>';*/
-        $xBufResult .= '<div class="garis"></div>' . form_button('btSimpan', 'Simpan', 'onclick="dosimpan();"') . form_button('btNew', 'Baru', 'onclick="doClear();"') . '<div class="spacer"></div>';
+        $xBufResult .= '<div class="garis"></div>' . form_button('btSimpan', 'Simpan', 'onclick="dosimpan();" id="btSimpan"') . form_button('btNew', 'Baru', 'onclick="doClear();"') . '<div class="spacer"></div>';
         return $xBufResult;
     }
 
