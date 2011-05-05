@@ -1,0 +1,34 @@
+
+baca dulu sampai selsai ya gan...hehehehe
+baru dicoba
+===========================
+Gan Di update seperti biasa ke local dulu baru ke server
+untuk Controllers
+untuk Models
+untuk Ajax
+============================
+* yang diperbiki transaksi fotokopi
+- sudah tidak bisa simpan untuk yang kosong
+- user bisa tekan enter setelah mengetikkan jumlah lembar fotokopi/print/jilid cursor secara otomatis ke tombol simpan dan langsung tekan enter
+ /// khusus untuk PLU yang penggunanya mahasiswa dan anggota baca
+
+=============================
+* Untuk transaksi Denda sudah konek ke table anggota. jadi table anggota di perbaruhi ya gan dari sparta
+=============================
+*  tambahan  rekap transaksi per user / perhari
+spek :
+     - tanggal bisa di ubah
+     - combo user akan otomotis memilih user yang aktif dan disable jika pada tanggal tersebut user yang aktif pernah transaksi
+     - jika pada tanggal tersebut user yang aktif tidak bertranssaksi maka combo akan enable dan namaya tidak ada di combo tersebut
+  => hal ini dimaksudkan dengan pengandaian orang yang berwenang yang tidak melakukan transaksi, bisa memilih user untuk mengetahui histori transaksi user
+     - ada combo jenis transaski supaya mudah mengecek histori baik untuk agt baca,denda maupun transaksi fotokopi
+     - lopran di sediakan kolom lokasi transaksi untuk pengecekan apakah user sudah memilih lokasi ketika login.
+       dengan demikiaan apabila ada selisih rekap transaksi bisa dicek, karena kemungkinan kesalahan ini bisa terjadi
+=========================
+PENTING
+sebelum menjalankan/menguji yang terbaru ini jalankan dulu  SQL Berikut ini
+* JnsTrx.sql
+* menu.sql
+
+jangan Lupa yang di server juga di jalankan sql ini.
+=========================
