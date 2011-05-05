@@ -10,6 +10,35 @@ class modeltransaksi extends CI_Model {
         parent::__construct();
     }
 
+    //*************Update 5 Mei 20011 *******************
+
+    function getSQLDasarPertanggalfotokopi($xTanggal,$xiduser) {
+    $xStr = "  Select   (select NamaProduk from produkplu where produkplu.KodePLU = transaksi.idPLU limit 1) NamaProduk ,jam,jumlahsatuan,total
+               nominalpersatuan,(select NmLokasi from lokasi where lokasi.idx = transaksi.idlokasi limit 1) as nmlokasi
+                from transaksi   where tanggal='".$xTanggal."' and iduser = '".$xiduser."' and idjenistransaksi = '3'".
+                "  order by jam DESC ";
+    $query = $this->db->query($xStr);
+       return $query;
+    }
+
+    function getSQLDasarPertanggaldenda($xTanggal,$xiduser) {
+     $xStr = "  Select  NIM, NamaMHS,jam,
+               nominalpersatuan,(select NmLokasi from lokasi where lokasi.idx = transaksi.idlokasi limit 1) as nmlokasi
+                from transaksi   where tanggal='".$xTanggal."' and iduser = '".$xiduser."' and idjenistransaksi = '1'".
+                "  order by jam DESC ";
+    $query = $this->db->query($xStr);
+       return $query;
+    }
+
+    function getSQLDasarPertanggalanggotabaca($xTanggal,$xiduser) {
+     $xStr = "  Select  idpegawai,(select Nama from anggotabaca where anggotabaca.idx = idpegawai) Nama ,jam,
+               nominalpersatuan,idjenistransaksi,idlokasi,(select NmLokasi from lokasi where lokasi.idx = transaksi.idlokasi limit 1) as nmlokasi
+                from transaksi   where tanggal='".$xTanggal."' and iduser = '".$xiduser."' and idjenistransaksi = '2'".
+                "  order by jam DESC ";
+     $query = $this->db->query($xStr);
+       return $query;
+    }
+
    //**************Update 27 April 2011 Rekap Pribadi*************
    function getarraypribadi($xBulan,$tahun,$edidlokasi) {
         $xStr = 'Select idpegawai from ('.$this->getSQLDasarRekap($xBulan, $tahun).') as tb1 WHERE idlokasi ="'.$edidlokasi.'" and (idpegawai <> 0) and idgrouppengguna = "3" ';
@@ -38,6 +67,7 @@ class modeltransaksi extends CI_Model {
         return $row->jmllembar;
     }
 
+
  //***************Update 26 April 2011 *************
   function getSQLDasarRekap($xBulan,$tahun) {
      return "  Select trx.idx, trx.idplu,tanggal,day(tanggal) hari,jumlahsatuan,nominalpersatuan,
@@ -47,8 +77,7 @@ class modeltransaksi extends CI_Model {
                 idpegawai,idunitkerja,trx.idjenistransaksi,idlokasi,idgrouppengguna
                 from transaksi as trx
                 left join produkplu as plu on(trx.idplu=plu.KodePLU) where month(tanggal)='".$xBulan."' and year(tanggal)='".$tahun.
-                "'  order by tanggal ASC, trx.idjenistransaksi DESC ";
-    
+                "'  order by tanggal ASC, trx.idjenistransaksi DESC "; 
     }
 
    function getRekapAll($xBulan,$tahun){
@@ -346,7 +375,7 @@ class modeltransaksi extends CI_Model {
                 "iduser," .
                 "nominaldenda," .
                 "iddendasparta," .
-                "idlokasi) VALUES('" . $xidx . "','" . $xidplu . "','" . $xidjenistransaksi . "','" . $xidpegawai . "','" . $xidunitkerja . "','" . $xidstatusdinas . "','" . $xtanggal . "','" . $xjam . "','" . $xjumlahsatuan . "','" . $xnominalpersatuan . "','" . $xtotal . "','" . $xiduser . "','" . $xnominaldenda . "','" . $xiddendasparta . "','" . $xidlokasi . "')";
+                "idlokasi) VALUES('" . $xidx . "','" . $xidplu . "','" . $xidjenistransaksi . "','" . $xidpegawai . "','" . $xidunitkerja . "','" . $xidstatusdinas . "','" . $xtanggal . "',current_time,'" . $xjumlahsatuan . "','" . $xnominalpersatuan . "','" . $xtotal . "','" . $xiduser . "','" . $xnominaldenda . "','" . $xiddendasparta . "','" . $xidlokasi . "')";
 
         //echo $xStr;
         $query = $this->db->query($xStr);

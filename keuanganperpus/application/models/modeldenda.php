@@ -8,6 +8,12 @@ class modeldenda extends CI_Model {
 
 
  //***************** Update 4 april ********************************
+ function getarrayuser($xtgltrx){
+      $xStr = "Select  distinct iduser,(select Nama from pegawai where pegawai.idx = transaksi.iduser) as Nama from transaksi where tanggal = '".$xtgltrx."'";
+      $query = $this->db->query($xStr);
+      return $query;
+  }
+
  function getNamaMhs($xNim){
   $xStr = " select Nama  from anggota WHERE No_Anggota like '%".$xNim."%' limit 1";
   $query = $this->db->query($xStr);
