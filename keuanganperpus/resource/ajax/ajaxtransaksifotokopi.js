@@ -96,9 +96,11 @@ function dotampildataPLU(){
            if(json.isdataada){
                   //alert('tess'+json.idjenistransaksi);
                    $("#ednominalpersatuan").val(json.harga);
-                   $("#edjumlahsatuan").focus();
+                   
                    $("#nmproduk").html(json.NamaProduk);
                    $("#edidgrouppengguna").val(json.idjenipengguna);
+                   $("#edjumlahsatuan").attr('disabled', false);
+                   $("#edjumlahsatuan").focus();
 
                     doshownamaProduk(true);
 
@@ -212,6 +214,12 @@ function doClear(){
 
 function dosimpan(){ 
     $(document).ready(function(){
+        if(($("#edjumlahsatuan").val()=='0')||($("#edjumlahsatuan").val()==''))
+        {
+           alert("Data belum lengkap Terisi");
+          return;
+        }
+
         $.ajax({
             url: getBaseURL()+"index.php/ctrtransaksifotokopi/simpan/",
             data: "edidx="+$("#edidx").val()+
@@ -239,7 +247,9 @@ function dosimpan(){
                 doshownamaProduk(false);
                 doshownmpegawai(false);
                 doshowpegawai(false);
-                
+               
+                $("#edjumlahsatuan").attr('disabled', true);
+                 $("#edidplu").focus();
                 //$("#edidplu").val(json.data);
                // alert(json.data);
             },
@@ -293,6 +303,8 @@ function dokeypresseed(){
     $(document).ready(function(){
 
         $("#ednominalpersatuan").attr('disabled', true);
+        $("#edjumlahsatuan").attr('disabled', true);
+
         $("#edtotal").attr('disabled', true);
         $('#edidplu').bind('keypress', function(e) {
             if(e.keyCode==13){
@@ -306,7 +318,7 @@ function dokeypresseed(){
             if(e.keyCode==13){
                if($('#edjumlahsatuan').val!=''){
                   $('#edtotal').val($("#ednominalpersatuan").val()*$("#edjumlahsatuan").val());
-
+                  $("#btSimpan").focus();
                }
                if(($("#edidjenistransaksi").val()==3)||($("#edidjenistransaksi").val()==4)){
                   $("#edidpegawai").focus();
