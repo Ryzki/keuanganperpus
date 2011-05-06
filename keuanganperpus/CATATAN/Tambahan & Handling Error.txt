@@ -7,6 +7,12 @@ Handling Error:
 ke database jika PLU masih kosong.
 2. Pada menu denda sama pada nmr 1
 
+==================================================
 Tambahan 6-5-2011
 Laporan Detail Anggota baca per Lokasi
 No |Nama       | Rupiah  |
+
+Laporan denda Harian tambah 1 kolom fild "Petugas"
+No  | NIM      | Nama MHS  | Denda  | Petugas  |
+
+Pada Laporan Detai RAB-> POS : (tidak berubah), data sdh benar
