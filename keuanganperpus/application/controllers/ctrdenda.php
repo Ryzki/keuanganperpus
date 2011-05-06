@@ -76,7 +76,8 @@ class ctrdenda extends CI_Controller {
         $xBufResult .= setForm('edtgldenda', 'Tanggal Denda', form_input(getArrayObj('edtgldenda', '', '120'))) . '<div class="spacer"></div>';
         $xBufResult .= setForm('edNoIdentitas', 'NIM', form_input(getArrayObj('edNoIdentitas', $xNoIdentitas, '150')),'Isikan NIM/Nomor NPP TEKAN ENTER(Sorot barcode)') . '<div class="spacer"></div>';
         $xBufResult .= setForm('edNama', 'Nama', form_input(getArrayObj('edNama', $xNama, '200'))) . '<div class="spacer"></div>';
-        $xBufResult .= setForm('edDendaSparta', 'Denda', form_input(getArrayObj('edDendaSparta', $xnominaldenda, '100')),'Nominal Denda yang muncul di Sparta') . '<div class="spacer"></div>';
+         $xBufResult .= '<input type="hidden" name="edDendaSparta" id="edDendaSparta" value="0" />';
+        //$xBufResult .= setForm('edDendaSparta', 'Denda', form_input(getArrayObj('edDendaSparta', $xnominaldenda, '100'),'0','type="hidden"'),'Nominal Denda yang muncul di Sparta') . '<div class="spacer"></div>';
        //$xBufResult .= form_button('btGetSparta', 'Get From Sparta', 'onclick="dogetsparta();"') . '<div class="spacer"></div>';
         $xBufResult .= setForm('edDenda', 'Di Bayar', form_input(getArrayObj('edDenda', $xnominalpersatuan, '100')),'Nominal Denda yang dibayar Mahasiswa') . '<div class="spacer"></div>';
         $xBufResult .= '<div class="garis"></div>' . form_button('btSimpan', 'Simpan', 'onclick="dosimpan();"') . form_button('btNew', 'Baru', 'onclick="doClear();"') . '<div class="spacer"></div>';
@@ -90,7 +91,7 @@ class ctrdenda extends CI_Controller {
         $xbufResult = addRow(addCell('idx', 'width:45px;', true) .
                         addCell('NIM', 'width:80px;', true) .
                         addCell('Nama Mhs', 'width:200px;', true) .
-                        addCell('Denda', 'width:100px;text-align:right;', true) .
+                        //addCell('Denda', 'width:100px;text-align:right;', true) .
                         addCell('Dibayar', 'width:100px;text-align:right;', true) .
                         addCell('Edit/Hapus', 'width:100px;text-align:center;', true));
         $this->load->model('modeldenda');
@@ -101,7 +102,7 @@ class ctrdenda extends CI_Controller {
             $xbufResult .= addRow(addCell($row->idx, 'width:45px;') .
                             addCell($row->NIM, 'width:80px;') .
                             addCell($row->NamaMhs, 'width:200px;') .
-                            addCell(number_format( $row->nominaldenda, 2, ',', '.'), 'width:100px;text-align:right;') .
+                          //  addCell(number_format( $row->nominaldenda, 2, ',', '.'), 'width:100px;text-align:right;') .
                             addCell( number_format($row->nominalpersatuan,2, ',', '.'), 'width:100px;text-align:right;') .
                             addCell($xButtonEdit . '&nbsp/&nbsp' . $xButtonHapus, 'width:100px;'));
         }
@@ -112,9 +113,9 @@ class ctrdenda extends CI_Controller {
         $xButtonNext = '<img src="' . base_url() . 'resource/imgbtn/b_nextpage.png" style="border:none;width:20px;" onclick = "dosearch(' . ($xAwal + $xLimit) . ');" />';
         $xRowCells = addCell($xButtonADD, 'width:100px;', true) .
                 addCell($xInput, 'width:200px;border-right:0px;', true) .
-                addCell($xButtonSearch, 'width:245px;border-right:0px;border-left:0px;', true) .
+                addCell($xButtonSearch, 'width:138px;border-right:0px;border-left:0px;', true) .
                 addCell($xButtonPrev . '&nbsp&nbsp' . $xButtonNext, 'width:100px;border-left:0px;', true);
-        return '<div id="tabledata" name ="tabledata" class="tc1" style="width:680px;">' . $xbufResult . $xRowCells . '</div>';
+        return '<div id="tabledata" name ="tabledata" class="tc1" style="width:580px;">' . $xbufResult . $xRowCells . '</div>';
     }
 
     function actionrecord($xIdRec='', $xAction='') {
@@ -222,6 +223,7 @@ class ctrdenda extends CI_Controller {
         $xiduser = $this->session->userdata('idpegawai');
         $xnominaldenda = $_POST['edDendaSparta'];
         $xiddendasparta = $_POST['edidsparta'];
+        $xnominaldenda =$xnominalpersatuan;
 
         $xidlokasi = $this->session->userdata('idlokasi');
         $this->load->model('modeldenda');
