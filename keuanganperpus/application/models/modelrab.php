@@ -10,7 +10,65 @@ class modelrab extends CI_Model {
         parent::__construct();
     }
 
-    /*Update 27 April 2011 ***************/
+    /*Update 09 mei 2011 ***************/
+    function getLastKodeRABbyParrent($xIdParent) {
+                $xStr = "SELECT " .
+                "idx," .
+                "JudulRAB," .
+                "idparent," .
+                "kodeRAB," .
+                "kodeRABUSD,isview " .
+                " FROM rab WHERE idparent = '".$xIdParent."' order by idx DESC limit 1 ";
+        $query = $this->db->query($xStr);
+        $row = $query->row();
+      if(!empty ($row->kodeRAB)){
+//        //ambil kode terakhir kemudian + 1 dan munculkan;
+          $xArrayKode = explode('.', $row->kodeRAB);
+//          $xKodeRAB = count($xArrayKode);
+          $xKodeRAB = '';
+          $xKodeLast = $xArrayKode[count($xArrayKode)-1];
+           $xKodeLast += 1;
+//           //$xKodeRAB = $xArrayKode[0];
+           for($i=0;$i<=count($xArrayKode)-2;$i++){
+             $xKodeRAB = $xKodeRAB.'.' . $xArrayKode[$i];
+//
+           }
+           $xKodeRAB .= '.'.str_pad($xKodeLast. '', 3, '0', STR_PAD_LEFT);
+
+
+      }else//jika kosong berarti child
+      {
+        $rowrab = $this->getDetailrab($xIdParent);
+        $xKodeRAB =  $rowrab->kodeRAB.'.'.'001';
+      }
+       if(strpos($xKodeRAB,'.')==0){
+         $xKodeRAB = substr($xKodeRAB, 1);
+       }
+       return $xKodeRAB;
+      // return 'aaa';
+    }
+
+    function getListraballbyidx() {
+                $xStr = "SELECT " .
+                "idx," .
+                "JudulRAB," .
+                "idparent," .
+                "kodeRAB," .
+                "kodeRABUSD,isview" .
+                " FROM rab  order by idx ASC ";
+        $query = $this->db->query($xStr);
+        return $query;
+    }
+
+    function getKodeRABbyUrut($xIdxRAB,$xIdxParent){
+     $xStrSet  = "set @urut :=0";
+     $this->db->query($xStrSet);
+     $xStr = "Select urut,idx,JudulRAB,idparent,kodeRAB from(select @urut :=  @urut + 1  as urut ,idx,JudulRAB,idparent,kodeRAB,isview from keuperpususd.rab where idparent ='".$xIdxParent."') tb1 where idx='".$xIdxRAB."' ";
+     $query = $this->db->query($xStr);
+     $row = $query->row();
+     return $row;
+
+    }
 
 
     /*     * **********edit  02 april 2011 ******** */
@@ -31,7 +89,7 @@ class modelrab extends CI_Model {
                 "JudulRAB," .
                 "idparent," .
                 "kodeRAB," .
-                "kodeRABUSD" .
+                "kodeRABUSD,isview" .
                 " FROM rab  $xWhere order by idx Desc limit 1";
                 
 
@@ -41,15 +99,15 @@ class modelrab extends CI_Model {
 
 // return $xStr;
     }
-
+    
     function getListraball() {
                 $xStr = "SELECT " .
                 "idx," .
                 "JudulRAB," .
                 "idparent," .
                 "kodeRAB," .
-                "kodeRABUSD" .
-                " FROM rab  order by kodeRAB ASC ";
+                "kodeRABUSD,isview" .
+                " FROM rab  where isview = 'Y' order by kodeRAB ASC  ";
         $query = $this->db->query($xStr);
         return $query;
     }
@@ -77,7 +135,7 @@ class modelrab extends CI_Model {
                 "JudulRAB," .
                 "idparent," .
                 "kodeRAB," .
-                "kodeRABUSD" .
+                "kodeRABUSD,isview" .
                 " FROM rab  $xSearch order by idx ASC ";
         $query = $this->db->query($xStr);
 
@@ -209,7 +267,7 @@ class modelrab extends CI_Model {
                 "JudulRAB," .
                 "idparent," .
                 "kodeRAB," .
-                "kodeRABUSD" .
+                "kodeRABUSD,isview" .
                 " FROM rab   order by idx ASC ";
         $query = $this->db->query($xStr);
         $xBufResult = "<option value=\"0\" selected=\"selected\">-</option>";
@@ -274,19 +332,28 @@ class modelrab extends CI_Model {
     }
 //********************************************************end edit*************/
 
-    function getArrayListrab() { /* spertinya perlu lock table */
+    function getArrayListrab($isParentNotShow=false) { /* spertinya perlu lock table */
         $xBuffResul = array();
         $xStr = "SELECT " .
                 "idx," .
                 "JudulRAB," .
                 "idparent," .
                 "kodeRAB," .
-                "kodeRABUSD" .
+                "kodeRABUSD,isview" .
                 " FROM rab   order by idx ASC ";
         $query = $this->db->query($xStr);
         $xBuffResul[0] = '-';
         foreach ($query->result() as $row) {
+            if($isParentNotShow){
+              $this->load->model('modelpostingrab');
+              if(!$this->modelpostingrab->getIsParrent($row->idx)){
+                $xBuffResul[$row->idx] = $row->JudulRAB;
+              }
+
+            } else{
+
             $xBuffResul[$row->idx] = $row->JudulRAB;
+            }
         }
         return $xBuffResul;
     }
@@ -300,7 +367,7 @@ class modelrab extends CI_Model {
                 "JudulRAB," .
                 "idparent," .
                 "kodeRAB," .
-                "kodeRABUSD" .
+                "kodeRABUSD,isview" .
                 " FROM rab $xSearch order by idx DESC limit " . $xAwal . "," . $xLimit;
         $query = $this->db->query($xStr);
         return $query;
@@ -312,7 +379,7 @@ class modelrab extends CI_Model {
                 "JudulRAB," .
                 "idparent," .
                 "kodeRAB," .
-                "kodeRABUSD" .
+                "kodeRABUSD,isview" .
                 " FROM rab  WHERE idx = '" . $xidx . "'";
 
         $query = $this->db->query($xStr);
@@ -326,7 +393,7 @@ class modelrab extends CI_Model {
                 "JudulRAB," .
                 "idparent," .
                 "kodeRAB," .
-                "kodeRABUSD" .
+                "kodeRABUSD,isview" .
                 " FROM rab  WHERE kodeRAB = '" . $xidx . "'";
 
         $query = $this->db->query($xStr);
@@ -340,33 +407,42 @@ class modelrab extends CI_Model {
                 "JudulRAB," .
                 "idparent," .
                 "kodeRAB," .
-                "kodeRABUSD" .
+                "kodeRABUSD,isview" .
                 " FROM rab order by idx DESC limit 1 ";
         $query = $this->db->query($xStr);
         $row = $query->row();
         return $row;
     }
 
-    Function setInsertrab($xidx, $xJudulRAB, $xidparent, $xkodeRAB, $xkodeRABUSD) {
+    Function setInsertrab($xidx, $xJudulRAB, $xidparent, $xkodeRAB, $xkodeRABUSD,$xisview) {
         $xStr = " INSERT INTO rab( " .
                 "idx," .
                 "JudulRAB," .
                 "idparent," .
                 "kodeRAB," .
-                "kodeRABUSD) VALUES('" . $xidx . "','" . $xJudulRAB . "','" . $xidparent . "','" . $xkodeRAB . "','" . $xkodeRABUSD . "')";
+                "kodeRABUSD,isview) VALUES('" . $xidx . "','" . $xJudulRAB . "','" . $xidparent .
+                                           "','" . $xkodeRAB . "','" . $xkodeRABUSD . "','".$xisview."')";
         $query = $this->db->query($xStr);
         return $xidx;
     }
 
-    Function setUpdaterab($xidx, $xJudulRAB, $xidparent, $xkodeRAB, $xkodeRABUSD) {
+    Function setUpdaterab($xidx, $xJudulRAB, $xidparent, $xkodeRAB, $xkodeRABUSD,$xisview) {
         $xStr = " UPDATE rab SET " .
                 "idx='" . $xidx . "'," .
                 "JudulRAB='" . $xJudulRAB . "'," .
                 "idparent='" . $xidparent . "'," .
                 "kodeRAB='" . $xkodeRAB . "'," .
-                "kodeRABUSD='" . $xkodeRABUSD . "' WHERE idx = '" . $xidx . "'";
+                "kodeRABUSD='" . $xkodeRABUSD ."',".
+                "isview ='".$xisview."' WHERE idx = '" . $xidx . "'";
         $query = $this->db->query($xStr);
         return $xidx;
+    }
+
+    Function setUpdateKodeRab($xidx, $xkodeRAB) {
+        $xStr = " UPDATE rab SET " .
+                " kodeRAB='" . $xkodeRAB . "' WHERE idx = '" . $xidx . "'";
+        $query = $this->db->query($xStr);
+        return $xStr;
     }
 
     function setDeleterab($xidx) {

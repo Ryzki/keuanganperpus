@@ -9,7 +9,48 @@ class modelrealisasirab extends CI_Model {
     function __construct() {
         parent::__construct();
     }
+    /****************09 mei 2011*************/
+    function getSumRealisasirabbyparrentsampaibulan($xParent,$xbulan,$tahun) {
+        $this->load->model('modelrab');
+        $row = $this->modelrab->getDetailrab($xParent);
+
+        $xStr = "SELECT " .
+                " sum(nominal) nominal " .
+                " FROM realisasirab
+                  inner join rab on (left(rab.kodeRAB,length('".$row->kodeRAB."'))= '".$row->kodeRAB."') and (rab.idx = realisasirab.idrab)
+                  WHERE  month(realisasirab.tanggal) <= '" . $xbulan . "' and realisasirab.idthnanggaran = '".$tahun."'";
+       $query = $this->db->query($xStr);
+       $row = $query->row();
+        if(!empty($row->nominal)){
+          return $row->nominal;
+       } else
+       {
+        return 0;
+       }    
+       // return $xStr;
+    }
+
+    function getSumRealisasirabbyparrentbulan($xParent,$xbulan,$tahun) {
+        $this->load->model('modelrab');
+        $row = $this->modelrab->getDetailrab($xParent);
+
+        $xStr = "SELECT " .
+                " sum(nominal) nominal " .
+                " FROM realisasirab
+                  inner join rab on (left(rab.kodeRAB,length('".$row->kodeRAB."'))= '".$row->kodeRAB."') and (rab.idx = realisasirab.idrab)
+                  WHERE  month(realisasirab.tanggal) = '" . $xbulan . "' and realisasirab.idthnanggaran = '".$tahun."'";
+       $query = $this->db->query($xStr);
+       $row = $query->row();
+       if(!empty($row->nominal)){
+          return $row->nominal;
+       } else
+       {
+        return 0;
+       }
+       // return $xStr;
+    }
    /****** update tanggal 27 April 2011 */
+
    function getlistrealisasirabreport($xbulan,$tahun,$idrab){
            $xStr = "SELECT " .
                 "idx," .
@@ -85,9 +126,11 @@ function getrealisasisampaibulan($xbulan,$tahun,$idrab){
     }
 
     function getListrealisasirab($xAwal, $xLimit, $xSearch='') {
-        if (!empty($xSearch)) {
-            $xSearch = "Where tanggal like '%" . $xSearch . "%'";
-        }
+
+        //if (!empty($xSearch)) {
+            $xSearch = "Where idrab = '" . $xSearch . "'";
+       // }
+
         $xStr = "SELECT " .
                 "idx," .
                 "tanggal," .
@@ -97,9 +140,11 @@ function getrealisasisampaibulan($xbulan,$tahun,$idrab){
                 "nominal," .
                 "iduser," .
                 "idthnanggaran,(Select TahunAnggaran from tahunanggaran where tahunanggaran.idx=realisasirab.idthnanggaran) as TahunAnggaran" .
-                " FROM realisasirab $xSearch order by idx DESC limit " . $xAwal . "," . $xLimit;
+                " FROM realisasirab ".$xSearch ." order by idx DESC limit " . $xAwal . "," . $xLimit;
+
         $query = $this->db->query($xStr);
         return $query;
+        return $xStr;
     }
 
     function getDetailrealisasirab($xidx) {

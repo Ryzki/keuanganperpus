@@ -9,6 +9,52 @@ class modelpostingrab extends CI_Model {
     function __construct() {
         parent::__construct();
     }
+/***************09 Mei 2011 ***************/
+
+    function getlistpostingrabbyidtahun($xIdThnAnggaran) {
+        $xStr = "SELECT " .
+                "idx," .
+                "idrab," .
+                "idtahunanggaran," .
+                "nominalposting," .
+                "tglisi," .
+                "jam," .
+                "iduser" .
+                " FROM postingrab  WHERE (idtahunanggaran='".$xIdThnAnggaran."')";
+        $query = $this->db->query($xStr);
+        return $query;
+    }
+
+function getSumPostingrabbyparrenttahun($xParent,$xThn) {
+        $this->load->model('modelrab');
+        $row = $this->modelrab->getDetailrab($xParent);
+
+        $xStr = "SELECT " .
+                " sum(nominalposting) nominalposting " .
+                " FROM postingrab
+                  inner join rab on (left(rab.kodeRAB,length('".$row->kodeRAB."'))= '".$row->kodeRAB."') and (rab.idx = postingrab.idrab)
+                  WHERE (postingrab.idtahunanggaran='".$xThn."')";
+        $query = $this->db->query($xStr);
+        $row = $query->row();
+        return $row->nominalposting;
+        //return $xStr;
+    }
+
+function getIsParrent($xIdRAB) {
+                $xStr = "SELECT " .
+                "idx," .
+                "JudulRAB," .
+                "idparent," .
+                "kodeRAB," .
+                "kodeRABUSD,isview " .
+                " FROM rab WHERE idparent = '".$xIdRAB."' order by idx DESC limit 1 ";
+      $query = $this->db->query($xStr);
+      $row = $query->row();
+     return !empty($row);
+}
+
+
+
 /**************** 05 April 2011****************/
  function getDetailpostingrabbyidrabtahun($xIdRab,$xThn) {
         $xStr = "SELECT " .
@@ -121,9 +167,15 @@ class modelpostingrab extends CI_Model {
         return $xidx;
     }
 
+   Function setUpdatepostingrabrepair($xidrab) {
+          $xStr = " UPDATE postingrab SET " .
+                   " nominalposting='0' WHERE idrab = '" . $xidrab . "'";
+        $query = $this->db->query($xStr);
+        return $xStr;
+    }
+
     function setDeletepostingrab($xidx) {
         $xStr = " DELETE FROM postingrab WHERE postingrab.idx = '" . $xidx . "'";
-
         $query = $this->db->query($xStr);
     }
 
