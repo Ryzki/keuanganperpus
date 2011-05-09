@@ -1,0 +1,35 @@
+Perbaikan RAB Posting RAB, realisasi RAB
+beserta laporan-laporannya
+
+Jalankan Perintah SQL ini dulu ya untuk menambah field isview pada RAB gunanya untuk tidak menampilkan judul RAB tertentu
+===============================================================
+alter table `keuperpususd`.`rab` add column `isview` enum ("Y","N")  DEFAULT 'Y' NULL  after `kodeRABUSD`
+================================================================
+
+yang diupdate untuk ajax:
+
+*ajaxrab.js
+*ajaxpostingrab.js
+*ajakrealisasirab.js
+
+hati-hati update ajaxnya jangan samapai menimpa baseurl()
+==========================
+untuk controller dam model update seperti biasa
+
+===================================
+
+Perbaikan Kode RAB
+
+Pada menu Isi/Edit judul RAB
+karena kode salah maka repair kode RAB --> Pakai Tombol Repair dia berdasarkan index RAB
+
+Begitu juga untuk posting rab untuk membuat nilai nol RAB untul yang Parent
+
+
+
+Saat pengisian Realisasi RAB hanya dimunculkan yang berelasi dengan RAB yang dipilih order DESC
+
+
+=====================
+Untuk Laporan Realisasi RAB
+tak buat berwarna setiap parentnya untuk memudahkan menganalisa data silah di cek ya
