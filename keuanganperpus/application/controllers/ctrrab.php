@@ -23,18 +23,10 @@ class ctrrab extends CI_Controller {
         $this->load->helper('html');
         $this->load->model('modelgetmenu');
         $xForm = '<div id="stylized" class="myform"><h3>Pengisian Data judul RAB </h>' . form_open_multipart('ctrrab/inserttable', array('id' => 'form', 'name' => 'form')) . '<div class="garis"></div>';
-        $xAddJs = '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/tiny_mce/jquery.tinymce.js"></script>' .
-                '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/thickbox.js"></script>' .
-                '<link rel="stylesheet" href="' . base_url() . 'resource/css/thickbox.css" type="text/css" media="screen" />' .
-                link_tag('resource/css/screenshot.css') .
-                link_tag('resource/js/uploadify/uploadify.css') .
+        $xAddJs = 
                 link_tag('resource/css/jquery.treeview.css') .
-                '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/uploadify/swfobject.js"></script>' .
-                '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/uploadify/jquery.uploadify.v2.1.4.js"></script>' .
                 '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/ajax/baseurl.js"></script>' .
                 '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/ajax/ajaxrab.js"></script>' .
-                '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/ajax/ajaxuploadfy.js"></script>' .
-                '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/ajax/ajaxmce.js"></script>' .
                 '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/jquery.treeview.js"></script>' .
                 '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/jquery.cookie.js"></script>' .
                 '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/demo.js"></script>';
@@ -52,39 +44,27 @@ class ctrrab extends CI_Controller {
             $xidparent = '';
             $xkodeRAB = '';
             $xkodeRABUSD = '';
+            $xisView = 'N';
         } else {
             $xidx = $row->idx;
             $xJudulRAB = $row->JudulRAB;
             $xidparent = $row->idparent;
             $xkodeRAB = $row->kodeRAB;
             $xkodeRABUSD = $row->kodeRABUSD;
+            $xisView = $row->isview;
         }
         $this->load->helper('common');
         $xBufResult = '<input type="hidden" name="edidx" id="edidx" value="0" />';
         $xBufResult .= setForm('edJudulRAB', 'Judul RAB', form_input(getArrayObj('edJudulRAB', $xJudulRAB, '200'))) . '<div class="spacer"></div>';
         $xBufResult .= setForm('edidparent', 'Parent RAB', form_dropdown('edidparent', $this->modelrab->getArrayListrab(), '0', 'id="edidparent" width="150px" onchange="dochangeparent();"')) . '<div class="spacer"></div>';
-        $xBufResult .= setForm('edkodeRAB', 'Kode RAB', form_input(getArrayObj('edkodeRAB', $xkodeRAB, '100'))) . '<div class="spacer"></div>';
+        $xBufResult .= setForm('edkodeRAB', 'Kode RAB', form_input(getArrayObj('edkodeRAB', $xkodeRAB, '200'))) . '<div class="spacer"></div>';
         $xBufResult .= setForm('edkodeRABUSD', 'Kode RAB di USD', form_input(getArrayObj('edkodeRABUSD', $xkodeRABUSD, '100'))) . '<div class="spacer"></div>';
-        $xBufResult .= '<div class="garis"></div>' . form_button('btSimpan', 'simpan', 'onclick="dosimpan();"') . form_button('btNew', 'new', 'onclick="doClear();"') . form_button('btHapus', 'delete', 'onclick="dohapus();"') . '<div class="spacer"></div>';
+        $xBufResult .= setForm('edisview', 'Tampilkan RAB',form_checkbox(getArrayObjCheckBox('edisview', $xisView,TRUE, "0")),'Uncheck Apabila RAB ini Sudah Tidak Digunakan'). '<div class="spacer"></div>';
+        $xBufResult .= '<div class="garis"></div>' . form_button('btSimpan', 'simpan', 'onclick="dosimpan();"') . form_button('btNew', 'new', 'onclick="doClear();"') . form_button('btHapus', 'delete', 'onclick="dohapus();"').form_button('btRepair', 'Repair Data', 'onclick="dorepair();"') . '<div class="spacer"></div>';
         return $xBufResult;
     }
 
-    function inserttable() {
-        $xidx = $_POST['edidx'];
-        $xJudulRAB = $_POST['edJudulRAB'];
-        $xidparent = $_POST['edidparent'];
-        $xkodeRAB = $_POST['edkodeRAB'];
-        $xkodeRABUSD = $_POST['edkodeRABUSD'];
-
-        $this->load->model('modelrab');
-        if ($xidx != '0') {
-            $this->modelrab->setUpdaterab($xidx, $xJudulRAB, $xidparent, $xkodeRAB, $xkodeRABUSD);
-        } else {
-            $this->modelrab->setInsertrab($xidx, $xJudulRAB, $xidparent, $xkodeRAB, $xkodeRABUSD);
-        }
-        $this->createform('0');
-    }
-
+    
     function getlistrab($xAwal, $xSearch) {
         $xLimit = 3;
         /*        $this->load->helper('form');
@@ -143,64 +123,59 @@ class ctrrab extends CI_Controller {
     }
 
     
+   function  getKodeRABbyUrut($xIdxRAB,$xIdxParent){
+        if(empty($xIdxParent))
+          $xIdxParent='0';
+
+       if($xIdxParent!='0'){
+              $this->load->model('modelrab');
+              $rowparent = $this->modelrab->getDetailrab($xIdxParent);
+              $row= $this->modelrab->getKodeRABbyUrut($xIdxRAB,$xIdxParent);
+              $xKodeRABParent = $rowparent->kodeRAB;
+              $xkodeRAB = $xKodeRABParent . '.' . str_pad($row->urut . '', 3, '0', STR_PAD_LEFT);
+       } else
+       {
+          $this->load->model('modelrab');
+          $rowparent = $this->modelrab->getDetailrab($xIdxRAB);
+          $xkodeRAB = $rowparent->kodeRAB;
+           //$xkodeRAB=$xIdxParent;
+       }
+
+        return $xkodeRAB;
+   }
+
+   function dorepair(){
+    $this->load->model('modelrab');
+    $xQuery =  $this->modelrab->getListraballbyidx();
     
-    function getkoderab($xinsearch = "") {
-       $xkodeRAB ='00';
-        $edidparent = "0";
-        if (isset($_POST['edidparent'])) {
-            $edidparent = $_POST['edidparent'];
-        }
+    foreach ($xQuery->result() as $row) {
+       $xKodeRAB = $this->getKodeRABbyUrut($row->idx,$row->idparent);
+       $this->modelrab->setUpdateKodeRab($row->idx, $xKodeRAB);
 
-        $this->load->model('modelrab');
-
-        
-        $rowrab = $this->modelrab->getDetailrab($edidparent);
-      
-
-        if (empty($rowrab)) {
-            $xparent = "0";
-            $xrowlastroot = $this->modelrab->getDetailrabparent($xparent);
-            if(!empty ($xrowlastroot)){
-              $xparent = $xrowlastroot->kodeRAB;
-            }
-        } else {
-            $xparent = $rowrab->kodeRAB;
-        }
-    
-        $row = $this->modelrab->getDetailrabparent($xparent);
-
-        if (!empty($row)) {
-           
-            $xkodeRAB = $row->kodeRAB;
-            if (strpos($xkodeRAB, '.') === false) {
-                $ixidRAB = $xkodeRAB + 1;
-                $xkodeRAB = str_pad($ixidRAB . '', 3, '0', STR_PAD_LEFT);
-            } else {
-
-                $xkodeRAB = substr($xkodeRAB, strrpos($xkodeRAB, '.') + 1, strlen($xkodeRAB));
-                $ixidRAB = $xkodeRAB + 1;
-                $xkodeRAB = $xparent . '.' . str_pad($ixidRAB . '', 3, '0', STR_PAD_LEFT);
-            }
-           
-        } else {
-            if ($edidparent == '0') {
-                $xkodeRAB = $xparent + 1;
-                $xkodeRAB = str_pad($xkodeRAB . '', 3, '0', STR_PAD_LEFT);
-            } else {
-                $xkodeRAB = $xparent . '.001';
-            }
-        } 
-
-        if ($xinsearch != "0") {
-            $this->json_data['kodeRAB'] = $xkodeRAB;
-            //$this->json_data['idRAB'] = $rowRAB;
-            echo json_encode($this->json_data);
-        } else {
-            return $xkodeRAB;
-        }
-       
-//     return $xkodeRAB;
     }
+
+    
+   }
+
+   function doChange(){
+         //if (isset($_POST['edidparent'])) {
+            $xIdParent = $_POST['edidparent'];
+//          } else {
+//
+//            $xIdParent = "0";
+//          }
+
+      $this->load->helper('json');
+      $this->json_data['kodeRAB'] = $this->getkoderab($xIdParent);
+      echo json_encode($this->json_data);
+
+   }
+
+   function getkoderab($xIdParent) {
+        $this->load->model('modelrab');
+        $kodeRAB = $this->modelrab->getLastKodeRABbyParrent($xIdParent);
+        return $kodeRAB;
+   }
 
     function editrec() {
         $xIdEdit = $_POST['edidx'];
@@ -211,7 +186,10 @@ class ctrrab extends CI_Controller {
         $this->json_data['JudulRAB'] = $row->JudulRAB;
         $this->json_data['idparent'] = $row->idparent;
         $this->json_data['kodeRAB'] = $row->kodeRAB;
+        //$this->json_data['kodeRAB'] = $this->getKodeRABbyUrut($row->idx, $row->idparent);//$row->kodeRAB;
         $this->json_data['kodeRABUSD'] = $row->kodeRABUSD;
+        $this->json_data['edisview'] = $row->isview;
+
         echo json_encode($this->json_data);
     }
 
@@ -239,7 +217,7 @@ class ctrrab extends CI_Controller {
         $this->load->model('modelrab');
         $this->json_data['lstreeview'] = $this->getlistrab($xAwal, $xSearch);
         $this->json_data['edidparent'] = $this->modelrab->getArrayListrabnotarray();
-        $this->json_data['edkodeRAB'] = $this->getkoderab("0");
+        $this->json_data['edkodeRAB'] = $this->getkoderab('0');
 
         //$this->json_data['lstreeview'] = '';
        // $this->json_data['edidparent'] = '';
@@ -260,11 +238,12 @@ class ctrrab extends CI_Controller {
         $xidparent = $_POST['edidparent'];
         $xkodeRAB = $_POST['edkodeRAB'];
         $xkodeRABUSD = $_POST['edkodeRABUSD'];
+        $xisview = $_POST['edisview'];
         $this->load->model('modelrab');
         if ($xidx != '0') {
-            $xStr = $this->modelrab->setUpdaterab($xidx, $xJudulRAB, $xidparent, $xkodeRAB, $xkodeRABUSD);
+            $xStr = $this->modelrab->setUpdaterab($xidx, $xJudulRAB, $xidparent, $xkodeRAB, $xkodeRABUSD,$xisview);
         } else {
-            $xStr = $this->modelrab->setInsertrab($xidx, $xJudulRAB, $xidparent, $xkodeRAB, $xkodeRABUSD);
+            $xStr = $this->modelrab->setInsertrab($xidx, $xJudulRAB, $xidparent, $xkodeRAB, $xkodeRABUSD,$xisview);
         }
     }
 

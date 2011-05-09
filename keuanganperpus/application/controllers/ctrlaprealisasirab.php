@@ -113,9 +113,13 @@ class ctrlaprealisasirab extends CI_Controller {
                  "REALISASI RENCANA ANGGARAN BELANJA  <br />".
                             "BULAN ".$nmbulan." ".$rowtahun->TahunAnggaran."<br />";
                  //"POS : ".$rowunitkerja->NmUnitKerja;
-        return '<div id="tablereport" name ="tablereport" class="tablereport" style="width:700px;" align="center"><h3>'.$judul.' </h3>' . $xBufresult . '</div>';
+        return '<div id="tablereport" name ="tablereport" class="tablereport" style="width:950px;" align="center"><h3>'.$judul.' </h3>' . $xBufresult . '</div>';
     }
-
+    
+function  getisparent($xIdRAB){
+    $this->load->model('modelpostingrab');
+    return $this->modelpostingrab->getIsParrent($xIdRAB);
+   }
 
     function getrow($xbulan,$tahun){
         //Prepare data untuk membuat reporttable
@@ -142,6 +146,7 @@ class ctrlaprealisasirab extends CI_Controller {
            foreach($xQuery->result() as $row){
              $this->load->model('modelpostingrab');
              $rowposting = $this->modelpostingrab->getDetailpostingrabbyidrabtahun($row->idx,$tahun);
+
              $this->load->model('modelrealisasirab');
              $rowbulan = $this->modelrealisasirab->getrealisasibulan($xbulan,$tahun,$row->idx);
              $rowsampaibulan = $this->modelrealisasirab->getrealisasisampaibulan($xbulan,$tahun,$row->idx);
@@ -169,22 +174,27 @@ class ctrlaprealisasirab extends CI_Controller {
                $sampaibulan =$rowsampaibulan->nominal;
              }
 
-             if(empty ($posting)){
-                 $posting = '_';
-                 $bulan ='_';
-                 $sampaibulan ='_';
-                 $saldo = '_';
-                 $prosentase = '_';
+             if(empty($posting)){
+                 $nominalpostingparent = $this->modelpostingrab->getSumPostingrabbyparrenttahun($row->idx,$tahun);
+                 $posting = $nominalpostingparent;
+                 
+                 $bulan =$this->modelrealisasirab->getSumRealisasirabbyparrentbulan($row->idx,$xbulan,$tahun);;
+                 $sampaibulan = $this->modelrealisasirab->getSumRealisasirabbyparrentsampaibulan($row->idx,$xbulan,$tahun);
+                 
+                 $saldo = $posting - $sampaibulan;
+                 $prosentase = ($sampaibulan/$posting)*100;
+                 $posting = number_format($posting, 0, '.', ',');
+                 $bulan =number_format($bulan, 0, '.', ',');
+                 $sampaibulan =number_format($sampaibulan, 0, '.', ',');
+                 $saldo = number_format($saldo, 0, '.', ',');
+                 $prosentase = number_format($prosentase, 3, '.', ',')."%";
+
              } else{
                  $Totalposting += $posting;
                  $Totalbulan += $bulan;
                  $Totalsampaibulan +=$sampaibulan;
-                 
-
-
                  $saldo = $posting - $sampaibulan ;
                  $Totalsaldo +=$saldo;
-                 
                  $prosentase = ($sampaibulan/$posting)*100;
                  $posting = number_format($posting, 0, '.', ',');
                  $bulan =number_format($bulan, 0, '.', ',');
@@ -196,9 +206,22 @@ class ctrlaprealisasirab extends CI_Controller {
 
 
              //echo "Test".$ArrayHari[$i]; hari,idpegawai,idunitkerja $this->modeltransaksi->getnamapegawairekapdinas($xBulan,$tahun,$edidlokasi,$edunitkerja,$hari)
-             $arrayrow[$i]= '<td>'.$row->kodeRAB.'</td><td>'.str_pad($row->JudulRAB, strlen($row->JudulRAB)+strlen($row->kodeRAB), "__", STR_PAD_LEFT) .'</td><td align ="right">'.$posting.
+          // is tingkat LENGTH(REPLACE('foobarfoobarfoobar', 'b', '')) AS `occurrences` ,LENGTH(REPLACE(kodeRAB, '.', '')) level background-
+
+            $arraycolor[0]="green";
+            $arraycolor[1]="blue";
+            $arraycolor[2]="brown";
+            $arraycolor[3]="purple";
+            $xStyle = 'style = "color:'.$arraycolor[substr_count($row->kodeRAB,'.')].';font-size:12pt;font-weight:bold;"';
+             if($this->getisparent($row->idx)){
+               $arrayrow[$i]= '<td '.$xStyle.'>'.$row->kodeRAB.'</td><td '.$xStyle.'>'.str_pad($row->JudulRAB, strlen($row->JudulRAB)+strlen($row->kodeRAB), "__", STR_PAD_LEFT) .'</td><td align ="right" '.$xStyle.'>'.$posting.
+                            '</td><td align ="right" '.$xStyle.'>'.$bulan.'</td><td align ="right" '.$xStyle.'>'.$sampaibulan.'</td><td align ="right" '.$xStyle.'>'.$saldo
+                           .'</td><td align ="center" '.$xStyle.'>'.$prosentase.' </td>';
+             } else{
+               $arrayrow[$i]= '<td>'.$row->kodeRAB.'</td><td>'.str_pad($row->JudulRAB, strlen($row->JudulRAB)+strlen($row->kodeRAB), "__", STR_PAD_LEFT) .'</td><td align ="right">'.$posting.
                             '</td><td align ="right">'.$bulan.'</td><td align ="right">'.$sampaibulan.'</td><td align ="right">'.$saldo
                            .'</td><td align ="center">'.$prosentase.' </td>';
+             }
              
             $i++;
 

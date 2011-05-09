@@ -23,26 +23,17 @@ class ctrpostingrab extends CI_Controller {
         $this->load->helper('html');
         $this->load->model('modelgetmenu');
         $xForm = '<div id="stylized" class="myform"><h3>Pengisian Anggaran RAB</h3>' . form_open_multipart('ctrpostingrab/inserttable', array('id' => 'form', 'name' => 'form')) . '<div class="garis"></div>';
-        $xAddJs = '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/tiny_mce/jquery.tinymce.js"></script>' .
-                '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/thickbox.js"></script>' .
-                '<link rel="stylesheet" href="' . base_url() . 'resource/css/thickbox.css" type="text/css" media="screen" />' .
-                link_tag('resource/css/screenshot.css') .
-                link_tag('resource/js/uploadify/uploadify.css') .
-                link_tag('resource/css/jquery.treeview.css') .
-                '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/uploadify/swfobject.js"></script>' .
-                '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/uploadify/jquery.uploadify.v2.1.4.js"></script>' .
+        $xAddJs = link_tag('resource/css/jquery.treeview.css') .
                 '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/ajax/baseurl.js"></script>' .
                 '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/ajax/ajaxpostingrab.js"></script>' .
-                '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/ajax/ajaxuploadfy.js"></script>' .
-                '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/autoNumeric.js"></script>' .
-                '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/ajax/ajaxmce.js"></script>' .
                 '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/jquery.treeview.js"></script>' .
                 '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/jquery.cookie.js"></script>' .
                 '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/demo.js"></script>' .
+                '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/autoNumeric.js"></script>' .
                 '<script  type=text/javascript>
                             $(function() {
                              $("#stylized input#ednominalposting").autoNumeric();
-                             //$("#ednominalposting").autoNumeric();
+                                 //$("#ednominalposting").autoNumeric();
                              });
                         </script>';
         echo $this->modelgetmenu->SetViewPerpus($xForm . $this->setDetailFormpostingrab($xidx), $this->getlistpostingrab($xAwal, '', $xSearch), '', $xAddJs, '');
@@ -90,9 +81,32 @@ class ctrpostingrab extends CI_Controller {
           $xBufResult .= setForm('ediduser', 'iduser', form_input(getArrayObj('ediduser', $xiduser, '100'))) . '<div class="spacer"></div>';
          *
          */
-        $xBufResult .= '<div class="garis"></div>' . form_button('btSimpan', 'simpan', 'onclick="dosimpan();"') . form_button('btNew', 'new', 'onclick="doClear();"') . '<div class="spacer"></div>';
+        $xBufResult .= '<div class="garis"></div>' . form_button('btSimpan', 'Simpan', 'onclick="dosimpan();"') . form_button('btNew', 'Baru', 'onclick="doClear();"') .form_button('btNew', 'Repair Data Posting', 'onclick="dorepair();"') . '<div class="spacer"></div>';
         return $xBufResult;
     }
+
+   function dorepair(){
+       $xidTahunAnggaran =  $_POST['xthnanggaran'];
+       $this->load->model('modelpostingrab');
+       $xQuery = $this->modelpostingrab->getlistpostingrabbyidtahun($xidTahunAnggaran);
+       
+       foreach ($xQuery->result() as $row) {
+        if($this->getisparent($row->idrab))
+         {
+             $this->modelpostingrab->setUpdatepostingrabrepair($row->idrab);
+         }
+       }
+//        $this->load->helper('json');
+//        $this->json_data['data'] = $xBufResult;
+//        echo json_encode($this->json_data);
+   
+   }
+
+   function  getisparent($xIdRAB){
+    $this->load->model('modelpostingrab');
+    return $this->modelpostingrab->getIsParrent($xIdRAB);
+   }
+
 
     function getlistpostingrab($xAwal, $xthnanggaran, $xSearch) {
         $xLimit = 3;
@@ -156,7 +170,15 @@ class ctrpostingrab extends CI_Controller {
             $this->json_data['tglisi'] = $row->tglisi;
             $this->json_data['jam'] = $row->jam;
             $this->json_data['iduser'] = $row->iduser;
+            $xisParent = $this->getisparent($row->idrab) ;
+            $this->json_data['isparent'] = $xisParent;
+            if($xisParent){
+             //$this->json_data['nominalposting'] = number_format($this->modelpostingrab->getSumPostingrabbyparrenttahun($row->idrab,$row->idtahunanggaran) , 0, ',', '.');
+               $this->json_data['nominalposting'] = $this->modelpostingrab->getSumPostingrabbyparrenttahun($row->idrab,$row->idtahunanggaran);
+            }
+
             $this->json_data['isdataada'] = true;
+
         } else {
             $this->json_data['isdataada'] = false;
             
@@ -178,6 +200,12 @@ class ctrpostingrab extends CI_Controller {
             $this->json_data['idrab'] = $row->idrab;
             $this->json_data['idtahunanggaran'] = $row->idtahunanggaran;
             $this->json_data['nominalposting'] = number_format($row->nominalposting, 0, ',', '.');
+            $xisParent = $this->getisparent($row->idrab) ;
+            $this->json_data['isparent'] = $xisParent;
+            if($xisParent){
+             $this->json_data['nominalposting'] = number_format($this->modelpostingrab->getSumPostingrabbyparrenttahun($row->idrab,$row->idtahunanggaran) , 0, ',', '.');
+             //  $this->json_data['nominalposting'] = $this->modelpostingrab->getSumPostingrabbyparrenttahun($row->idrab,$row->idtahunanggaran);
+            }
         } else {
             $this->json_data['isadadata'] = false;
             $this->json_data['idx'] = '0';
