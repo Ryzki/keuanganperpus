@@ -1,19 +1,10 @@
 function dosearch(xAwal){ 
-    xSearch ="";
-    try 
-        {             if ($("#edSearch").val()!=""){ 
-            xSearch = $("#edSearch").val();
-        } 
-    }catch(err){
-        xSearch ="";
-    }
-    if (typeof(xSearch) =="undefined"){
-        xSearch ="";
-    } 
+    
     $(document).ready(function(){
+        $("#edidrab").attr('disabled',true);
         $.ajax({
             url: getBaseURL()+"index.php/ctrrealisasirab/search/",
-            data: "xAwal="+xAwal+"&xSearch="+xSearch,
+            data: "xAwal="+xAwal+"&xSearch="+$("#edidrab").val(),
             cache: false,
             dataType: 'json',
             type: 'POST',
@@ -42,6 +33,7 @@ function doedit(edidx){
             dataType: 'json',
             type: 'POST',
             success: function(json){
+                $("#ednominal").attr('disabled',false);
                 $("#edidx").val(json.idx);
                 $("#edtanggal").val(json.tanggal);
                 $("#edjam").val(json.jam);
@@ -61,12 +53,12 @@ function doedit(edidx){
             }
         });
     });
-} 
+}
+
 function doClear(){ 
     $(document).ready(function(){
         $("#edidx").val("0");
-        $("#edtanggal").val("");
-        $("#edjam").val("");
+         $("#edjam").val("");
         $("#edidrab").val("");
         $("#edketerangan").val("");
         $("#ednominal").val("");
@@ -130,15 +122,60 @@ function dohapus(edidx,edtanggal){
 
 function initCorners() { 
     var setting = {
-                 tl: { radius: 10 }, // top left
-                 tr: { radius: 10 }, // top right
-                 bl: { radius: 6 }, // bottom left
-                 br: { radius: 6 }, // bottom right
+                 tl: {radius: 10}, // top left
+                 tr: {radius: 10}, // top right
+                 bl: {radius: 6}, // bottom left
+                 br: {radius: 6}, // bottom right
         antiAlias: true
     }
     curvyCorners(setting, "div#mnhead h1");
 } 
 addEvent(window, 'load', initCorners); 
-dosearch(0); 
+dosearch(0);
 
+function doeditposting(edidx){
+
+    $(document).ready(function(){
+
+        $("#edidrab").val(edidx);
+        doedidrabchange();
+    });
+}
+
+function doedidrabchange(){
+  $(document).ready(function(){
+       $.ajax({
+            url: getBaseURL()+"index.php/ctrrealisasirab/searchidrealisasi/",
+            data: "xidrab="+$("#edidrab").val(),
+            cache: false,
+            dataType: 'json',
+            type: 'POST',
+            success: function(json){
+                //$("#edidx").val(json.idx);
+                doClear();
+                $("#edidrab").val(json.idrab);
+               // $("#edidtahunanggaran").val(json.idtahunanggaran);
+               // $("#ednominal").val(json.nominalposting);
+                
+                  if(json.isparent){
+                     $("#ednominal").attr('disabled',true);
+                  } else
+                  {
+                    $("#ednominal").attr('disabled',false);
+                  }
+                  $("#tabledata").html(json.tabledata);
+                  
+            },
+            error: function (xmlHttpRequest, textStatus, errorThrown) {
+                start = xmlHttpRequest.responseText.search("<title>") + 7;
+                end  = xmlHttpRequest.responseText.search("</title>");
+                errorMsg = " error on search ";
+                if (start > 0 && end > 0)
+                    alert(" "+errorMsg + "  [" + xmlHttpRequest.responseText.substring(start, end) + "]");
+                else
+                    alert("Error juga"+errorMsg);
+            }
+        });
+  });
+}
 

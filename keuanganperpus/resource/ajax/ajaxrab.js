@@ -24,7 +24,13 @@ function dosearch(xAwal){
                 $("#edidparent").html(json.edidparent);
                 $("#lstreeview").html(json.lstreeview);
                 $("#edkodeRAB").val(json.edkodeRAB);
+
+                //$("#edkodeRABUSD").val(json.edkodeRAB);
+                  $('#edisview').attr('checked',true);
+              
                 $("#browser").treeview();
+
+
             },
             error: function (xmlHttpRequest, textStatus, errorThrown) {
                 start = xmlHttpRequest.responseText.search("<title>") + 7;
@@ -53,6 +59,14 @@ function doedit(edidx){
                 $("#edidparent").val(json.idparent);
                 $("#edkodeRAB").val(json.kodeRAB);
                 $("#edkodeRABUSD").val(json.kodeRABUSD);
+                if(json.edisview=='Y'){
+                 $('#edisview').attr('checked',true);
+                 //$('#ededisview').is(':checked')
+                } else
+                {
+                  $('#edisview').attr('checked',false);
+                }
+
             },
             error: function (xmlHttpRequest, textStatus, errorThrown) {
                 start = xmlHttpRequest.responseText.search("<title>") + 7;
@@ -72,6 +86,7 @@ function doClear(){
         $("#edidparent").val("0");
         $("#edkodeRAB").val("");
         $("#edkodeRABUSD").val("");
+        $('#edisview').attr('checked',true);
 
          dosearch(0);
     });
@@ -79,9 +94,16 @@ function doClear(){
 
 function dosimpan(){ 
     $(document).ready(function(){
+
+        var xischecked = 'N';
+               if( $('#edisview').is(':checked')){
+                xischecked = 'Y';
+               }
+
         $.ajax({
             url: getBaseURL()+"index.php/ctrrab/simpan/",
-            data: "edidx="+$("#edidx").val()+"&edJudulRAB="+$("#edJudulRAB").val()+"&edidparent="+$("#edidparent").val()+"&edkodeRAB="+$("#edkodeRAB").val()+"&edkodeRABUSD="+$("#edkodeRABUSD").val(),
+            data: "edidx="+$("#edidx").val()+"&edJudulRAB="+$("#edJudulRAB").val()+"&edidparent="+$("#edidparent").val()+"&edkodeRAB="+$("#edkodeRAB").val()+
+                   "&edkodeRABUSD="+$("#edkodeRABUSD").val()+"&edisview="+xischecked,
             cache: false,
             dataType: 'json',
             type: 'POST',
@@ -132,6 +154,34 @@ function dohapus(){
    });
 } 
 
+function dorepair(){
+   $(document).ready(function(){
+    if (confirm("Semua Kode RAB Akan Disesuaikan Menurut Index RAB,\n Anda yakin Akan Me-repair Semua Kode RAB ? \n Gunakan SOP sbb : \n1. Backup Dahulu Table RAB \n2. Sesudah Yakin Klik Tombol OK"))
+    {
+
+            $.ajax({
+                url: getBaseURL()+"index.php/ctrrab/dorepair/",
+                data: "edidx="+$("#edidx").val()+"&kodeRAB="+$("#edkodeRAB").val(),
+                cache: false,
+                dataType: 'json',
+                type: 'POST',
+                success: function(json){
+                    alert("Repair Data Sudah di lakukan !!!");
+                },
+                error: function (xmlHttpRequest, textStatus, errorThrown) {
+                    start = xmlHttpRequest.responseText.search("<title>") + 7;
+                    end = xmlHttpRequest.responseText.search("</title>");
+                    errorMsg = " error on REPAIR ";
+                    if (start > 0 && end > 0)
+                        alert(" "+errorMsg + "  [" + xmlHttpRequest.responseText.substring(start, end) + "]");
+                    else
+                        alert("with database "+errorMsg);
+                }
+            });
+
+    }
+   });
+}
 
 function initCorners() { 
     var setting = {
@@ -153,17 +203,19 @@ function initCorners() {
 } 
 
 function dochangeparent(){
-  
  $(document).ready(function(){
+     //alert("Haloo "+$("#edidparent").val());
   $.ajax({
-       url: getBaseURL()+"index.php/ctrrab/getkoderab/",
+       url: getBaseURL()+"index.php/ctrrab/doChange/",
       data: "edidparent="+$("#edidparent").val(),
      cache: false,
   dataType: 'json',
       type: 'POST',
    success: function(json){
+       
         $("#edkodeRAB").val(json.kodeRAB);
-        //alert("hallo");
+      //  $("#edkodeRABUSD").val(json.kodeRAB);
+        
 
      },
  error: function (xmlHttpRequest, textStatus, errorThrown) {

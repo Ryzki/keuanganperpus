@@ -23,6 +23,8 @@ function dosearch(xAwal){
             type: 'POST',
             success: function(json){
                 $("#tabledata").html(json.tabledata);
+                $("#browser").treeview();
+
             },
             error: function (xmlHttpRequest, textStatus, errorThrown) {
                 start = xmlHttpRequest.responseText.search("<title>") + 7;
@@ -37,8 +39,35 @@ function dosearch(xAwal){
     });
 } 
 
+function dorepair(){
+      $(document).ready(function(){
+        $.ajax({
+            url: getBaseURL()+"index.php/ctrpostingrab/dorepair/",
+            data: "&xthnanggaran="+$("#edidtahunanggaran").val(),
+            cache: false,
+            dataType: 'json',
+            type: 'POST',
+            success: function(json){
+               alert("Repair Sudah Dilakassanakan");
+//                $("#edtglisi").val(json.tglisi);
+//                $("#edjam").val(json.jam);
+//                $("#ediduser").val(json.iduser);
+            },
+            error: function (xmlHttpRequest, textStatus, errorThrown) {
+                start = xmlHttpRequest.responseText.search("<title>") + 7;
+                end = xmlHttpRequest.responseText.search("</title>");
+                errorMsg = "OnEdit ";
+                if (start > 0 && end > 0)  alert("On Edit "+errorMsg + "  [" + xmlHttpRequest.responseText.substring(start, end) + "]");
+                else
+                    alert("Error  "+errorMsg);
+            }
+        });
+    });
+}
+
 function doedit(edidx){ 
     $(document).ready(function(){
+        //alert(" test ");
         $.ajax({
             url: getBaseURL()+"index.php/ctrpostingrab/editrec/",
             data: "edidx="+edidx,
@@ -47,12 +76,15 @@ function doedit(edidx){
             type: 'POST',
             success: function(json){
                if(json.isdataada){
+
                   $("#edidx").val(json.idx);
                   $("#edidrab").val(json.idrab);
                   $("#edidtahunanggaran").val(json.idtahunanggaran);
                   $("#ednominalposting").val(json.nominalposting);
+                  
+
                } else{
-                //doClear();
+                 //doClear();
                }
 //                $("#edtglisi").val(json.tglisi);
 //                $("#edjam").val(json.jam);
@@ -178,6 +210,13 @@ function doedidrabchange(){
                 $("#edidrab").val(json.idrab);
                 $("#edidtahunanggaran").val(json.idtahunanggaran);
                 $("#ednominalposting").val(json.nominalposting);
+                
+                  if(json.isparent){
+                     $("#ednominalposting").attr('disabled',true);
+                  } else
+                  {
+                    $("#ednominalposting").attr('disabled',false);  
+                  }
             },
             error: function (xmlHttpRequest, textStatus, errorThrown) {
                 start = xmlHttpRequest.responseText.search("<title>") + 7;
