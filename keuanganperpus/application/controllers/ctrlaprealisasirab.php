@@ -111,7 +111,7 @@ class ctrlaprealisasirab extends CI_Controller {
        $rowtahun= $this->modeltahunanggaran->getDetailtahunanggaran($tahun);
         $judul = "LAPORAN  <br />".
                  "REALISASI RENCANA ANGGARAN BELANJA  <br />".
-                            "BULAN ".$nmbulan." ".$rowtahun->TahunAnggaran."<br />";
+                            "SAMPAI DENGAN BULAN ".$nmbulan." ".$rowtahun->TahunAnggaran."<br />";
                  //"POS : ".$rowunitkerja->NmUnitKerja;
         return '<div id="tablereport" name ="tablereport" class="tablereport" style="width:950px;" align="center"><h3>'.$judul.' </h3>' . $xBufresult . '</div>';
     }
