@@ -23,12 +23,11 @@ class ctrrealisasirab extends CI_Controller {
         $this->load->helper('html');
         $this->load->model('modelgetmenu');
         $xForm = '<div id="stylized" class="myform"><h3>Realisasi  RAB </h3>' . form_open_multipart('ctrrealisasirab/inserttable', array('id' => 'form', 'name' => 'form')) . '<div class="garis"></div>';
-        $xAddJs = 
+        $xAddJs =
                 link_tag('resource/js/themes/base/jquery.ui.all.css') .
                 link_tag('resource/css/jquery.treeview.css') .
                 '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/ajax/baseurl.js"></script>' .
                 '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/ajax/ajaxrealisasirab.js"></script>' .
-                
                 '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/ui/jquery.ui.core.js"></script>' .
                 '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/ui/jquery.ui.widget.js"></script>' .
                 '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/autoNumeric.js"></script>' .
@@ -109,10 +108,10 @@ class ctrrealisasirab extends CI_Controller {
         $this->load->helper('common');
         $this->load->model('modelrab');
         $xBufResult = '<input type="hidden" name="edidx" id="edidx" value="0" />';
+        $xBufResult .= $this->getlistrab() . '<div class="spacer"></div>';
         $xBufResult .= setForm('edtanggal', 'Tanggal', form_input(getArrayObj('edtanggal', $xtanggal, '100'))) . '<div class="spacer"></div>';
         //$xBufResult .= setForm('edjam', 'jam', form_input(getArrayObj('edjam', $xjam, '100'))) . '<div class="spacer"></div>';
         $xBufResult .= setForm('edidrab', 'R A B', form_dropdown('edidrab', $this->modelrab->getArrayListrab(), '0', 'id="edidrab" width="150px" onchange="doedidrabchange();"')) . '<div class="spacer"></div>';
-        $xBufResult .= $this->getlistrab() . '<div class="spacer"></div>';
         $xBufResult .= setForm('edketerangan', 'Keterangan', form_input(getArrayObj('edketerangan', $xketerangan, '400'))) . '<div class="spacer"></div>';
         $xBufResult .= setForm('ednominal', 'Realisasi', form_input(getArrayObj('ednominal', $xnominal, '100'))) . '<div class="spacer"></div>';
         //$xBufResult .= setForm('ediduser', 'iduser', form_input(getArrayObj('ediduser', $xiduser, '100'))) . '<div class="spacer"></div>';
@@ -139,7 +138,7 @@ class ctrrealisasirab extends CI_Controller {
                         addCell('Edit/Hapus', 'width:100px;text-align:center;', true));
         $this->load->model('modelrealisasirab');
         $xQuery = $this->modelrealisasirab->getListrealisasirab($xAwal, $xLimit, $xSearch);
-        
+
         foreach ($xQuery->result() as $row) {
             $xButtonEdit = '<img src="' . base_url() . 'resource/imgbtn/edit.png" alt="Edit Data" onclick = "doedit(\'' . $row->idx . '\');" style="border:none;width:20px"/>';
             $xButtonHapus = '<img src="' . base_url() . 'resource/imgbtn/delete_table.png" alt="Hapus Data" onclick = "dohapus(\'' . $row->idx . '\',\'' . substr($row->tanggal, 0, 20) . '\');" style="border:none;">';
@@ -224,18 +223,18 @@ class ctrrealisasirab extends CI_Controller {
         echo json_encode($this->json_data);
     }
 
-function  getisparent($xIdRAB){
-    $this->load->model('modelpostingrab');
-    return $this->modelpostingrab->getIsParrent($xIdRAB);
-   }
-   
-     function searchidrealisasi() {
+    function getisparent($xIdRAB) {
+        $this->load->model('modelpostingrab');
+        return $this->modelpostingrab->getIsParrent($xIdRAB);
+    }
+
+    function searchidrealisasi() {
         $xidrab = $_POST['xidrab'];
-       $this->json_data['idrab'] = $xidrab;
-       $xisParent = $this->getisparent($xidrab) ;
-       $this->json_data['tabledata'] = $this->getlistrealisasirab(0, $xidrab);
-       $this->json_data['isparent'] = $xisParent;
-       echo json_encode($this->json_data);
+        $this->json_data['idrab'] = $xidrab;
+        $xisParent = $this->getisparent($xidrab);
+        $this->json_data['tabledata'] = $this->getlistrealisasirab(0, $xidrab);
+        $this->json_data['isparent'] = $xisParent;
+        echo json_encode($this->json_data);
     }
 
     function simpan() {
@@ -254,12 +253,12 @@ function  getisparent($xIdRAB){
         $xidthnanggaran = $_POST['edidthnanggaran'];
         $xiduser = $this->session->userdata('idpegawai');
         $this->load->model('modeltahunanggaran');
-        $rowthnanggaran =  $this->modeltahunanggaran->getDetailtahunanggaranbystatusaktif();
+        $rowthnanggaran = $this->modeltahunanggaran->getDetailtahunanggaranbystatusaktif();
         $this->load->model('modelrealisasirab');
         if ($xidx != '0') {
-            $xStr = $this->modelrealisasirab->setUpdaterealisasirab($xidx, $xtanggal,  $xidrab, $xketerangan, str_replace('.', '', $xnominal), $xiduser, $rowthnanggaran->idx);
+            $xStr = $this->modelrealisasirab->setUpdaterealisasirab($xidx, $xtanggal, $xidrab, $xketerangan, str_replace('.', '', $xnominal), $xiduser, $rowthnanggaran->idx);
         } else {
-            $xStr = $this->modelrealisasirab->setInsertrealisasirab($xidx, $xtanggal,  $xidrab, $xketerangan, str_replace('.', '', $xnominal), $xiduser, $rowthnanggaran->idx);
+            $xStr = $this->modelrealisasirab->setInsertrealisasirab($xidx, $xtanggal, $xidrab, $xketerangan, str_replace('.', '', $xnominal), $xiduser, $rowthnanggaran->idx);
         }
     }
 
