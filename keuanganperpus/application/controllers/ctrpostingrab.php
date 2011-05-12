@@ -72,8 +72,8 @@ class ctrpostingrab extends CI_Controller {
         $this->load->model('modeltahunanggaran');
         $xBufResult = '<input type="hidden" name="edidx" id="edidx" value="0" />';
         $xBufResult .= setForm('edidtahunanggaran', 'Tahun Anggaran', form_dropdown('edidtahunanggaran', $this->modeltahunanggaran->getArrayListtahunanggaran(), '0', 'id="edidtahunanggaran" width="150px" ')) . '<div class="spacer"></div>';
-        $xBufResult .= setForm('edidrab', 'R A B', form_dropdown('edidrab', $this->modelrab->getArrayListrab(), '0', 'id="edidrab" width="150px" onchange="doedidrabchange();"')) . '<div class="spacer"></div>';
         $xBufResult .= $this->getlistrab('', '') . '<div class="spacer"></div>';
+        $xBufResult .= setForm('edidrab', 'R A B', form_dropdown('edidrab', $this->modelrab->getArrayListrab(), '0', 'id="edidrab" width="150px" onchange="doedidrabchange();"')) . '<div class="spacer"></div>';
         $xBufResult .= setForm('ednominalposting', 'Nominal ', form_input(getArrayObj('ednominalposting', $xnominalposting, '100'))) . '<div class="spacer"></div>';
 
         /* $xBufResult .= setForm('edtglisi', 'tglisi', form_input(getArrayObj('edtglisi', $xtglisi, '100'))) . '<div class="spacer"></div>';
@@ -115,7 +115,7 @@ class ctrpostingrab extends CI_Controller {
         $xbufResult = addRow(addCell('idx', 'width:40px;', true) .
                         addCell('R A B', 'width:200px;', true) .
                         addCell('Thn Anggaran', 'width:100px;', true) .
-                        addCell('Nominal', 'width:100px;text-align:right;', true) .
+                        addCell('Nominal', 'width:100px;text-align:center;', true) .
                         addCell('Edit/Hapus', 'width:100px;text-align:center;', true));
         $this->load->model('modelpostingrab');
         $xQuery = $this->modelpostingrab->getListpostingrab($xAwal, $xLimit, $xthnanggaran, $xSearch);
