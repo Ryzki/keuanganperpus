@@ -132,10 +132,10 @@ class ctrrealisasirab extends CI_Controller {
                         addCell('Tanggal', 'width:70px;', true) .
                         //addCell('jam', 'width:100px;', true) .
                         addCell('R A B', 'width:100px;', true) .
-                        addCell('Keterangan', 'width:150px;', true) .
-                        addCell('Realisasi', 'width:90px;', true) .
+                        addCell('Keterangan', 'width:180px;', true) .
+                        addCell('Realisasi', 'width:90px;text-align:center;', true) .
                         // addCell('iduser', 'width:100px;', true) .
-                        addCell('Edit/Hapus', 'width:100px;text-align:center;', true));
+                        addCell('Edit/Hapus', 'width:70px;text-align:center;', true));
         $this->load->model('modelrealisasirab');
         $xQuery = $this->modelrealisasirab->getListrealisasirab($xAwal, $xLimit, $xSearch);
 
@@ -143,13 +143,13 @@ class ctrrealisasirab extends CI_Controller {
             $xButtonEdit = '<img src="' . base_url() . 'resource/imgbtn/edit.png" alt="Edit Data" onclick = "doedit(\'' . $row->idx . '\');" style="border:none;width:20px"/>';
             $xButtonHapus = '<img src="' . base_url() . 'resource/imgbtn/delete_table.png" alt="Hapus Data" onclick = "dohapus(\'' . $row->idx . '\',\'' . substr($row->tanggal, 0, 20) . '\');" style="border:none;">';
             $xbufResult .= addRow(addCell($row->idx, 'width:40px;') .
-                            addCell($row->tanggal, 'width:100px;') .
+                            addCell($row->tanggal, 'width:70px;') .
                             //   addCell($row->jam, 'width:100px;') .
                             addCell($row->JudulRAB, 'width:100px;') .
-                            addCell($row->keterangan, 'width:100px;') .
-                            addCell(number_format($row->nominal, 2, ',', '.'), 'width:100px;') .
+                            addCell($row->keterangan, 'width:180px;') .
+                            addCell(number_format($row->nominal, 2, ',', '.'), 'width:90px;text-align:right;') .
                             //addCell($row->iduser, 'width:100px;') .
-                            addCell($xButtonEdit . '&nbsp/&nbsp' . $xButtonHapus, 'width:100px;'));
+                            addCell($xButtonEdit . '&nbsp/&nbsp' . $xButtonHapus, 'width:70px;'));
         }
 
         $xButtonADD = '<img src="' . base_url() . 'resource/imgbtn/document-new.png" onclick = "doClear();" style="border:none;" />';
