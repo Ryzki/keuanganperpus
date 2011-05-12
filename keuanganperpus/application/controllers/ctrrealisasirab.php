@@ -129,11 +129,11 @@ class ctrrealisasirab extends CI_Controller {
         $this->load->helper('form');
         $this->load->helper('common');
         $xbufResult = addRow(addCell('idx', 'width:40px;', true) .
-                        addCell('Tanggal', 'width:100px;', true) .
+                        addCell('Tanggal', 'width:70px;', true) .
                         //addCell('jam', 'width:100px;', true) .
                         addCell('R A B', 'width:100px;', true) .
-                        addCell('Keterangan', 'width:100px;', true) .
-                        addCell('Realisasi', 'width:100px;', true) .
+                        addCell('Keterangan', 'width:150px;', true) .
+                        addCell('Realisasi', 'width:90px;', true) .
                         // addCell('iduser', 'width:100px;', true) .
                         addCell('Edit/Hapus', 'width:100px;text-align:center;', true));
         $this->load->model('modelrealisasirab');
@@ -158,7 +158,7 @@ class ctrrealisasirab extends CI_Controller {
         $xButtonPrev = '<img src="' . base_url() . 'resource/imgbtn/b_prevpage.png" style="border:none;width:20px;" onclick = "dosearch(' . ($xAwal - $xLimit) . ');"/>';
         $xButtonNext = '<img src="' . base_url() . 'resource/imgbtn/b_nextpage.png" style="border:none;width:20px;" onclick = "dosearch(' . ($xAwal + $xLimit) . ');" />';
         $xRowCells = addCell($xButtonADD, 'width:100px;', true) .
-                addCell($xInput, 'width:200px;border-right:0px;', true) .
+                addCell($xInput, 'width:330px;border-right:0px;', true) .
                 addCell($xButtonSearch, 'width:40px;border-right:0px;border-left:0px;', true) .
                 addCell($xButtonPrev . '&nbsp&nbsp' . $xButtonNext, 'width:100px;border-left:0px;', true)
         ;
