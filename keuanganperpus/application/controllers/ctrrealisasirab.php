@@ -256,9 +256,9 @@ class ctrrealisasirab extends CI_Controller {
         $rowthnanggaran = $this->modeltahunanggaran->getDetailtahunanggaranbystatusaktif();
         $this->load->model('modelrealisasirab');
         if ($xidx != '0') {
-            $xStr = $this->modelrealisasirab->setUpdaterealisasirab($xidx, $xtanggal, $xidrab, $xketerangan, str_replace('.', '', $xnominal), $xiduser, $rowthnanggaran->idx);
+            $xStr = $this->modelrealisasirab->setUpdaterealisasirab($xidx, $xtanggal, $xidrab,  addslashes($xketerangan), str_replace('.', '', $xnominal), $xiduser, $rowthnanggaran->idx);
         } else {
-            $xStr = $this->modelrealisasirab->setInsertrealisasirab($xidx, $xtanggal, $xidrab, $xketerangan, str_replace('.', '', $xnominal), $xiduser, $rowthnanggaran->idx);
+            $xStr = $this->modelrealisasirab->setInsertrealisasirab($xidx, $xtanggal, $xidrab, addslashes($xketerangan), str_replace('.', '', $xnominal), $xiduser, $rowthnanggaran->idx);
         }
     }
 
