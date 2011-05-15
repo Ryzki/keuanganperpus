@@ -44,7 +44,7 @@ class ctrlaprealisasirab extends CI_Controller {
 
                  </script>   ';
 //'<div id="tablereport" name ="tablereport"> </div>' 
-        echo $this->modelgetmenu->SetViewPerpus($xForm . $this->setDetailFormReport($xidx),'<div id="tablereport" name ="tablereport"> </div>'  , '', $xAddJs, '');
+        echo $this->modelgetmenu->SetViewPerpus($xForm . $this->setDetailFormReport($xidx),  '<div id="tablereport" name ="tablereport"> </div>' , '', $xAddJs, '');
     }
 
     function setDetailFormReport($xidx) {
@@ -173,21 +173,28 @@ function  getisparent($xIdRAB){
              {
                $sampaibulan =$rowsampaibulan->nominal;
              }
-
+             $prosentaseTotal =0;
              if(empty($posting)){
-                 $nominalpostingparent = $this->modelpostingrab->getSumPostingrabbyparrenttahun($row->idx,$tahun);
+                $nominalpostingparent = $this->modelpostingrab->getSumPostingrabbyparrenttahun($row->idx,$tahun);
                  $posting = $nominalpostingparent;
                  
-                 $bulan =$this->modelrealisasirab->getSumRealisasirabbyparrentbulan($row->idx,$xbulan,$tahun);;
+                $bulan =$this->modelrealisasirab->getSumRealisasirabbyparrentbulan($row->idx,$xbulan,$tahun);;
                  $sampaibulan = $this->modelrealisasirab->getSumRealisasirabbyparrentsampaibulan($row->idx,$xbulan,$tahun);
                  
                  $saldo = $posting - $sampaibulan;
-                 $prosentase = ($sampaibulan/$posting)*100;
+                 if($posting!=0){
+                     $prosentase = ($sampaibulan/$posting)*100;
+
+                 }
+
                  $posting = number_format($posting, 0, '.', ',');
                  $bulan =number_format($bulan, 0, '.', ',');
                  $sampaibulan =number_format($sampaibulan, 0, '.', ',');
                  $saldo = number_format($saldo, 0, '.', ',');
                  $prosentase = number_format($prosentase, 3, '.', ',')."%";
+                 if($Totalposting!=0){
+                   $prosentaseTotal = ($Totalsampaibulan/$Totalposting)*100;
+                 }
 
              } else{
                  $Totalposting += $posting;
@@ -201,6 +208,9 @@ function  getisparent($xIdRAB){
                  $sampaibulan =number_format($sampaibulan, 0, '.', ',');
                  $saldo = number_format($saldo, 0, '.', ',');
                  $prosentase = number_format($prosentase, 2, '.', ',')."%";
+                 if($Totalposting!=0){
+                   $prosentaseTotal = ($Totalsampaibulan/$Totalposting)*100;
+                 }
 
              }
 
@@ -230,7 +240,7 @@ function  getisparent($xIdRAB){
        
        $arrayrow[$i]= '<td>_</td><td><b>Jumlah</b></td><td align ="right"><b>'.number_format($Totalposting, 0, '.', ',').
                             '</b></td><td align ="right"><b>'.number_format($Totalbulan, 0, '.', ',').'</b></td><td align ="right"><b>'.number_format($Totalsampaibulan, 0, '.', ',').
-                            '</b></td><td align ="right"><b>'.number_format($Totalsaldo, 0, '.', ',').'</b></td><td align ="center"><b>'.number_format(($Totalsampaibulan/$Totalposting)*100, 2, '.', ',')."%".'</b> </td>';
+                            '</b></td><td align ="right"><b>'.number_format($Totalsaldo, 0, '.', ',').'</b></td><td align ="center"><b>'.number_format($prosentaseTotal, 2, '.', ',')."%".'</b> </td>';
 
 
     return $arrayrow;
