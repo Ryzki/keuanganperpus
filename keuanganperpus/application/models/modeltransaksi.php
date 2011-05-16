@@ -144,7 +144,7 @@ class modeltransaksi extends CI_Model {
     }
 //****************update 28 maret 2011**********
     function getSQLDasar($xBulan,$tahun,$xidlokasi) {
-        return "(Select trx.idx, trx.idplu,plu.idjnspengguna,tanggal,day(tanggal) hari,jumlahsatuan,nominalpersatuan,plu.idstatusPLU ,
+        return "(Select distinct trx.idx, trx.idplu,plu.idjnspengguna,tanggal,day(tanggal) hari,jumlahsatuan,nominalpersatuan,plu.idstatusPLU ,
                 (select JenisPengguna from jenipengguna as jnsp Where jnsp.idx=plu.idjnspengguna limit 1) as pengg
                 from transaksi as trx
                 inner join produkplu as plu on(trx.idplu=plu.KodePLU) where month(tanggal)='" . $xBulan . "' and year(tanggal)='".$tahun."' and  idlokasi = '".$xidlokasi."' order by plu.idjnspengguna) as tb1";
