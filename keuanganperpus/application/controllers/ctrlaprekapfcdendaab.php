@@ -142,12 +142,12 @@ class ctrlaprekapfcdendaab extends CI_Controller {
        $xBufTotal =0;
         for($i=0;$i<count($xarrayhari);$i++){
            
-           $xBufArray[$i] = $xarraydata[$i]. '<td align ="right">'. number_format($xArrayTotal[$i], 0, '.', ',').'</td>';
+           $xBufArray[$i] = $xarraydata[$i]. '<td align ="right">'. number_format($xArrayTotal[$i], 0, ',', '.').'</td>';
            $xBufTotal += $xArrayTotal[$i];
 
         }
         $xBufArray[0] = $xarraydata[0].'<td align ="center">Total<br />Rp</td>';
-        $xBufArray[count($xarrayhari)-1] = $xarraydata[count($xarrayhari)-1].'<td align ="right">'.number_format($xBufTotal, 0, '.', ',').'</td>';
+        $xBufArray[count($xarrayhari)-1] = $xarraydata[count($xarrayhari)-1].'<td align ="right">'.number_format($xBufTotal, 0, ',', '.').'</td>';
       
 
         return $xBufArray;
