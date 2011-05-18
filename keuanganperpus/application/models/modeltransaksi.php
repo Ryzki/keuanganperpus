@@ -13,7 +13,7 @@ class modeltransaksi extends CI_Model {
     //*************Update 5 Mei 20011 *******************
 
     function getSQLDasarPertanggalfotokopi($xTanggal,$xiduser) {
-    $xStr = "  Select   (select NamaProduk from produkplu where produkplu.KodePLU = transaksi.idPLU limit 1) NamaProduk ,jam,jumlahsatuan,total
+    $xStr = "  Select   (select NamaProduk from produkplu where produkplu.KodePLU = transaksi.idPLU limit 1) NamaProduk ,jam,jumlahsatuan,total,
                nominalpersatuan,(select NmLokasi from lokasi where lokasi.idx = transaksi.idlokasi limit 1) as nmlokasi
                 from transaksi   where tanggal='".$xTanggal."' and iduser = '".$xiduser."' and idjenistransaksi = '3'".
                 "  order by jam DESC ";
