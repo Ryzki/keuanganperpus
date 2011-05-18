@@ -133,7 +133,7 @@ class ctrlaprekapfcdendaabperuser extends CI_Controller {
             $arrayrow[$i]= '<td>'.$i.'</td>';
             $arrayrow[$i].= '<td>'.$row->jam.'</td>';
             $arrayrow[$i].= '<td>('. $row->NIM.') '.$row->NamaMHS.'</td>';
-            $arrayrow[$i].= '<td align="right">'.number_format($row->nominalpersatuan,0, '.', ',').'</td>';
+            $arrayrow[$i].= '<td align="right">'.number_format($row->nominalpersatuan,0, ',', '.').'</td>';
             $arrayrow[$i].= '<td>'.$row->nmlokasi.'</td>';
             $jumlahtotal +=$row->nominalpersatuan;
             $i++;
@@ -142,7 +142,7 @@ class ctrlaprekapfcdendaabperuser extends CI_Controller {
             $arrayrow[$i].= '<td> </td>';
             
             $arrayrow[$i].= '<td>Jumlah  </td>';
-            $arrayrow[$i].= '<td align="right"> '.number_format($jumlahtotal, 0, '.', ',').' </td>';
+            $arrayrow[$i].= '<td align="right"> '.number_format($jumlahtotal, 0, ',', '.').' </td>';
             $arrayrow[$i].= '<td> </td>';
        }
 
@@ -160,7 +160,7 @@ class ctrlaprekapfcdendaabperuser extends CI_Controller {
             $arrayrow[$i]= '<td>'.$i.'</td>';
             $arrayrow[$i].= '<td>'.$row->jam.'</td>';
             $arrayrow[$i].= '<td>'.$row->Nama.'</td>';
-            $arrayrow[$i].= '<td align="right">'.number_format($row->nominalpersatuan,0, '.', ',').'</td>';
+            $arrayrow[$i].= '<td align="right">'.number_format($row->nominalpersatuan,0, ',', '.').'</td>';
             $arrayrow[$i].= '<td>'.$row->nmlokasi.'</td>';
             $jumlahtotal +=$row->nominalpersatuan;
             $i++;
@@ -169,7 +169,7 @@ class ctrlaprekapfcdendaabperuser extends CI_Controller {
             $arrayrow[$i].= '<td> </td>';
             
             $arrayrow[$i].= '<td>Jumlah  </td>';
-            $arrayrow[$i].= '<td align="right"> '.number_format($jumlahtotal, 0, '.', ',').' </td>';
+            $arrayrow[$i].= '<td align="right"> '.number_format($jumlahtotal, 0, ',', '.').' </td>';
             $arrayrow[$i].= '<td> </td>';
        }
 
@@ -187,7 +187,7 @@ class ctrlaprekapfcdendaabperuser extends CI_Controller {
             $arrayrow[$i]= '<td>'.$i.'</td>';
             $arrayrow[$i].= '<td>'.$row->jam.'</td>';
             $arrayrow[$i].= '<td>'.$row->NamaProduk.'('.$row->jumlahsatuan.' lembar, @ '.$row->nominalpersatuan.')'.'</td>';
-            $arrayrow[$i].= '<td align="right">'.number_format(($row->jumlahsatuan*$row->nominalpersatuan),0, '.', ',').'</td>';
+            $arrayrow[$i].= '<td align="right">'.number_format(($row->jumlahsatuan*$row->nominalpersatuan),0, ',', '.').'</td>';
             $arrayrow[$i].= '<td>'.$row->nmlokasi.'</td>';
             $jumlahtotal +=($row->jumlahsatuan*$row->nominalpersatuan);
             $i++;
@@ -196,7 +196,7 @@ class ctrlaprekapfcdendaabperuser extends CI_Controller {
             $arrayrow[$i].= '<td> </td>';
             
             $arrayrow[$i].= '<td>Jumlah  </td>';
-            $arrayrow[$i].= '<td align="right"> '.number_format($jumlahtotal, 0, '.', ',').' </td>';
+            $arrayrow[$i].= '<td align="right"> '.number_format($jumlahtotal, 0, ',', '.').' </td>';
             $arrayrow[$i].= '<td> </td>';
        }
     return $arrayrow;
