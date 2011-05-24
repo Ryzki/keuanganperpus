@@ -116,7 +116,7 @@ class modeltransaksi extends CI_Model {
 
    function getarrayharirekapdinas($xBulan,$tahun,$edidlokasi,$edunitkerja) {
         
-        $xStr = 'Select distinct hari,(Select NmUnitKerja FROM unitkerja Where unitkerja.idx=idunitkerja limit 1)  idunitkerja from ('.$this->getSQLDasarRekap($xBulan, $tahun).') as tb1 WHERE idlokasi ="'.$edidlokasi.'" and idunitkerja = "'.$edunitkerja.'" and idjnspengguna <> 1 and idjnspengguna <> 4 order by hari ASC';
+        $xStr = 'Select distinct hari,(Select NmUnitKerja FROM unitkerja Where unitkerja.idx=idunitkerja limit 1)  idunitkerja from ('.$this->getSQLDasarRekap($xBulan, $tahun).') as tb1 WHERE idlokasi ="'.$edidlokasi.'" and idunitkerja = "'.$edunitkerja.'" and idjnspengguna =2 order by hari ASC';
         $query = $this->db->query($xStr);
        return $query;
         
@@ -124,7 +124,7 @@ class modeltransaksi extends CI_Model {
 
 
     function getarraystatusplurekapdinas($xBulan,$xIdSTatus,$tahun,$edidlokasi,$edunitkerja) {
-        $xStr = 'Select distinct(idplu) as idplu from ('.$this->getSQLDasarRekap($xBulan, $tahun).') as tb1 where idstatusPLU  = "'.$xIdSTatus.'" and idlokasi ="'.$edidlokasi.'" and idunitkerja = "'.$edunitkerja.'" and idjnspengguna <> 1 and idjnspengguna <> 4 order by idplu ASC';
+        $xStr = 'Select distinct(idplu) as idplu from ('.$this->getSQLDasarRekap($xBulan, $tahun).') as tb1 where idstatusPLU  = "'.$xIdSTatus.'" and idlokasi ="'.$edidlokasi.'" and idunitkerja = "'.$edunitkerja.'" and idjnspengguna =2 order by idplu ASC';
         $query = $this->db->query($xStr);
         $i = 0;
         $xBuffResul =null;
