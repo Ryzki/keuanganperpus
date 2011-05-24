@@ -44,7 +44,7 @@ class ctrlaprekapfcpribadi extends CI_Controller {
 
                  </script>   ';
    //'<div id="tablereport" name ="tablereport"> </div>'
-        echo $this->modelgetmenu->SetViewPerpus($xForm . $this->setDetailFormReport($xidx), $this->getReport("05","2011","1"), '', $xAddJs, '');
+        echo $this->modelgetmenu->SetViewPerpus($xForm . $this->setDetailFormReport($xidx), '<div id="tablereport" name ="tablereport"> </div>', '', $xAddJs, '');
     }
 
     function setDetailFormReport($xidx) {
