@@ -97,7 +97,7 @@ class modeltransaksi extends CI_Model {
    }
 
    function getlistcombounitkerjaofthemonth($xBulan,$tahun,$idlokasi){
-     $query = $this->db->query(' Select distinct idunitkerja from ('.$this->getSQLDasarRekap($xBulan, $tahun).') as tb1 WHERE idlokasi ="'.$idlokasi.'" and idjnspengguna = "2" ');
+     $query = $this->db->query(' Select distinct idunitkerja from ('.$this->getSQLDasarRekap($xBulan, $tahun).') as tb1 WHERE idlokasi ="'.$idlokasi.'" and idjnspengguna = 2 ');
      return  $query;
      //return 'Select * from ('.$this->getSQLDasarRekap($xBulan, $tahun).') as tb1 WHERE idlokasi ="'.$idlokasi.'" and idjnspengguna = "2"' ;
      
