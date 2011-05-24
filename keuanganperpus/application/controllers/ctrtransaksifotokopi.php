@@ -94,7 +94,7 @@ class ctrtransaksifotokopi extends CI_Controller {
         $xBufResult .= setForm('edchkispusd', 'Buku USD ',form_checkbox(getArrayObjCheckBox('edchkispusd', 'N', FALSE, "0"),'Y',TRUE,'onclick=doclickchkbkusd();'),'Check Bila untuk Buku milik PUSD(Pot 20%)') . '<div class="spacer"></div>'; //form_checkbox( $row->nmmenu, $row->idmenu);
         $xBufResult .='<div id="nmproduk"></div>'. '<div class="spacer"></div>';
         $xBufResult .='<div id="nmpegawai"></div>'. '<div class="spacer"></div>';
-        $xBufResult .='<div id="showhide">'. setForm('edidpegawai', 'NPP', form_input(getArrayObj('edidpegawai', $xidpegawai, '100'))) ;
+        $xBufResult .='<div id="showhide">'. setForm('edidpegawai', 'NPP', form_input(getArrayObj('edidpegawai', $xidpegawai, '100')),'Masukkan P. dan Tekan ENTER') ;
         $xBufResult .= setForm('edunitkerja', 'Unit Kerja', form_dropdown('edunitkerja', $this->modelunitkerja->getArrayListunitkerja(), '0', 'id="edunitkerja" width="100px" onchange="onCbunitkerjaChange();"')) . '<div class="spacer"></div></div>';
         /*$xBufResult .= setForm('ediduser', 'iduser', form_input(getArrayObj('ediduser', $xiduser, '100'))) . '<div class="spacer"></div>';
         $xBufResult .= setForm('ednominaldenda', 'nominaldenda', form_input(getArrayObj('ednominaldenda', $xnominaldenda, '100'))) . '<div class="spacer"></div>';
