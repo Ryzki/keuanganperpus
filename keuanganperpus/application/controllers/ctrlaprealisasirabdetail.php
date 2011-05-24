@@ -164,13 +164,13 @@ class ctrlaprealisasirabdetail extends CI_Controller {
 
         if (!empty($xQuery)) {
             foreach ($xQuery->result() as $row) {
-                $arrayrow[$i] = '<td>'.$i.'. </td><td>'.$row->tanggal.'</td><td width="500px">'.$row->keterangan.'</td><td align="right">'.number_format($row->nominal, 0, '.', ',').'</td> ';
+                $arrayrow[$i] = '<td>'.$i.'. </td><td>'.$row->tanggal.'</td><td width="500px">'.$row->keterangan.'</td><td align="right">'.number_format($row->nominal, 0, ',', '.').'</td> ';
                 $Totalsaldo += $row->nominal;
                 $i++;
             }
         }
 
-        $arrayrow[$i] = '<td><b>_</b></td><td><b>_</b></td><td width="500px"><b>Jumlah</b></td><td align="right"><b>'.number_format($Totalsaldo, 0, '.', ',').'</b></td> ';
+        $arrayrow[$i] = '<td><b>_</b></td><td><b>_</b></td><td width="500px"><b>Jumlah</b></td><td align="right"><b>'.number_format($Totalsaldo, 0, ',', '.').'</b></td> ';
 
         return $arrayrow;
     }
