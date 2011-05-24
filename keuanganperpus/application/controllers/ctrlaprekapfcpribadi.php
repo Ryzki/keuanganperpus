@@ -43,8 +43,8 @@ class ctrlaprekapfcpribadi extends CI_Controller {
                     setawalpribadi();
 
                  </script>   ';
-//'<div id="tablereport" name ="tablereport"> </div>'
-        echo $this->modelgetmenu->SetViewPerpus($xForm . $this->setDetailFormReport($xidx), '<div id="tablereport" name ="tablereport"> </div>', '', $xAddJs, '');
+   //'<div id="tablereport" name ="tablereport"> </div>'
+        echo $this->modelgetmenu->SetViewPerpus($xForm . $this->setDetailFormReport($xidx), $this->getReport("05","2011","1"), '', $xAddJs, '');
     }
 
     function setDetailFormReport($xidx) {
@@ -255,7 +255,7 @@ class ctrlaprekapfcpribadi extends CI_Controller {
 
        if(!empty($xarrayFC) ){
          for($i=0;$i<count($xarrayFC);$i++){
-            $xBufarrayrow = $this->addkolom($arrayrow, $xarrayFC[$i],$xarrayhari ,$xbulan,$xArrayTotalPrintBiasa,$xArrayTotal,$tahun,$edidlokasi,$edunitkerja);
+            $xBufarrayrow = $this->addkolom($arrayrow, $xarrayFC[$i],$xarrayhari ,$xbulan,$xArrayTotalPrintBiasa,$xArrayTotal,$tahun,$edidlokasi);
             $arrayrow = $xBufarrayrow[0];
             $xArrayTotalPrintBiasa = $xBufarrayrow[1];
             $xArrayTotal = $xBufarrayrow[2];
@@ -269,7 +269,7 @@ class ctrlaprekapfcpribadi extends CI_Controller {
        $xarrayFC = $this->modeltransaksi->getarraystatusplurekappribadi($xbulan,"2",$tahun,$edidlokasi);
        if(!empty($xarrayFC) ){
          for($i=0;$i<count($xarrayFC);$i++){
-            $xBufarrayrow = $this->addkolom($arrayrow, $xarrayFC[$i],$xarrayhari ,$xbulan,$xArrayTotalPrintColor,$xArrayTotal,$tahun,$edidlokasi,$edunitkerja);
+            $xBufarrayrow = $this->addkolom($arrayrow, $xarrayFC[$i],$xarrayhari ,$xbulan,$xArrayTotalPrintColor,$xArrayTotal,$tahun,$edidlokasi);
             $arrayrow = $xBufarrayrow[0];
             $xArrayTotalPrintColor = $xBufarrayrow[1];
             $xArrayTotal = $xBufarrayrow[2];
