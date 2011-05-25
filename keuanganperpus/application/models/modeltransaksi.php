@@ -41,8 +41,9 @@ class modeltransaksi extends CI_Model {
 
    //**************Update 27 April 2011 Rekap Pribadi*************
    function getarraypribadi($xBulan,$tahun,$edidlokasi) {
-        $xStr = 'Select idpegawai from ('.$this->getSQLDasarRekap($xBulan, $tahun).') as tb1 WHERE idlokasi ="'.$edidlokasi.'" and (idpegawai <> 0) and idgrouppengguna = "3" ';
+        $xStr = 'Select distinct idpegawai from ('.$this->getSQLDasarRekap($xBulan, $tahun).') as tb1 WHERE idlokasi ="'.$edidlokasi.'" and (idpegawai <> 0) and idgrouppengguna = "3" ';
         $query = $this->db->query($xStr);
+        //echo $xStr;
        return $query;
 
     }
