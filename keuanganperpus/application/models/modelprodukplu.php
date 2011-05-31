@@ -11,6 +11,24 @@ class modelprodukplu extends CI_Model {
     }
 
     //********** Updte 29 Maret 2010 *********
+    function getDetailprodukplubykodeandjnsgroup($xkodeplu,$xidJnsPengguna) {
+        $xStr = "SELECT " .
+                "idx," .
+                "KodePLU," .
+                "idJnsPengguna," .
+                "NamaProduk," .
+                "Singkatan," .
+                "idstatusPLU," .
+                "idrekanan," .
+                "harga," .
+                "idjenistransaksi" .
+                " FROM produkplu  WHERE KodePLU = '" . $xkodeplu . "' and idJnsPengguna = '".$xidJnsPengguna."'";
+
+        $query = $this->db->query($xStr);
+        $row = $query->row();
+        return $row;
+    }
+
     function getDetailprodukplubykode($xkodeplu) {
         $xStr = "SELECT " .
                 "idx," .
