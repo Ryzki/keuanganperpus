@@ -188,7 +188,9 @@ $(document).ready(function(){
 function setawaldinas(){
 $(document).ready(function(){
        $("#edBulan").val(getbulan());
-       $("#edunitkerja").attr('disabled', true);
+      // $("#edunitkerja").attr('disabled', true);
+      docblokasichange();
+      
 
  });
 }
@@ -213,7 +215,7 @@ $(document).ready(function(){
             //alert('tess'+json.harga);
             $("#edunitkerja").html("");
             $(json.data).appendTo("#edunitkerja");
-             $("#edunitkerja").attr('disabled', false);
+             //$("#edunitkerja").attr('disabled', false);
 
             },
             error: function (xmlHttpRequest, textStatus, errorThrown) {
