@@ -12,11 +12,34 @@ class modeltransaksi extends CI_Model {
 
     //*************Update 5 Mei 20011 *******************
 
+    function getSetoranTunaiPertanggalUser($xTanggal,$xLokasi) {
+    $xStr = "  Select   sum(nominalpersatuan*jumlahsatuan) total,
+               (Select nama from Pegawai where pegawai.idx = transaksi.iduser) as namauser
+                from transaksi   where tanggal='".$xTanggal."' and idjenistransaksi = '3'  and (idgrouppengguna='1' or idgrouppengguna = '4') and (idlokasi ='".$xLokasi."')".
+                "  group by iduser ";
+    $query = $this->db->query($xStr);
+       return $query;
+    }
+
+    function getSetoranNONTunaiPertanggal($xTanggal,$xLokasi,$xStatusPLU) {
+    $xStr = "  Select   (select NamaProduk from produkplu where produkplu.KodePLU = transaksi.idPLU limit 1) NamaProduk ,jam,jumlahsatuan,total,
+               nominalpersatuan,iduser,(Select nama from Pegawai where pegawai.idx = transaksi.iduser) as namauser,
+               (Select nama from Pegawai where pegawai.idx = transaksi.idpegawai) as namapengguna,
+               (Select NmUnitKerja from unitkerja where unitkerja.idx = transaksi.idunitkerja) as namaunitkerja,
+               (Select JenisPengguna from JeniPengguna where JeniPengguna.idx = transaksi.idgrouppengguna) as JenisPengguna
+                from transaksi   where tanggal='".$xTanggal."' and idjenistransaksi = '3' and idstatusplu ='".$xStatusPLU."' and (idgrouppengguna='2' or idgrouppengguna = '3') and (idlokasi ='".$xLokasi."')".
+                "  order by jam ASC ";
+  //  echo $xStr;
+    $query = $this->db->query($xStr);
+       return $query;
+    }
+
     function getSetoranTunaiPertanggal($xTanggal,$xLokasi,$xStatusPLU) {
     $xStr = "  Select   (select NamaProduk from produkplu where produkplu.KodePLU = transaksi.idPLU limit 1) NamaProduk ,jam,jumlahsatuan,total,
-               nominalpersatuan,iduser
-                from transaksi   where tanggal='".$xTanggal."' and iduser = '".$xiduser."' and idjenistransaksi = '3'".
-                "  order by jam DESC ";
+               nominalpersatuan,iduser,(Select nama from Pegawai where pegawai.idx = transaksi.iduser) as namauser
+                from transaksi   where tanggal='".$xTanggal."' and idjenistransaksi = '3' and idstatusplu ='".$xStatusPLU."' and (idgrouppengguna<>'2' or idgrouppengguna <> '3') and (idlokasi ='".$xLokasi."')".
+                "  order by jam ASC ";
+  //  echo $xStr;
     $query = $this->db->query($xStr);
        return $query;
     }
