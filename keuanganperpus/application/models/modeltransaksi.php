@@ -37,7 +37,7 @@ class modeltransaksi extends CI_Model {
     function getSetoranTunaiPertanggal($xTanggal,$xLokasi,$xStatusPLU) {
     $xStr = "  Select   (select NamaProduk from produkplu where produkplu.KodePLU = transaksi.idPLU limit 1) NamaProduk ,jam,jumlahsatuan,total,
                nominalpersatuan,iduser,(Select nama from Pegawai where pegawai.idx = transaksi.iduser) as namauser
-                from transaksi   where tanggal='".$xTanggal."' and idjenistransaksi = '3' and idstatusplu ='".$xStatusPLU."' and (idgrouppengguna<>'2' or idgrouppengguna <> '3') and (idlokasi ='".$xLokasi."')".
+                from transaksi   where tanggal='".$xTanggal."' and idjenistransaksi = '3' and idstatusplu ='".$xStatusPLU."' and idgrouppengguna<>'2' and  idgrouppengguna <> '3' and (idlokasi ='".$xLokasi."')".
                 "  order by jam ASC ";
   //  echo $xStr;
     $query = $this->db->query($xStr);
