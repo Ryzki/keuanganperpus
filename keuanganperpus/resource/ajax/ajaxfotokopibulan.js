@@ -3,6 +3,62 @@ function exporttoexcel(data){
   window.open(getBaseURL()+"resource/SaveToExcel.php?datatodisplay="+data, "laporan", "status=1,toolbar=1");
 }
 
+function dotampillapsetoranharian(isexport){
+    $(document).ready(function(){
+        $.ajax({
+            url: getBaseURL()+"index.php/ctrlapdsetorantunaifcharian/dotampillaporan/",
+            data: "edidlokasi="+$("#edidlokasi").val()+"&edtgldenda="+$("#edtgldenda").val(),
+            cache: false,
+            dataType: 'json',
+            type: 'POST',
+            success: function(json){
+            //alert('tess'+json.harga);
+            $("#tablereport").html(json.data);
+           if(isexport){
+               exporttoexcel(json.data);
+            }
+
+            },
+            error: function (xmlHttpRequest, textStatus, errorThrown) {
+                start = xmlHttpRequest.responseText.search("<title>") + 7;
+                end = xmlHttpRequest.responseText.search("</title>");
+                errorMsg = "On Tampil laporan ";
+                if (start > 0 && end > 0)  alert("On Edit "+errorMsg + "  [" + xmlHttpRequest.responseText.substring(start, end) + "]");
+                else
+                    alert("Error  "+errorMsg);
+            }
+        });
+    });
+}
+
+function dotampillapsetoranhariannontunai(isexport){
+    $(document).ready(function(){
+        $.ajax({
+            url: getBaseURL()+"index.php/ctrlapdsetorannontunaifcharian/dotampillaporan/",
+            data: "edidlokasi="+$("#edidlokasi").val()+"&edtgldenda="+$("#edtgldenda").val(),
+            cache: false,
+            dataType: 'json',
+            type: 'POST',
+            success: function(json){
+            //alert('tess'+json.harga);
+            $("#tablereport").html(json.data);
+           if(isexport){
+               exporttoexcel(json.data);
+            }
+
+            },
+            error: function (xmlHttpRequest, textStatus, errorThrown) {
+                start = xmlHttpRequest.responseText.search("<title>") + 7;
+                end = xmlHttpRequest.responseText.search("</title>");
+                errorMsg = "On Tampil laporan ";
+                if (start > 0 && end > 0)  alert("On Edit "+errorMsg + "  [" + xmlHttpRequest.responseText.substring(start, end) + "]");
+                else
+                    alert("Error  "+errorMsg);
+            }
+        });
+    });
+}
+
 function dotampillaporanfotokopibulan(isexport){
     $(document).ready(function(){
         $.ajax({
@@ -251,3 +307,43 @@ function initCorners() {
 }
 //   addEvent(window, 'load', initCorners);
 //     dosearch(0);
+function strpad(val){
+    return (!isNaN(val) && val.toString().length==1)?"0"+val:val;
+}
+
+function settanggal(){
+
+    $(document).ready(function() {
+        var currentTimeAndDate = new Date();
+        var Date30 = new Date();
+        var date = new Date();
+        Date30.setDate(Date30.getDate()-30);
+
+
+
+        var dd = date.getDate();
+        var mm = date.getMonth();
+        var yy = date.getYear();
+
+        var hh = date.getHours();
+        var mnt = date.getMinutes();
+
+        var dd30 = Date30.getDate();
+        var mm30 = Date30.getMonth();
+        var yy30 = Date30.getYear();
+
+        yy  = (yy < 1000) ? yy + 1900 : yy;
+
+
+
+        $("#stylized input#edtgldenda" ).datepicker({
+            dateFormat: 'yy-mm-dd'
+        });
+        $("#stylized input#edtgldenda" ).val(yy+"-"+strpad(mm+1)+"-"+strpad(dd));
+
+
+
+
+    });
+}
+settanggal();
