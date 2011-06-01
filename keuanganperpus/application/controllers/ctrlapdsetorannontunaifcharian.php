@@ -5,7 +5,7 @@ if (!defined('BASEPATH'))
 
 /* Class  Control : anggotabaca  * di Buat oleh Diar PHP Generator * Update List untuk grid karena program generatorku lom sempurna ya hehehehehe */
 
-class ctrlapdsetorantunaifcharian extends CI_Controller {
+class ctrlapdsetorannontunaifcharian extends CI_Controller {
     
     function __construct() {
         parent::__construct();
@@ -29,7 +29,7 @@ class ctrlapdsetorantunaifcharian extends CI_Controller {
         $this->load->model('modelhargajenistransaksi');
         $row = $this->modelhargajenistransaksi->getDetailhargaIdJnsTransaksi('2');
         $xHarga = number_format($row->biaya, 0, '.', ',');
-        $xForm = '<div id="stylized" class="myform"><h3>LAPORAN SETORAN TUNAI HARIAN</h3>' . form_open_multipart('ctranggotabaca/inserttable', array('id' => 'form', 'name' => 'form')) . '<div class="garis"></div>';
+        $xForm = '<div id="stylized" class="myform"><h3>LAPORAN DINAS DAN PRIBADI HARIAN</h3>' . form_open_multipart('ctranggotabaca/inserttable', array('id' => 'form', 'name' => 'form')) . '<div class="garis"></div>';
         $xAddJs = link_tag('resource/js/themes/base/jquery.ui.all.css') .
                 '<link rel="stylesheet" href="' . base_url() . 'resource/css/thickbox.css" type="text/css" media="screen" />'.
                 '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/ajax/baseurl.js"></script>' .
@@ -56,7 +56,7 @@ class ctrlapdsetorantunaifcharian extends CI_Controller {
         //$xBufResult = setForm('edTanggal', 'Tanggal', form_dropdown('edBulan', getArrayBulan(),'0','id="edBulan" width="150px"')) ;
         $xBufResult = setForm('edtgldenda', 'Tanggal Setoran', form_input(getArrayObj('edtgldenda', '', '120'))) . '<div class="spacer"></div>';
         $xBufResult .= setForm('edidlokasi', 'Lokasi', form_dropdown('edidlokasi', $this->modellokasi->getArrayListlokasi(), '0', 'id="edidlokasi" width="150px"')) . '<div class="spacer"></div>';
-        $xBufResult .= '<div class="garis"></div>' . form_button('btSimpan', 'Tampil Data', 'onclick="dotampillapsetoranharian(false);"') . form_button('btNew', 'Export Ke Excel', 'onclick="dotampillapsetoranharian(true);"') . '<div class="spacer"></div>';
+        $xBufResult .= '<div class="garis"></div>' . form_button('btSimpan', 'Tampil Data', 'onclick="dotampillapsetoranhariannontunai(false);"') . form_button('btNew', 'Export Ke Excel', 'onclick="dotampillapsetoranhariannontunai(true);"') . '<div class="spacer"></div>';
         return $xBufResult;
     }
 
@@ -97,20 +97,14 @@ class ctrlapdsetorantunaifcharian extends CI_Controller {
         }
         $xBufresult .='</table>';
 
-        $arrayrow = $this->getrowperuser($edtgldenda,$edidlokasi);
-        $xBufresult .= "<br /><br />SETORAN PERUSER <br />";
-        $xBufresult .='<table border="1px solid">';
-        for($i=0;$i<count($arrayrow);$i++){
-            $xBufresult .= '<tr>'. $arrayrow[$i].'</tr>';
-        }
-        $xBufresult .='</table>';
+        
 
         //$lokasi = $this->session->userdata('idlokasi');
         $this->load->model('modellokasi');
         $rowlokasi = $this->modellokasi->getDetaillokasi($edidlokasi);
 
         $judul = "PERPUSTAKAAN UNIVERSITAS SANATA DHARMA <br />".
-                 "LAPORAN SETORAN TUNAI HARIAN UNTUK FOTOKOPI,JILID DAN PRINT  <br />".
+                 "LAPORAN DETAIL DINAS DAN PRIBADI   <br />".
                  "TANGGAL ".$edtgldenda."<br /> DI ".$rowlokasi->NmLokasi;
         return '<div id="tablereport" name ="tablereport" class="tablereport" style="width:700px;" align="center"><h3>'.$judul.' </h3>' . $xBufresult . '</div>';
     }
@@ -124,10 +118,13 @@ class ctrlapdsetorantunaifcharian extends CI_Controller {
        *  2. tambahkan cell
        */
        $this->load->model('modeltransaksi');
-       $xQuery = $this->modeltransaksi->getSetoranTunaiPertanggal($edtgldenda,$edidlokasi,$xIdStatusPLU);
-       $arrayrow[0] = '<td width="150px"><b>Jam</b></td>';
-       $arrayrow[0] .= '<td width="600px"><b>PLU </b></td>';
+       $xQuery = $this->modeltransaksi->getSetoranNONTunaiPertanggal($edtgldenda,$edidlokasi,$xIdStatusPLU);
+       $arrayrow[0] = '<td width="100px"><b>Jam</b></td>';
+       $arrayrow[0] .= '<td width="400px"><b>PLU </b></td>';
        $arrayrow[0] .= '<td><b>Jumlah</b></td>';
+       $arrayrow[0] .= '<td><b>Pengguna</b></td>';
+       $arrayrow[0] .= '<td><b>Unit Kerja</b></td>';
+       $arrayrow[0] .= '<td><b>Jenis Pembayaran</b></td>';
        $arrayrow[0] .= '<td align="right" width="250px"><b>Total</b></td>';
        $arrayrow[0] .= '<td width="350px"><b>User</b></td>';
        $i=1;
@@ -136,6 +133,9 @@ class ctrlapdsetorantunaifcharian extends CI_Controller {
             $arrayrow[$i]= '<td>'.$row->jam.'.</td>';
             $arrayrow[$i].= '<td>'.$row->NamaProduk.' ('.$row->nominalpersatuan.')</td>';
             $arrayrow[$i].= '<td align="center">'.$row->jumlahsatuan.'</td>';
+            $arrayrow[$i].= '<td align="center">'.$row->namapengguna.'</td>';
+            $arrayrow[$i].= '<td align="center">'.$row->namaunitkerja.'</td>';
+            $arrayrow[$i].= '<td align="center">'.$row->JenisPengguna.'</td>';
             $arrayrow[$i].= '<td align="right">'.number_format($row->total, 0, '.', ',').'</td>';
             $arrayrow[$i].= '<td >'.$row->namauser.'</td>';
             $jumlahtotal += ($row->nominalpersatuan*$row->jumlahsatuan);
@@ -143,7 +143,10 @@ class ctrlapdsetorantunaifcharian extends CI_Controller {
         }
        $arrayrow[$i] = '<td></td>';
        $arrayrow[$i] .= '<td></td>';
-       $arrayrow[$i] .= '<td width="500px">Jumlah</td>';
+       $arrayrow[$i] .= '<td></td>';
+       $arrayrow[$i] .= '<td></td>';
+       $arrayrow[$i] .= '<td></td>';
+       $arrayrow[$i] .= '<td>Jumlah</td>';
        $arrayrow[$i] .= '<td align="right">'.number_format($jumlahtotal, 0, '.', ',').'</td>';
        $arrayrow[$i] .= '<td></td>';
         //$this->load->model('modelsetoran');

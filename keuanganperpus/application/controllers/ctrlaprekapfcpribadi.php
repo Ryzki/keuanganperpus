@@ -44,7 +44,7 @@ class ctrlaprekapfcpribadi extends CI_Controller {
 
                  </script>   ';
    //'<div id="tablereport" name ="tablereport"> </div>'
-        echo $this->modelgetmenu->SetViewPerpus($xForm . $this->setDetailFormReport($xidx), '<div id="tablereport" name ="tablereport"> </div>', '', $xAddJs, '');
+        echo $this->modelgetmenu->SetViewPerpus($xForm . $this->setDetailFormReport($xidx),  '<div id="tablereport" name ="tablereport"> </div>' , '', $xAddJs, '');
     }
 
     function setDetailFormReport($xidx) {
@@ -214,7 +214,12 @@ class ctrlaprekapfcpribadi extends CI_Controller {
              $this->load->model('modelpegawai');
              $rowpeg = $this->modelpegawai->getDetailpegawai($row->idpegawai);
              //echo "Test".$ArrayHari[$i]; hari,idpegawai,idunitkerja $this->modeltransaksi->getnamapegawairekapdinas($xBulan,$tahun,$edidlokasi,$edunitkerja,$hari)
-             $arrayrow[$i]= '<td>'.$rowpeg->Nama.'</td><td>'.$rowpeg->npp.'</td>';
+             if(!empty ($rowpeg->Nama)){
+              $arrayrow[$i]= '<td>'.$rowpeg->Nama.'</td><td>'.$rowpeg->npp.'</td>';
+             } else
+             {
+              $arrayrow[$i]= '<td><b>Kosong</b></td><td><b><i>(Mohon Dicek)</i></b></td>';
+             }
              $xarrayhari[$i]=$row->idpegawai;
              $xArrayTotal[$i] = 0;
              $xArrayTotalFC[$i] = 0;
