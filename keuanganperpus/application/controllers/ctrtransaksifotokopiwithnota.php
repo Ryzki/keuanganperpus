@@ -23,7 +23,8 @@ class ctrtransaksifotokopiwithnota extends CI_Controller {
         $this->load->helper('html');
         $this->load->model('modelgetmenu');
         $xForm = '<div id="stylized" class="myform"><h3>Transaksi Fotokopi/Jilid/Print(Berdasar PLU )</h3>' . form_open_multipart('ctrtransaksi/inserttable', array('id' => 'form', 'name' => 'form')).'<div class="garis"></div>';
-        $xAddJs = '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/ajax/baseurl.js"></script>' .
+        $xAddJs = 
+                '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/ajax/baseurl.js"></script>' .
                   '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/ajax/ajaxtransaksifotokopiwithnota.js"></script>' .
                   '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/autoNumeric.js"></script>' .
                   '<script  type=text/javascript>
@@ -551,12 +552,14 @@ function isPLUInBuffer(){
 
 function getSisaBayar(){
 
-  $xidnota = $_POST['edNoNota'];
+  //$xidnota = $_POST['edNoNota'];
+    $xidnota = $this->session->userdata('nonota');
   $edBayar = $_POST['edBayar'];
   $this->load->model('modelbuffer');
   $xJmlBayar =  $this->modelbuffer->getTotalFromBuffer($xidnota);
   $sisa =  str_replace('.', '', $edBayar)-$xJmlBayar;
   $this->load->helper('json');
+  $this->json_data['jumlahbayar'] = number_format($xJmlBayar, 0, ',', '.');
   $this->json_data['sisa'] = number_format($sisa, 0, ',', '.');
   echo json_encode($this->json_data);
 }
