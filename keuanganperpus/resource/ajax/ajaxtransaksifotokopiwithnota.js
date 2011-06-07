@@ -320,7 +320,7 @@ function doClear(){
         $("#edtotal").val("");
         setJumlahHarusBayar();
 
-        setNoNota();
+        
         
         //setJumlahHarusBayar();
 
@@ -334,7 +334,21 @@ function doClear(){
 
 function dosimpan(){ 
     $(document).ready(function(){
-    
+      if($("#edBayar").val()=='0' || $("#edBayar").val()==''){
+       alert('Pembayaran belum Terisi');
+       return;
+      }
+      if($("#edSisa").val()<'0' ){
+       alert('Sisa tidak Boleh Kurang dari Nol');
+       return;
+      }
+      if(($("#edidgrouppengguna").val() ==2)||($("#edidgrouppengguna").val()==3)){
+                       if($("#edidpegawai").val()==''){                       
+                        alert('NPP Tidak Boleh Kosong');
+                        return;   
+                       }
+                     }
+
         $.ajax({
             url: getBaseURL()+"index.php/ctrtransaksifotokopiwithnota/simpan/",
             data: "edNoNota="+$("#edNoNota").val()+"&edBayar="+$("#edBayar").val()+"&edSisa="+$("#edSisa").val(),
@@ -347,19 +361,24 @@ function dosimpan(){
                 dosearchbuffer('-99');
                 doshownamaProduk(false);
                 doshownmpegawai(false);
-                doshowpegawai(false);
+               // doshowpegawai(false);
 
                
                 $("#edidgrouppengguna").val("");
-                $("#edHarusBayar").val("0");
-                $("#edSisa").val("0");
-                $("#edBayar").val("0");
+                
+                
                 $("#edidpegawai").val("");
                 $("#edidunitkerja").val("0");
                 
                 $("#edidgrouppengguna").attr('disabled',false);
                 $("#edidplu").focus();
                 doshowpegawai(false);
+                
+                $("#edSisa").val("0");
+                $("#edBayar").val("0");
+                $("#edHarusBayar").val("0");
+                setNoNota();
+                doClear();
 
             //$("#edidplu").val(json.data);
             // alert(json.data);
@@ -565,9 +584,8 @@ function setSisaBayar(){
             dataType: 'json',
             type: 'POST',
             success: function(json){
-
-             $("#edSisa").val(json.sisa);
-
+               $("#edHarusBayar").val(json.jumlahbayar);
+               $("#edSisa").val(json.sisa);
             },
             error: function (xmlHttpRequest, textStatus, errorThrown) {
                 start = xmlHttpRequest.responseText.search("<title>") + 7;
@@ -733,9 +751,9 @@ function setJumlahHarusBayar(){
             success: function(json){
                 
                   if(($("#edidgrouppengguna").val() ==2)||($("#edidgrouppengguna").val()==3)){
-                    $("#edBayar").val(json.jumlahbayar);
+                        $("#edBayar").val(json.jumlahbayar);
                      }
-                    $("#edHarusBayar").val(json.jumlahbayar);
+                    //$("#edHarusBayar").val(json.jumlahbayar);
                     setSisaBayar();
                     
             },
@@ -849,4 +867,5 @@ function setnamapeg(){
 }
 
 doClear();
+setNoNota();
 //** Cek Group Pengguna
