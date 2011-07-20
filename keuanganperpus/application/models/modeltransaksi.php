@@ -178,7 +178,7 @@ class modeltransaksi extends CI_Model {
 //****************update 28 maret 2011**********
     function getSQLDasar($xBulan,$tahun,$xidlokasi) {
         return "(Select distinct trx.idx, trx.idplu,plu.idjnspengguna,tanggal,day(tanggal) hari,jumlahsatuan,nominalpersatuan,plu.idstatusPLU ,
-                (select JenisPengguna from jenipengguna as jnsp Where jnsp.idx=plu.idjnspengguna limit 1) as pengg
+                (select JenisPengguna from jenipengguna as jnsp Where jnsp.idx=plu.idjnspengguna limit 1) as pengg,idgrouppengguna
                 from transaksi as trx
                 inner join produkplu as plu on(trx.idplu=plu.KodePLU) where month(tanggal)='" . $xBulan . "' and year(tanggal)='".$tahun."' and  idlokasi = '".$xidlokasi."' order by plu.idjnspengguna) as tb1";
     }
@@ -193,6 +193,22 @@ class modeltransaksi extends CI_Model {
 
     function getarraystatusplu($xBulan,$xIdSTatus,$tahun,$xidlokasi) {
         $xStr = 'Select distinct(idplu) as idplu from ' . $this->getSQLDasar($xBulan,$tahun,$xidlokasi) . '  where idstatusPLU  = "'.$xIdSTatus.'" order by idplu ASC';
+        $query = $this->db->query($xStr);
+        $i = 0;
+        $xBuffResul =null;
+        foreach ($query->result() as $row) {
+            $xBuffResul[$i] = $row->idplu;
+            $i++;
+        }
+        return $xBuffResul;
+    }
+
+    function getarraystatusplutunainontunai($xBulan,$xIdSTatus,$tahun,$xidlokasi,$xTunaiNonTunai) {
+       $xWhere = "and (idgrouppengguna='2' or idgrouppengguna = '3')";
+        if($xTunaiNonTunai=='0'){
+        $xWhere = "and (idgrouppengguna='1' or idgrouppengguna = '4')";
+        }
+        $xStr = 'Select distinct(idplu) as idplu from ' . $this->getSQLDasar($xBulan,$tahun,$xidlokasi) . '  where idstatusPLU  = "'.$xIdSTatus.'" '.$xWhere.' order by idplu ASC';
         $query = $this->db->query($xStr);
         $i = 0;
         $xBuffResul =null;
