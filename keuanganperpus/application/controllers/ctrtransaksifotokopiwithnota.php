@@ -25,7 +25,8 @@ class ctrtransaksifotokopiwithnota extends CI_Controller {
         $xForm = '<div id="stylized" class="myform"><h3>Transaksi Fotokopi/Jilid/Print(Berdasar PLU )</h3>' . form_open_multipart('ctrtransaksi/inserttable', array('id' => 'form', 'name' => 'form')).'<div class="garis"></div>';
         $xAddJs = 
                 '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/ajax/baseurl.js"></script>' .
-                  '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/ajax/ajaxtransaksifotokopiwithnota.js"></script>' .
+                 '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/jquery.printElement.js"></script>'.
+                  '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/ajax/ajaxtransaksifotokopiwithnota.js"></script>' .                  
                   '<script language="javascript" type="text/javascript" src="' . base_url() . 'resource/js/autoNumeric.js"></script>' .
                   '<script  type=text/javascript>
                             $(function() {
@@ -34,7 +35,7 @@ class ctrtransaksifotokopiwithnota extends CI_Controller {
                              });
                         </script>';
 
-        echo $this->modelgetmenu->SetViewPerpus($xForm . $this->setDetailFormtransaksi($xidx), $this->getlisttransaksinota($xAwal, $xSearch), '', $xAddJs, '');
+        echo $this->modelgetmenu->SetViewPerpus($xForm . $this->setDetailFormtransaksi($xidx), $this->getlisttransaksinota($xAwal, $xSearch).'<br /><div id="cetak"></div>', '', $xAddJs, '');
     }
 
     function setDetailFormtransaksi($xidx) {
@@ -119,7 +120,7 @@ class ctrtransaksifotokopiwithnota extends CI_Controller {
         $xBufResult .= setForm('edSisa', 'Sisa Pembayaran', form_input(getArrayObj('edSisa', $xjumlahsatuan, '150'))). '<div class="spacer"></div>'.'<div class="garis"></div>';
 
 
-        $xBufResult .= form_button('btSimpan', 'Simpan', 'onclick="dosimpan();" id="btSimpan"') . form_button('btNew', 'Baru', 'onclick="doClearNota();"') . '<div class="spacer"></div>';
+        $xBufResult .= form_button('btSimpan', 'Simpan', 'onclick="dosimpan();" id="btSimpan"') . form_button('btNew', 'Baru', 'onclick="doClearNota();"'). form_button('btNew', 'Cetak/Simpan', 'onclick="doCetak();"')  . '<div class="spacer"></div>';
 
         return $xBufResult;
     }
@@ -530,6 +531,67 @@ function getlastnota(){
   echo json_encode($this->json_data);
 }
 
+function setprintnota(){
+         $xNama = $_POST['nmpegawai'];
+         $edNoNota = $_POST['edNoNota'];
+         $edunitkerja = $_POST['edunitkerja'];
+
+         $edHarusBayar = $_POST['edHarusBayar'];
+         $edBayar = $_POST['edBayar'];
+         $edSisa = $_POST['edSisa'];
+
+
+         $xBufResult = '<div id="toPrint">';
+         
+         $this->load->model('modelbuffer');
+         $this->load->model('modelprodukplu');
+         $xQuery = $this->modelbuffer->getListbuffer(0, 100, '');
+         $xIsiTrx = '<div id="detailnota">';
+         foreach ($xQuery->result() as $row) {
+            $RowPLU =$this->modelprodukplu->getDetailprodukplubykode($row->idplu);
+          $xTd = '<div class="kol1">'.$RowPLU->NamaProduk.'</div>';
+          $xTd .= '<div class="kol2">'.$row->jumlahsatuan.'</div>';
+          $xTd .= '<div class="kol3">'.number_format($row->total, 0, ',', '.').'</div>';
+
+          $xIsiTrx .= $xTd;
+         }
+         $xIsiTrx .='</div>';
+
+         $this->load->helper('umum');
+                 $xHeader = 'No Nota : '.$edNoNota.'<br /> Tanggal : '.$this->session->userdata('tanggal').' <br />';
+//                 if(!empty ($xNama)){
+//                  $xHeader .=  'Nama : '.$xNama.'<br />';
+//                 }
+//                 if(!empty ($edunitkerja)){
+//                   $xHeader .=  'Unit Kerja : '.$edunitkerja.'<br />';
+//                 }
+
+         
+         //            123456789012345678901234567890123456789012345678901234567890
+         $xBufResult = '<div id="toPrint">
+                       Perpustakaan Universitas Sanata Dharma <br />
+                       Mrican,Tromol Pos 29,yogyakarta 55002<br />
+                       telp .(0274) 513301,515352 <br />
+                       FAX (0274)562383<br />
+                       ===========================================================<br />
+                       '.$xHeader.'
+                       =========================================================== <br />
+                       '.$xIsiTrx.'
+                       =========================================================== <br />
+                       Total Transksi : '.$edHarusBayar.'<br />
+                       Jumlah   Bayar : '.$edBayar.'<br />
+                       Sisa     Bayar : '.$edSisa.'<br />
+                       
+                       Petugas : '.$this->session->userdata('nama').' <br />
+                       </div>';
+       $this->load->helper('json');
+       $this->json_data['data'] = $xBufResult;
+       //$this->json_data['data'] = $xBufResult.'testttt</div>';
+         
+        echo json_encode($this->json_data);
+       
+    }
+    
 function getJumlahHarusBayar(){
   $this->load->helper('json');
   $this->load->model('modelbuffer');
