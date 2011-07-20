@@ -88,6 +88,7 @@ function dotampillaporanfotokopibulan(isexport){
     });
 }
 
+
 function dotampillaporanfotokopibulantunainontunai(isexport){
     $(document).ready(function(){
         $.ajax({
