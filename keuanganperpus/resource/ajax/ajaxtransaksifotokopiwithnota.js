@@ -866,6 +866,39 @@ function setnamapeg(){
     });
 }
 
+function doCetak(){
+ $(document).ready(function(){
+//        alert("sdad"+"edidx="+$("#edidx").val()+"&edNoIdentitas="+$("#edNoIdentitas").val()+"&edNama="+$("#edNama").val()+"&edidJenisAnggota="+$("#edidJenisAnggota").val()+"&edAlamat="+$("#edAlamat").val()+"&edKota="+$("#edKota").val()+"&edkodepos="+$("#edkodepos").val()+
+//                  "&edNotelp="+$("#edNotelp").val()+"&edemail="+$("#edemail").val());
+        $.ajax({
+            url: getBaseURL()+"index.php/ctrtransaksifotokopiwithnota/setprintnota/",
+            data: "nmpegawai="+$("#nmpegawai").val()+"&edNoNota="+$("#edNoNota").val()+"&edunitkerja="+$("#edunitkerja").val()+
+                  "&edHarusBayar="+$("#edHarusBayar").val()+"&edBayar="+$("#edBayar").val()+"&edSisa="+$("#edSisa").val()  ,
+            cache: false,
+            dataType: 'json',
+            type: 'POST',
+            success: function(json){
+              //alert(json.data);
+                $('#cetak').html(json.data);
+                $('#cetak').hide();
+                $('#toPrint').printElement({printMode: 'popup'});
+                dosimpan();
+
+
+            },
+            error: function (xmlHttpRequest, textStatus, errorThrown) {
+                start = xmlHttpRequest.responseText.search("<title>") + 7;
+                end = xmlHttpRequest.responseText.search("</title>");
+                errorMsg =  " On Cetak ";
+                if (start > 0 && end > 0)
+                    alert("Rangerti "+errorMsg + "  [" + xmlHttpRequest.responseText.substring(start, end) + "]");
+                else
+                    alert("Error juga "+errorMsg);
+            }
+        });
+    });
+}
+
 doClear();
 setNoNota();
 //** Cek Group Pengguna
