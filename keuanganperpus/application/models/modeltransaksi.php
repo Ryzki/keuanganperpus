@@ -4,6 +4,7 @@ if (!defined('BASEPATH'))
     exit('Tidak Diperkenankan mengakses langsung');
 /* Class  Model : transaksi  * di Buat oleh Diar PHP Generator * Update List untuk grid karena program generatorku lom sempurna ya hehehehehe */
 
+
 class modeltransaksi extends CI_Model {
 
     function __construct() {
