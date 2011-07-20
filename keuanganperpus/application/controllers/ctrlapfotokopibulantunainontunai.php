@@ -5,7 +5,8 @@ if (!defined('BASEPATH'))
 /* Class  Control : anggotabaca  * di Buat oleh Diar PHP Generator * Update List untuk grid karena program generatorku lom sempurna ya hehehehehe */
 
 class ctrlapfotokopibulantunainontunai extends CI_Controller {
-    
+
+
     function __construct() {
         parent::__construct();
      
