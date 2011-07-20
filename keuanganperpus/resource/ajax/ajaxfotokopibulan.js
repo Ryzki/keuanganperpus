@@ -88,6 +88,34 @@ function dotampillaporanfotokopibulan(isexport){
     });
 }
 
+function dotampillaporanfotokopibulantunainontunai(isexport){
+    $(document).ready(function(){
+        $.ajax({
+            url: getBaseURL()+"index.php/ctrlapfotokopibulantunainontunai/dotampillaporan/",
+            data: "edbulan="+$("#edBulan").val()+"&edtahun="+$("#edTahun").val()+"&edidlokasi="+$("#edidlokasi").val()+"&edtunainontunai="+$("#edtunainontunai").val(),
+            cache: false,
+            dataType: 'json',
+            type: 'POST',
+            success: function(json){
+            //alert('tess'+json.harga);
+            $("#tablereport").html(json.data);
+             if(isexport){
+               exporttoexcel(json.data);
+            }
+
+
+            },
+            error: function (xmlHttpRequest, textStatus, errorThrown) {
+                start = xmlHttpRequest.responseText.search("<title>") + 7;
+                end = xmlHttpRequest.responseText.search("</title>");
+                errorMsg = "On Tampil laporan ";
+                if (start > 0 && end > 0)  alert("On Edit "+errorMsg + "  [" + xmlHttpRequest.responseText.substring(start, end) + "]");
+                else
+                    alert("Error  "+errorMsg);
+            }
+        });
+    });
+}
 
 function dotampillaporanrekap(isexport){
     $(document).ready(function(){
