@@ -249,4 +249,30 @@ height: 50px;
 width : 50px;
 left:50px;
 display :block;
-}                                        
+}
+
+#detailnota{
+position: relative;
+width: 470px;
+display: block;
+}
+
+.kol1{
+ float: left;
+ width: 350px;
+ display: block;
+}
+
+.kol2{
+ float: left;
+ width: 60px;
+ display: block;
+ text-align: center;
+}
+
+.kol3{
+ float: left;
+ width: 60px;
+ display: block;
+ text-align: right;
+}
