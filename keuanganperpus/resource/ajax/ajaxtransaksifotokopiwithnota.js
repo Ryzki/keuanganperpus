@@ -902,3 +902,14 @@ function doCetak(){
 doClear();
 setNoNota();
 //** Cek Group Pengguna
+
+//Setting  harus bayar  dan jumlah bayar
+$(document).ready(function(){
+ $("#edHarusBayar").css({color:"red"});
+ $("#edHarusBayar").css("font-weight","bold");
+ $("#edHarusBayar").css("font-size","14px");
+ 
+ $("#edBayar").css({color:"red"});
+ $("#edBayar").css("font-weight","bold");
+ $("#edBayar").css("font-size","14px");
+});
