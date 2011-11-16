@@ -128,6 +128,7 @@ class ctrlapdsetorannontunaifcharian extends CI_Controller {
        $arrayrow[0] .= '<td align="right" width="250px"><b>Total</b></td>';
        $arrayrow[0] .= '<td width="350px"><b>User</b></td>';
        $i=1;
+       $jumlahsatuantotal =0;
        $jumlahtotal =0;
        foreach ($xQuery->result() as $row) {
             $arrayrow[$i]= '<td>'.$row->jam.'.</td>';
@@ -138,15 +139,16 @@ class ctrlapdsetorannontunaifcharian extends CI_Controller {
             $arrayrow[$i].= '<td align="center">'.$row->JenisPengguna.'</td>';
             $arrayrow[$i].= '<td align="right">'.number_format($row->total, 0, '.', ',').'</td>';
             $arrayrow[$i].= '<td >'.$row->namauser.'</td>';
+            $jumlahsatuantotal += $row->jumlahsatuan;
             $jumlahtotal += ($row->nominalpersatuan*$row->jumlahsatuan);
             $i++;
         }
        $arrayrow[$i] = '<td></td>';
-       $arrayrow[$i] .= '<td></td>';
-       $arrayrow[$i] .= '<td></td>';
-       $arrayrow[$i] .= '<td></td>';
-       $arrayrow[$i] .= '<td></td>';
        $arrayrow[$i] .= '<td>Jumlah</td>';
+       $arrayrow[$i] .= '<td>'.number_format($jumlahsatuantotal, 0, '.', ',').'</td>';
+       $arrayrow[$i] .= '<td></td>';
+       $arrayrow[$i] .= '<td></td>';
+       $arrayrow[$i] .= '<td></td>';
        $arrayrow[$i] .= '<td align="right">'.number_format($jumlahtotal, 0, '.', ',').'</td>';
        $arrayrow[$i] .= '<td></td>';
         //$this->load->model('modelsetoran');
