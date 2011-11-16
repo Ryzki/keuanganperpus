@@ -132,21 +132,26 @@ class ctrlapdsetorantunaifcharian extends CI_Controller {
        $arrayrow[0] .= '<td width="350px"><b>User</b></td>';
        $i=1;
        $jumlahtotal =0;
+       $jumlahtotalsatuan = 0;
        foreach ($xQuery->result() as $row) {
             $arrayrow[$i]= '<td>'.$row->jam.'.</td>';
             $arrayrow[$i].= '<td>'.$row->NamaProduk.' ('.$row->nominalpersatuan.')</td>';
             $arrayrow[$i].= '<td align="center">'.$row->jumlahsatuan.'</td>';
             $arrayrow[$i].= '<td align="right">'.number_format($row->total, 0, '.', ',').'</td>';
             $arrayrow[$i].= '<td >'.$row->namauser.'</td>';
+            $jumlahtotalsatuan += $row->jumlahsatuan;
             $jumlahtotal += ($row->nominalpersatuan*$row->jumlahsatuan);
             $i++;
         }
        $arrayrow[$i] = '<td></td>';
-       $arrayrow[$i] .= '<td></td>';
-       $arrayrow[$i] .= '<td width="500px">Jumlah</td>';
+       $arrayrow[$i] .= '<td>Jumlah</td>';
+       $arrayrow[$i] .= '<td width="500px" align="center">'.number_format($jumlahtotalsatuan, 0, '.', ',').'</td>';
        $arrayrow[$i] .= '<td align="right">'.number_format($jumlahtotal, 0, '.', ',').'</td>';
        $arrayrow[$i] .= '<td></td>';
-        //$this->load->model('modelsetoran');
+     
+    return $arrayrow;
+    }
+       //$this->load->model('modelsetoran');
 //        $xQuery = $this->modelsetoran->getSumSetoranBulan($xbulan,$tahun);
 //
 //            $arrayrow[$i]= '<td> </td>';
@@ -175,8 +180,6 @@ class ctrlapdsetorantunaifcharian extends CI_Controller {
 //            $arrayrow[$i].= '<td>Jumlah  Pemasukkan Total</td>';
 //            $arrayrow[$i].= '<td align="right"> '.number_format($jumlahtotal-$TotalSetoran, 0, '.', ',').' </td>';
 //       $i++;
-    return $arrayrow;
-    }
 
 function getrowperuser($edtgldenda,$edidlokasi){
 
