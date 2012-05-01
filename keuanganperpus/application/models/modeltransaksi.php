@@ -22,6 +22,16 @@ class modeltransaksi extends CI_Model {
        return $query;
     }
 
+   function gethargaperbulan($xidplu,$xbulan){
+      $xStr = "Select
+               nominalpersatuan as harga
+               from transaksi   where month(tanggal)='".$xbulan."' and idPLU = '".$xidplu."' limit 1";
+           $query = $this->db->query($xStr);
+
+        $row = $query->row();
+        return $row;
+   }
+
     function getSetoranNONTunaiPertanggal($xTanggal,$xLokasi,$xStatusPLU) {
     $xStr = "  Select   (select NamaProduk from produkplu where produkplu.KodePLU = transaksi.idPLU limit 1) NamaProduk ,jam,jumlahsatuan,total,
                nominalpersatuan,iduser,(Select nama from Pegawai where pegawai.idx = transaksi.iduser) as namauser,
