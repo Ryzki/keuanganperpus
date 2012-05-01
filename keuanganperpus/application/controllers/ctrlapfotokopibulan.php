@@ -109,7 +109,7 @@ class ctrlapfotokopibulan extends CI_Controller {
         $this->load->model('modeltransaksi');
         $rowplu = $this->modelprodukplu->getDetailprodukplubykode($xidplu);
         $xJmlLembar = 0;
-         $rowharga = $this->modeltransaksi->gethargaperbulan($xidplu,$xBulan);
+         $rowharga = $this->modeltransaksi->gethargaperbulan($xidplu,$xBulan,$tahun);
          if (!empty ($rowharga)){
            $harga =$rowharga->harga;
          } else
