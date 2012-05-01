@@ -22,10 +22,10 @@ class modeltransaksi extends CI_Model {
        return $query;
     }
 
-   function gethargaperbulan($xidplu,$xbulan){
+   function gethargaperbulan($xidplu,$xbulan,$xtahun){
       $xStr = "Select
                nominalpersatuan as harga
-               from transaksi   where month(tanggal)='".$xbulan."' and idPLU = '".$xidplu."' limit 1";
+               from transaksi   where month(tanggal)='".$xbulan."' and year(tanggal)='".$xtahun."' and idPLU = '".$xidplu."' limit 1";
            $query = $this->db->query($xStr);
 
         $row = $query->row();
