@@ -143,20 +143,27 @@ class ctrlaprekapfcdinas extends CI_Controller {
         $this->load->model('modelprodukplu');
         $rowplu = $this->modelprodukplu->getDetailprodukplubykode($xidplu);
         $xJmlLembar = 0;
-        
+        $rowharga = $this->modeltransaksi->gethargaperbulan($xidplu,$xBulan,$tahun);
+         if (!empty ($rowharga)){
+           $harga =$rowharga->harga;
+         } else
+         {
+           $harga = 0;
+         }
+
         for($i=0;$i<count($xarrayhari);$i++){
            $lembar =  $this->getvalcellfromdatabase($xidplu, $xarrayhari[$i],$xBulan,$tahun,$edidlokasi,$edunitkerja);
            //$this->arrayTotalFC[$i] +=  $lembar;
            
            
-             $xArrayTotalStatus[$i] += ($lembar*$rowplu->harga);
-             $xArrayTotal[$i] += ($lembar*$rowplu->harga);
+             $xArrayTotalStatus[$i] += ($lembar*$harga);
+             $xArrayTotal[$i] += ($lembar*$harga);
            
            $xBufArray[$i] = $xarraydata[$i]. '<td align ="center">'. $lembar.'</td>';
            $xJmlLembar +=  $lembar;
         }
 
-       $xBufArray[0] = $xarraydata[0].'<td align ="center">'.$rowplu->NamaProduk.'<br />Rp '.$rowplu->harga.'</td>';
+       $xBufArray[0] = $xarraydata[0].'<td align ="center">'.$rowplu->NamaProduk.'<br />Rp '.$harga.'</td>';
        $xBufArray[count($xarrayhari)-1] = $xarraydata[count($xarrayhari)-1].'<td align ="center">'.$xJmlLembar.'</td>';
 
        
