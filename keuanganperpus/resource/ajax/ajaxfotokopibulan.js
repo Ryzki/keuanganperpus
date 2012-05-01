@@ -22,7 +22,7 @@ function dotampillapsetoranharian(isexport){
             error: function (xmlHttpRequest, textStatus, errorThrown) {
                 start = xmlHttpRequest.responseText.search("<title>") + 7;
                 end = xmlHttpRequest.responseText.search("</title>");
-                errorMsg = "On Tampil laporan ";
+                errorMsg = "On Tampil laporan "+xmlHttpRequest.responseText;
                 if (start > 0 && end > 0)  alert("On Edit "+errorMsg + "  [" + xmlHttpRequest.responseText.substring(start, end) + "]");
                 else
                     alert("Error  "+errorMsg);
@@ -50,7 +50,7 @@ function dotampillapsetoranhariannontunai(isexport){
             error: function (xmlHttpRequest, textStatus, errorThrown) {
                 start = xmlHttpRequest.responseText.search("<title>") + 7;
                 end = xmlHttpRequest.responseText.search("</title>");
-                errorMsg = "On Tampil laporan ";
+                errorMsg = "On Tampil laporan "+xmlHttpRequest.responseText;
                 if (start > 0 && end > 0)  alert("On Edit "+errorMsg + "  [" + xmlHttpRequest.responseText.substring(start, end) + "]");
                 else
                     alert("Error  "+errorMsg);
@@ -79,7 +79,7 @@ function dotampillaporanfotokopibulan(isexport){
             error: function (xmlHttpRequest, textStatus, errorThrown) {
                 start = xmlHttpRequest.responseText.search("<title>") + 7;
                 end = xmlHttpRequest.responseText.search("</title>");
-                errorMsg = "On Tampil laporan ";
+                errorMsg = "On Tampil laporan "+xmlHttpRequest.responseText;
                 if (start > 0 && end > 0)  alert("On Edit "+errorMsg + "  [" + xmlHttpRequest.responseText.substring(start, end) + "]");
                 else
                     alert("Error  "+errorMsg);
@@ -109,7 +109,7 @@ function dotampillaporanfotokopibulantunainontunai(isexport){
             error: function (xmlHttpRequest, textStatus, errorThrown) {
                 start = xmlHttpRequest.responseText.search("<title>") + 7;
                 end = xmlHttpRequest.responseText.search("</title>");
-                errorMsg = "On Tampil laporan ";
+                errorMsg = "On Tampil laporan "+xmlHttpRequest.responseText;
                 if (start > 0 && end > 0)  alert("On Edit "+errorMsg + "  [" + xmlHttpRequest.responseText.substring(start, end) + "]");
                 else
                     alert("Error  "+errorMsg);
@@ -137,7 +137,7 @@ function dotampillaporanrekap(isexport){
             error: function (xmlHttpRequest, textStatus, errorThrown) {
                 start = xmlHttpRequest.responseText.search("<title>") + 7;
                 end = xmlHttpRequest.responseText.search("</title>");
-                errorMsg = "On Tampil laporan ";
+                errorMsg = "On Tampil laporan "+xmlHttpRequest.responseText;
                 if (start > 0 && end > 0)  alert("On Edit "+errorMsg + "  [" + xmlHttpRequest.responseText.substring(start, end) + "]");
                 else
                     alert("Error  "+errorMsg);
@@ -166,7 +166,7 @@ function dotampillaporanrekapdetail(isexport){
             error: function (xmlHttpRequest, textStatus, errorThrown) {
                 start = xmlHttpRequest.responseText.search("<title>") + 7;
                 end = xmlHttpRequest.responseText.search("</title>");
-                errorMsg = "On Tampil laporan ";
+                errorMsg = "On Tampil laporan "+xmlHttpRequest.responseText;
                 if (start > 0 && end > 0)  alert("On Edit "+errorMsg + "  [" + xmlHttpRequest.responseText.substring(start, end) + "]");
                 else
                     alert("Error  "+errorMsg);
@@ -196,7 +196,7 @@ function dotampillaporanrekapdinas(isexport){
             error: function (xmlHttpRequest, textStatus, errorThrown) {
                 start = xmlHttpRequest.responseText.search("<title>") + 7;
                 end = xmlHttpRequest.responseText.search("</title>");
-                errorMsg = "On Tampil laporan ";
+                errorMsg = "On Tampil laporan "+xmlHttpRequest.responseText;
                 if (start > 0 && end > 0)  alert("On Edit "+errorMsg + "  [" + xmlHttpRequest.responseText.substring(start, end) + "]");
                 else
                     alert("Error  "+errorMsg);
@@ -226,7 +226,7 @@ function dotampillaporanrekappribadi(isexport){
             error: function (xmlHttpRequest, textStatus, errorThrown) {
                 start = xmlHttpRequest.responseText.search("<title>") + 7;
                 end = xmlHttpRequest.responseText.search("</title>");
-                errorMsg = "On Tampil laporan ";
+                errorMsg = "On Tampil laporan "+xmlHttpRequest.responseText;
                 if (start > 0 && end > 0)  alert("On Edit "+errorMsg + "  [" + xmlHttpRequest.responseText.substring(start, end) + "]");
                 else
                     alert("Error  "+errorMsg);
@@ -306,7 +306,7 @@ $(document).ready(function(){
             error: function (xmlHttpRequest, textStatus, errorThrown) {
                 start = xmlHttpRequest.responseText.search("<title>") + 7;
                 end = xmlHttpRequest.responseText.search("</title>");
-                errorMsg = "On Tampil laporan ";
+                errorMsg = "On Tampil laporan "+xmlHttpRequest.responseText;
                 if (start > 0 && end > 0)  alert("On Edit "+errorMsg + "  [" + xmlHttpRequest.responseText.substring(start, end) + "]");
                 else
                     alert("Error  "+errorMsg);
